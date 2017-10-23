@@ -16,9 +16,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity"
-            android:label="Tiramisu">
-        </activity>
+        <activity
+            android:name=".HomeActivity"
+            android:label="Tiramisu" />
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".HabitManagerActivity" />
+        <activity android:name=".EventManagerActivity" />
+        <activity android:name=".MapActivity" />
+        <activity android:name=".ShareActivity" />
+        <activity android:name=".HistoryActivity" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>

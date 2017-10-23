@@ -26,6 +26,8 @@ public class HomeActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mtoggle);
         mtoggle.syncState();
 
+        //testcode:
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
