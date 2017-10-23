@@ -58,7 +58,7 @@ public class HistoryActivityTest extends ActivityInstrumentationTestCase2<Histor
         /*
         final ListView HistoryList = activity.getHistoryList();
         Event event = (Event) HistoryList.getItemAtPosition(0);
-        assertEquals("Test Event", event.getTitle());
+        assertEquals("Test Search", event.getTitle());
         */
 
         //will be made testable once historyList is implemented
