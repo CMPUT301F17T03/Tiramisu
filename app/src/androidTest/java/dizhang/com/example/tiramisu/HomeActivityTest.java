@@ -39,9 +39,8 @@ public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActiv
         solo.assertCurrentActivity("Wrong Activity", HomeActivity.class);
 
         solo.clickInList(0);
-        solo.assertCurrentActivity("Wrong Activity", EventManagerActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", EventViewActivity.class);
         assertTrue(solo.waitForText("Event Manager"));
-
         solo.goBack();
 
         solo.clickOnView(solo.getView(R.id.drawerLayout));
@@ -51,7 +50,7 @@ public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActiv
 
 
         solo.clickOnMenuItem("manageHabit");
-        solo.assertCurrentActivity("Wrong Activity", HabitManagerActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", HabitViewActivity.class);
         solo.goBack();
 
         solo.clickOnMenuItem("eventHistory");

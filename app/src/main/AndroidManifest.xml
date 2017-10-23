@@ -25,7 +25,11 @@
         <activity android:name=".MapActivity" />
         <activity android:name=".ShareActivity" />
         <activity android:name=".HistoryActivity" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".HabitViewActivity" />
+        <activity android:name=".EventViewActivity" />
+        <activity android:name=".HabitNewActivity" />
+        <activity android:name=".EditHabitActivity"></activity>
     </application>
 
 </manifest>
