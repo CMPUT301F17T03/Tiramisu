@@ -14,7 +14,7 @@ import org.junit.Before;
  * Created by ggranked on 2017-10-23.
  */
 
-public class HabitManagerActivityTest  extends ActivityInstrumentationTestCase2<HabitManagerActivity> {
+public class HabitManagerActivityTest extends ActivityInstrumentationTestCase2<HabitManagerActivity> {
     private Solo solo;
 
     public HabitManagerActivityTest(){
@@ -46,6 +46,17 @@ public class HabitManagerActivityTest  extends ActivityInstrumentationTestCase2<
         solo.enterText((EditText) solo.getView(R.id.editText2), "Test Habit!");
         solo.clickOnButton("Done");
 
+
+        //BELOW IS TO CHECK IF ITEM ACTUALLY ADDED TO THE LIST, CANNOT
+        //PERFORM RIGHT NOW, BUT WILL BE TESTABLE LATER!!!!
+
+
+        /*
+        final ListView HabitList = activity.getHabitList();
+        Habit habit = (Habit) HabitList.getItemAtPosition(0);
+        assertEquals("Test Habit!", event.getTitle());
+        */
+
         solo.assertCurrentActivity("Wrong Activity", HabitManagerActivity.class);
 
         solo.clickInList(0);
@@ -54,6 +65,18 @@ public class HabitManagerActivityTest  extends ActivityInstrumentationTestCase2<
         solo.enterText((EditText) solo.getView(R.id.editText), "Test Edit Habit!");
         solo.enterText((EditText) solo.getView(R.id.editText2), "Test Edit Habit!");
         solo.clickOnButton("Done");
+
+        //BELOW IS TO CHECK IF ITEM ACTUALLY CHANGED ON THE LIST, CANNOT
+        //PERFORM RIGHT NOW, BUT WILL BE TESTABLE LATER!!!!
+
+
+        /*
+        final ListView HabitList = activity.getHabitList();
+        Habit habit = (Habit) HabitList.getItemAtPosition(0);
+        assertEquals("Test Habit!", event.getTitle());
+        */
+
+
 
         solo.assertCurrentActivity("Wrong Activity", HabitManagerActivity.class);
 

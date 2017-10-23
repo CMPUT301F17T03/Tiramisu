@@ -29,7 +29,8 @@
         <activity android:name=".HabitViewActivity" />
         <activity android:name=".EventViewActivity" />
         <activity android:name=".HabitNewActivity" />
-        <activity android:name=".EditHabitActivity"></activity>
+        <activity android:name=".EditHabitActivity" />
+        <activity android:name=".EditEventActivity"></activity>
     </application>
 
 </manifest>
