@@ -30,7 +30,9 @@
         <activity android:name=".EventViewActivity" />
         <activity android:name=".HabitNewActivity" />
         <activity android:name=".EditHabitActivity" />
-        <activity android:name=".EditEventActivity"></activity>
+        <activity android:name=".EditEventActivity" />
+        <activity android:name=".RequestActivity" />
+        <activity android:name=".FollowedActivity"></activity>
     </application>
 
 </manifest>
