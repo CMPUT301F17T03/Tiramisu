@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name="dizhang.com.example.View.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,22 +17,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomeActivity"
+            android:name="dizhang.com.example.View.HomeActivity"
             android:label="Tiramisu" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".HabitManagerActivity" />
-        <activity android:name=".EventManagerActivity" />
-        <activity android:name=".MapActivity" />
-        <activity android:name=".ShareActivity" />
-        <activity android:name=".HistoryActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".HabitViewActivity" />
-        <activity android:name=".EventViewActivity" />
-        <activity android:name=".HabitNewActivity" />
-        <activity android:name=".EditHabitActivity" />
-        <activity android:name=".EditEventActivity" />
-        <activity android:name=".RequestActivity" />
-        <activity android:name=".FollowedActivity"></activity>
+        <activity android:name="dizhang.com.example.View.SignupActivity" />
+        <activity android:name="dizhang.com.example.View.HabitManagerActivity" />
+        <activity android:name="dizhang.com.example.View.EventManagerActivity" />
+        <activity android:name="dizhang.com.example.View.MapActivity" />
+        <activity android:name="dizhang.com.example.View.ShareActivity" />
+        <activity android:name="dizhang.com.example.View.HistoryActivity" />
+        <activity android:name="dizhang.com.example.View.ProfileActivity" />
+        <activity android:name="dizhang.com.example.View.HabitViewActivity" />
+        <activity android:name="dizhang.com.example.View.EventViewActivity" />
+        <activity android:name="dizhang.com.example.Control.HabitNewActivity" />
+        <activity android:name="dizhang.com.example.Control.EditHabitActivity" />
+        <activity android:name="dizhang.com.example.Control.EditEventActivity" />
+        <activity android:name="dizhang.com.example.View.RequestActivity" />
+        <activity android:name="dizhang.com.example.Control.FollowedActivity"></activity>
     </application>
 
 </manifest>

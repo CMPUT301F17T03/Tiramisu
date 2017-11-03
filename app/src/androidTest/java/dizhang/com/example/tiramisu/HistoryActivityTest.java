@@ -10,6 +10,10 @@ import com.robotium.solo.Solo;
 import org.junit.After;
 import org.junit.Before;
 
+import dizhang.com.example.View.EventViewActivity;
+import dizhang.com.example.View.HistoryActivity;
+import dizhang.com.example.View.MapActivity;
+
 /**
  * Created by ggranked on 2017-10-23.
  */
@@ -18,7 +22,7 @@ public class HistoryActivityTest extends ActivityInstrumentationTestCase2<Histor
     private Solo solo;
 
     public HistoryActivityTest() {
-        super(dizhang.com.example.tiramisu.HistoryActivity.class);
+        super(HistoryActivity.class);
     }
 
 

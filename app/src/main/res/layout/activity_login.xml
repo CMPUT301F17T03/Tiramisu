@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
-    tools:context="dizhang.com.example.tiramisu.LoginActivity">
+    tools:context="dizhang.com.example.tiramisu.dizhang.com.example.View.LoginActivity">
 
     <TextView
         android:id="@+id/textView"

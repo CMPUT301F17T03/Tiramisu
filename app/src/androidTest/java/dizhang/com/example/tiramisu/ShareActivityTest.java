@@ -10,6 +10,10 @@ import com.robotium.solo.Solo;
 import org.junit.After;
 import org.junit.Before;
 
+import dizhang.com.example.Control.FollowedActivity;
+import dizhang.com.example.View.RequestActivity;
+import dizhang.com.example.View.ShareActivity;
+
 /**
  * Created by ggranked on 2017-10-23.
  */
@@ -20,7 +24,7 @@ public class ShareActivityTest extends ActivityInstrumentationTestCase2<ShareAct
     private Solo solo;
 
     public ShareActivityTest() {
-        super(dizhang.com.example.tiramisu.ShareActivity.class);
+        super(ShareActivity.class);
     }
 
 

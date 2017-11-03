@@ -10,6 +10,10 @@ import com.robotium.solo.Solo;
 import org.junit.After;
 import org.junit.Before;
 
+import dizhang.com.example.Control.EditEventActivity;
+import dizhang.com.example.View.EventManagerActivity;
+import dizhang.com.example.View.EventViewActivity;
+
 /**
  * Created by ggranked on 2017-10-23.
  */
@@ -18,7 +22,7 @@ public class EventManagerActivityTest extends ActivityInstrumentationTestCase2<E
     private Solo solo;
 
     public EventManagerActivityTest(){
-        super(dizhang.com.example.tiramisu.EventManagerActivity.class);
+        super(EventManagerActivity.class);
     }
 
 

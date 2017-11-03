@@ -3,12 +3,20 @@ package dizhang.com.example.tiramisu;
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
-import android.widget.EditText;
 
 import com.robotium.solo.Solo;
 
 import org.junit.After;
 import org.junit.Before;
+
+import dizhang.com.example.View.EventViewActivity;
+import dizhang.com.example.View.HabitViewActivity;
+import dizhang.com.example.View.HistoryActivity;
+import dizhang.com.example.View.HomeActivity;
+import dizhang.com.example.View.LoginActivity;
+import dizhang.com.example.View.MapActivity;
+import dizhang.com.example.View.ProfileActivity;
+import dizhang.com.example.View.ShareActivity;
 
 /**
  * Created by ggranked on 2017-10-23.
@@ -18,7 +26,7 @@ public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActiv
     private Solo solo;
 
     public HomeActivityTest(){
-        super(dizhang.com.example.tiramisu.HomeActivity.class);
+        super(HomeActivity.class);
     }
 
 

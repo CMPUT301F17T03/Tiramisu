@@ -10,6 +10,11 @@ import com.robotium.solo.Solo;
 import org.junit.After;
 import org.junit.Before;
 
+import dizhang.com.example.Control.EditHabitActivity;
+import dizhang.com.example.Control.HabitNewActivity;
+import dizhang.com.example.View.HabitManagerActivity;
+import dizhang.com.example.View.HomeActivity;
+
 /**
  * Created by ggranked on 2017-10-23.
  */
@@ -18,7 +23,7 @@ public class HabitManagerActivityTest extends ActivityInstrumentationTestCase2<H
     private Solo solo;
 
     public HabitManagerActivityTest(){
-        super(dizhang.com.example.tiramisu.HabitManagerActivity.class);
+        super(HabitManagerActivity.class);
     }
 
 

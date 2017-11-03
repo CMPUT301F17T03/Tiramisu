@@ -1,13 +1,15 @@
-package dizhang.com.example.tiramisu;
+package dizhang.com.example.Control;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class FollowedActivity extends AppCompatActivity {
+import dizhang.com.example.tiramisu.R;
+
+public class EditEventActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_followed);
+        setContentView(R.layout.activity_edit_event);
     }
 }

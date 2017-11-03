@@ -10,9 +10,9 @@ import com.robotium.solo.Solo;
 import org.junit.After;
 import org.junit.Before;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static dizhang.com.example.tiramisu.R.styleable.View;
-import static org.junit.Assert.*;
+import dizhang.com.example.View.HomeActivity;
+import dizhang.com.example.View.LoginActivity;
+import dizhang.com.example.View.SignupActivity;
 
 /**
  * Created by ggranked on 2017-10-22.
@@ -21,7 +21,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     private Solo solo;
 
     public LoginActivityTest(){
-        super(dizhang.com.example.tiramisu.LoginActivity.class);
+        super(LoginActivity.class);
     }
 
 

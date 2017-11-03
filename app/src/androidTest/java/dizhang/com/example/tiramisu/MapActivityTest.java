@@ -3,12 +3,13 @@ package dizhang.com.example.tiramisu;
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
-import android.widget.EditText;
 
 import com.robotium.solo.Solo;
 
 import org.junit.After;
 import org.junit.Before;
+
+import dizhang.com.example.View.MapActivity;
 
 /**
  * Created by ggranked on 2017-10-23.
@@ -20,7 +21,7 @@ public class MapActivityTest extends ActivityInstrumentationTestCase2<MapActivit
         private Solo solo;
 
     public MapActivityTest() {
-        super(dizhang.com.example.tiramisu.MapActivity.class);
+        super(MapActivity.class);
     }
 
 

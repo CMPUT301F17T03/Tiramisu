@@ -1,7 +1,9 @@
-package dizhang.com.example.tiramisu;
+package dizhang.com.example.View;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import dizhang.com.example.tiramisu.R;
 
 public class HistoryActivity extends AppCompatActivity {
 
