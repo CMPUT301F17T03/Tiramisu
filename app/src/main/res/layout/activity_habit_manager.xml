@@ -4,25 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dizhang.com.example.tiramisu.dizhang.com.example.View.HabitManagerActivity">
+    android:background="@drawable/gradient"
+    tools:context="dizhang.com.example.View.HabitManagerActivity">
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        tools:layout_editor_absoluteX="62dp"
-        tools:layout_editor_absoluteY="96dp" />
-
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        tools:layout_editor_absoluteX="62dp"
-        tools:layout_editor_absoluteY="165dp" />
 </android.support.constraint.ConstraintLayout>
