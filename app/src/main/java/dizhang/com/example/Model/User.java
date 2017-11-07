@@ -19,11 +19,96 @@ public class User {
     private UserList requests = new UserList(); //requests sent to me
     private UserList following = new UserList(); //the users that I followed
 
-    //TODO: generate getter and setter
+    public User(String username){
+        this.username = username;
+    }
 
 
+    public String getUsername() {
+        return username;
+    }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
+    public String getNickname() {
+        return nickname;
+    }
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getInterests() {
+        return interests;
+    }
+
+    public void setInterests(String interests) {
+        this.interests = interests;
+    }
+
+    public Picture getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(Picture profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    public HabitList getHabitlist() {
+        return habitlist;
+    }
+
+    public void setHabitlist(HabitList habitlist) {
+        this.habitlist = habitlist;
+    }
+
+    public EventList getEventlist() {
+        return eventlist;
+    }
+
+    public void setEventlist(EventList eventlist) {
+        this.eventlist = eventlist;
+    }
+
+    public HistoryList getHistory() {
+        return history;
+    }
+
+    public void setHistory(HistoryList history) {
+        this.history = history;
+    }
+
+    public UserList getFans() {
+        return fans;
+    }
+
+    public void setFans(UserList fans) {
+        this.fans = fans;
+    }
+
+    public UserList getRequests() {
+        return requests;
+    }
+
+    public void setRequests(UserList requests) {
+        this.requests = requests;
+    }
+
+    public UserList getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(UserList following) {
+        this.following = following;
+    }
 }
