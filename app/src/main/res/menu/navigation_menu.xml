@@ -6,6 +6,9 @@
     <item android:id="@+id/manageHabit"
         android:title = "Manage Habit"/>
 
+    <item android:id="@+id/manageEvent"
+        android:title = "Manage Event"/>
+
     <item android:id="@+id/eventHistory"
         android:title = "Event History"/>
 
