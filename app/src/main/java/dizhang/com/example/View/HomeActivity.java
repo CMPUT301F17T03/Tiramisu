@@ -1,11 +1,15 @@
 package dizhang.com.example.View;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import dizhang.com.example.Model.History;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -31,15 +35,62 @@ public class HomeActivity extends AppCompatActivity {
         //testcode:
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.nav_menu);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case(R.id.myProfile):
+                        Intent profileInt = new Intent(getApplicationContext(), ProfileActivity.class);
+                        startActivity(profileInt);
+                        break;
+                    case(R.id.manageHabit):
+                        Intent habitInt = new Intent(getApplicationContext(), HabitViewActivity.class);
+                        startActivity(habitInt);
+                        break;
+                    case(R.id.manageEvent):
+                        Intent eventInt = new Intent(getApplicationContext(), EventViewActivity.class);
+                        startActivity(eventInt);
+                        break;
+                    case(R.id.eventHistory):
+                        Intent historyInt = new Intent(getApplicationContext(), HistoryActivity.class);
+                        startActivity(historyInt);
+                        break;
+                    case(R.id.shareCenter):
+                        Intent shareInt = new Intent(getApplicationContext(), ShareActivity.class);
+                        startActivity(shareInt);
+                        break;
+                    case(R.id.map):
+                        Intent mapInt = new Intent(getApplicationContext(), MapActivity.class);
+                        startActivity(mapInt);
+                        break;
+                    case(R.id.logout):
+                        Intent loginInt = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(loginInt);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
         if(mtoggle.onOptionsItemSelected(item)){
             return true;
 
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onBackPressed(){
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
     }
 }
