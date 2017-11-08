@@ -2,7 +2,6 @@ package dizhang.com.example.Model;
 
 import android.support.v7.app.AppCompatActivity;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,11 +13,11 @@ public class Habit {
     private String title;
     private String description;
     private Date date;
-    private ArrayList<DayOfWeek> frequency;
+    private ArrayList<String> frequency;
     private EventList events = new EventList();
 
 
-    public Habit(String title, String description, Date date, ArrayList<DayOfWeek> frequency){
+    public Habit(String title, String description, Date date, ArrayList<String> frequency){
         this.title = title;
         this.description = description;
         this.date = date;
@@ -49,11 +48,11 @@ public class Habit {
         this.date = date;
     }
 
-    public ArrayList<DayOfWeek> getFrequency() {
+    public ArrayList<String> getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(ArrayList<DayOfWeek> frequency) {
+    public void setFrequency(ArrayList<String> frequency) {
         this.frequency = frequency;
     }
 
