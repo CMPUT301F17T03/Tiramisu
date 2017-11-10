@@ -28,8 +28,6 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
     int dayFinal, monthFinal, yearFinal;
     Date date;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

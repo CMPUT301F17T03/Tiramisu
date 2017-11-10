@@ -7,4 +7,30 @@
     android:background="@drawable/gradient"
     tools:context="dizhang.com.example.View.HabitManagerActivity">
 
+    <LinearLayout
+        android:layout_width="344dp"
+        android:layout_height="495dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ListView
+            android:id="@+id/habitList"
+            android:layout_width="match_parent"
+            android:layout_height="454dp" />
+
+        <Button
+            android:id="@+id/createNew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_orange_light"
+            android:text="Create a New Habit"
+            android:textColor="@color/cardview_light_background" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
