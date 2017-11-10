@@ -66,7 +66,6 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
         //Contains start date and the day of the week
         date = new GregorianCalendar(yearFinal, monthFinal, dayFinal).getTime();
         System.out.println(date);
-
     }
 
     public void selectItem(View view){

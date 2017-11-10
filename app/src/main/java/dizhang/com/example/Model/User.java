@@ -15,6 +15,7 @@ public class User {
     private HabitList habitlist;
     private EventList eventlist;
     private HistoryList history;
+    private String password;
     private UserList fans = new UserList();     //users who follows me
     private UserList requests = new UserList(); //requests sent to me
     private UserList following = new UserList(); //the users that I followed
@@ -110,5 +111,13 @@ public class User {
 
     public void setFollowing(UserList following) {
         this.following = following;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
