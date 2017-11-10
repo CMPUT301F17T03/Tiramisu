@@ -18,7 +18,7 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class EditProfileActivity extends AppCompatActivity {
-    //private User user;
+    private User user;
     EditText nickName, interest;
     String gender;
     RadioButton rbGender;
