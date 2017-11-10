@@ -20,11 +20,6 @@ import dizhang.com.example.tiramisu.R;
 
 public class FollowedActivity extends AppCompatActivity {
 
-    public Button requestButton;
-    public Button searchButton;
-    private EditText bodyText;
-    private ArrayList<User> userList = new ArrayList<User>();
-    private ListView followedHabit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
