@@ -7,4 +7,57 @@
     android:background="@drawable/gradient"
     tools:context="dizhang.com.example.View.ProfileActivity">
 
+    <LinearLayout
+        android:layout_width="344dp"
+        android:layout_height="495dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/idDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:text="my user id:"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/nickNameDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:text="my nick name:"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/genderDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:text="gender:"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/interestDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="119dp"
+            android:text="interests:"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/editProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_orange_light"
+            android:text="Edit My Profile"
+            android:textColor="@color/cardview_light_background" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

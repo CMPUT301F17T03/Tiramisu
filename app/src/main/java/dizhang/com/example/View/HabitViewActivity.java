@@ -17,7 +17,7 @@ public class HabitViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_habit_view);
+        setContentView(R.layout.activity_habit_manager);
 
         createNew = (Button) findViewById(R.id.createNew);
 

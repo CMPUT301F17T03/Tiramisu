@@ -52,7 +52,7 @@ public class EventManagerActivityTest extends ActivityInstrumentationTestCase2<E
         solo.clickOnButton("Add photo");
         solo.clickOnCheckBox(0);
         //solo.enterText((EditText) solo.getView(R.id.editText), "Test Event");
-        solo.enterText((EditText) solo.getView(R.id.editText), "Test event comment");
+        //solo.enterText((EditText) solo.getView(R.id.EditComment), "Test event comment");
         //solo.enterText((EditText) solo.getView(R.id.editText2), "Test Habit!");
         solo.clickOnButton("Done");
 
