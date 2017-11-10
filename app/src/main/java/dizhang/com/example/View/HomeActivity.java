@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import dizhang.com.example.Control.FollowedActivity;
 import dizhang.com.example.Model.History;
 import dizhang.com.example.tiramisu.R;
 
