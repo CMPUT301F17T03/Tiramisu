@@ -24,26 +24,32 @@
         <ListView
             android:id="@+id/habitFollowedList"
             android:layout_width="match_parent"
-            android:layout_height="330dp"></ListView>
+            android:layout_height="317dp"></ListView>
 
         <EditText
             android:id="@+id/searchText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="search habit"
-            android:textColor="@android:color/darker_gray"/>
+            android:text="Enter username"
+            android:textColor="@android:color/darker_gray" />
 
         <Button
             android:id="@+id/searchHabits"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="search" />
+            android:background="@android:color/holo_orange_light"
+            android:text="send following request" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
 
         <Button
             android:id="@+id/requestList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="request list"/>
+            android:background="@android:color/holo_orange_light"
+            android:text="requests list" />
     </LinearLayout>
 
 
