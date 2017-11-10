@@ -6,7 +6,15 @@ import android.location.Location;
 import java.util.Date;
 
 /**
- * Created by ggranked on 2017-10-23.
+ * Class Name: Event
+ *
+ * Created by dz2 on 2017-10-23.
+ *
+ * Version: 1.0
+ *
+ * Copyright (c) Team03. CMPUT301. University of Alberta. All Rights Reserved. You may use,
+ * distribute or modify the code under terms and conditions of the Code of Students Behavior
+ * at University of Alberta
  */
 
 public class Event {

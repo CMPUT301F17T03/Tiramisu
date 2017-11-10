@@ -25,6 +25,18 @@ import java.util.ArrayList;
 
 import dizhang.com.example.tiramisu.R;
 
+/**
+ * Class Name: LoginActivity
+ *
+ * Created by dz2 on 2017-10-23.
+ *
+ * Version: 1.0
+ *
+ * Copyright (c) Team03. CMPUT301. University of Alberta. All Rights Reserved. You may use,
+ * distribute or modify the code under terms and conditions of the Code of Students Behavior
+ * at University of Alberta
+ */
+
 public class LoginActivity extends AppCompatActivity{
 
     public TextView signupButton;

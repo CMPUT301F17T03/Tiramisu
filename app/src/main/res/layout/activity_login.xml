@@ -35,14 +35,13 @@
         android:id="@+id/passwordLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/usernameLayout"
+        android:layout_below="@+id/usernameLayout"
         android:layout_marginTop="15dp"
+        android:drawableStart="@drawable/ic_action_name"
         android:ems="10"
         android:hint="password"
-        android:inputType="textPassword"
-        android:layout_below="@+id/usernameLayout"
-        android:drawableStart="@drawable/ic_action_name"
-        android:layout_alignStart="@+id/usernameLayout"
-        android:layout_alignEnd="@+id/usernameLayout" />
+        android:inputType="textPassword" />
 
     <TextView
         android:id="@+id/signupLayout"

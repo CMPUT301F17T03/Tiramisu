@@ -10,14 +10,24 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.lang.String;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import dizhang.com.example.tiramisu.R;
+
+/**
+ * Class Name: HabitNewActivity
+ *
+ * Created by dz2 on 2017-11-06.
+ *
+ * Version: 1.0
+ *
+ * Copyright (c) Team03. CMPUT301. University of Alberta. All Rights Reserved. You may use,
+ * distribute or modify the code under terms and conditions of the Code of Students Behavior
+ * at University of Alberta
+ */
 
 public class HabitNewActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
@@ -55,6 +65,13 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
 
     }
 
+    /**
+     * source demonstration of coding: https://www.youtube.com/watch?v=hwe1abDO2Ag
+     * @param datePicker
+     * @param i
+     * @param i1
+     * @param i2
+     */
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
         yearFinal = i;
@@ -66,6 +83,11 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
         System.out.println(date);
     }
 
+
+    /**
+     * source demonstration of coding: https://www.youtube.com/watch?v=NGRV2qY9ZiU
+     * @param view
+     */
     public void selectItem(View view){
         boolean checked = ((CheckBox) view).isChecked();
 

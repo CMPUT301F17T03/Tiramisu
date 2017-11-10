@@ -14,7 +14,15 @@ import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
 /**
- * Created by ggranked on 2017-11-06.
+ * Class Name: EditProfileActivity
+ *
+ * Created by dz2 on 2017-11-06.
+ *
+ * Version: 1.0
+ *
+ * Copyright (c) Team03. CMPUT301. University of Alberta. All Rights Reserved. You may use,
+ * distribute or modify the code under terms and conditions of the Code of Students Behavior
+ * at University of Alberta
  */
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -39,6 +47,15 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * source demonstration of coding: https://www.youtube.com/watch?v=n7c3bIWcgZo
+     *
+     * convert radio selection into string for gender used in Profile.
+     *
+     * @see User
+     * @param view
+     */
     public void rbClick (View view) {
         int rbID = rgprofile.getCheckedRadioButtonId();
         rbGender = (RadioButton) findViewById(rbID);
