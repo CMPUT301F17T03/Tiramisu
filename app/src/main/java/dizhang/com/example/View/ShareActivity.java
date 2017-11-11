@@ -43,7 +43,7 @@ public class ShareActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
 
-        bodyText = (EditText) findViewById(R.id.searchText);
+        bodyText = (EditText) findViewById(R.id.searchUser);
         requestButton = (Button) findViewById(R.id.requestList);
         searchButton = (Button) findViewById(R.id.searchHabits);
 

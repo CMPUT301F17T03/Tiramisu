@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 import dizhang.com.example.Control.HabitNewActivity;
 import dizhang.com.example.tiramisu.R;
@@ -25,12 +26,15 @@ public class HabitManagerActivity extends AppCompatActivity {
 
     Button createNew;
 
+    ListView habitList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit_manager);
 
         createNew = (Button) findViewById(R.id.createNew);
+        habitList = (ListView) findViewById(R.id.habitList);
 
         createNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,5 +43,9 @@ public class HabitManagerActivity extends AppCompatActivity {
                 startActivity(newHabitInt);
             }
         });
+
+
+
+
     }
 }
