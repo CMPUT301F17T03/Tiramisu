@@ -24,21 +24,11 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class HabitViewActivity extends AppCompatActivity {
-    Button createNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit_manager);
 
-        createNew = (Button) findViewById(R.id.createNew);
-
-        createNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent newHabitInt = new Intent(getApplicationContext(), HabitNewActivity.class);
-                startActivity(newHabitInt);
-            }
-        });
     }
 }

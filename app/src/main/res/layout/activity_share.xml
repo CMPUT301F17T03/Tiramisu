@@ -27,7 +27,7 @@
             android:layout_height="317dp"></ListView>
 
         <EditText
-            android:id="@+id/searchText"
+            android:id="@+id/searchUser"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Enter username"

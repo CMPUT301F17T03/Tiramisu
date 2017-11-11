@@ -22,6 +22,6 @@ public class EditHabitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_habit);
+        setContentView(R.layout.activity_habit_new);
     }
 }

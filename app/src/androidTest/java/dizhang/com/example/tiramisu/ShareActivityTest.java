@@ -51,7 +51,7 @@ public class ShareActivityTest extends ActivityInstrumentationTestCase2<ShareAct
         solo.goBack();
         solo.assertCurrentActivity("Wrong Activity", ShareActivity.class);
 
-        solo.enterText((EditText) solo.getView(R.id.editText), "TestUsername");
+        solo.enterText((EditText) solo.getView(R.id.searchUser), "TestUsername");
         solo.clickOnButton("Sent a Request");
 
         solo.clickOnButton("Check Request From Others");

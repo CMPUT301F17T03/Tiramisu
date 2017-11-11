@@ -55,11 +55,11 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(profileInt);
                         break;
                     case(R.id.manageHabit):
-                        Intent habitInt = new Intent(getApplicationContext(), HabitViewActivity.class);
+                        Intent habitInt = new Intent(getApplicationContext(), HabitManagerActivity.class);
                         startActivity(habitInt);
                         break;
                     case(R.id.manageEvent):
-                        Intent eventInt = new Intent(getApplicationContext(), EventViewActivity.class);
+                        Intent eventInt = new Intent(getApplicationContext(), EventManagerActivity.class);
                         startActivity(eventInt);
                         break;
                     case(R.id.eventHistory):

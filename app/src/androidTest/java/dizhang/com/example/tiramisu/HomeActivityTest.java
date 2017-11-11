@@ -9,7 +9,9 @@ import com.robotium.solo.Solo;
 import org.junit.After;
 import org.junit.Before;
 
+import dizhang.com.example.View.EventManagerActivity;
 import dizhang.com.example.View.EventViewActivity;
+import dizhang.com.example.View.HabitManagerActivity;
 import dizhang.com.example.View.HabitViewActivity;
 import dizhang.com.example.View.HistoryActivity;
 import dizhang.com.example.View.HomeActivity;
@@ -47,7 +49,7 @@ public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActiv
         solo.assertCurrentActivity("Wrong Activity", HomeActivity.class);
 
         solo.clickInList(0);
-        solo.assertCurrentActivity("Wrong Activity", EventViewActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", EventManagerActivity.class);
         assertTrue(solo.waitForText("Event Manager"));
         solo.goBack();
 
@@ -58,7 +60,7 @@ public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActiv
 
 
         solo.clickOnMenuItem("manageHabit");
-        solo.assertCurrentActivity("Wrong Activity", HabitViewActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", HabitManagerActivity.class);
         solo.goBack();
 
         solo.clickOnMenuItem("eventHistory");
