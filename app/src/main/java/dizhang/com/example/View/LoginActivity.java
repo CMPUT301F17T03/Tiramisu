@@ -87,9 +87,9 @@ public class LoginActivity extends AppCompatActivity {
                         password.setText(null);
                         password.setText(null);
                     }
-
-                    //Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    //startActivity(intent);
+                    // start the activity anyway because signup is empty
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
                 }
             }
         });
