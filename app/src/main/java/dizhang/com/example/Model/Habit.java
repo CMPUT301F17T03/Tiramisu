@@ -2,9 +2,12 @@ package dizhang.com.example.Model;
 
 import android.support.v7.app.AppCompatActivity;
 
+import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
+
+import io.searchbox.annotations.JestId;
 
 /**
  * Class Name: Habit
@@ -18,13 +21,24 @@ import java.util.Date;
  * at University of Alberta
  */
 
-public class Habit {
+public class Habit implements Serializable {
     private String title;
     private String description;
     private Date date;
     private ArrayList<String> frequency;
     private EventList events = new EventList();
+    @JestId
+    private String id;
 
+    public String getId() {
+        return id;
+    }
+
+    public Habit(){};
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Habit(String title, String description, Date date, ArrayList<String> frequency){
         this.title = title;

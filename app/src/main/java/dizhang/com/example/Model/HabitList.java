@@ -1,5 +1,6 @@
 package dizhang.com.example.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * at University of Alberta
  */
 
-public class HabitList {
+public class HabitList implements Serializable {
     private ArrayList<Habit> habits = new ArrayList<Habit>();
 
     public HabitList(){}

@@ -10,7 +10,10 @@ import com.searchly.jestdroid.JestDroidClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
+import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
@@ -33,7 +36,7 @@ public class ElasticSearchController {
     //private static final String APP_INDEX = "cmput301f17t03";
 
 
-    public static void verifySettings(){
+    public static void verifySettings() {
         if (client == null) {
             DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
             DroidClientConfig config = builder.build();
@@ -44,6 +47,27 @@ public class ElasticSearchController {
 
         }
     }
+    public static class addHabitTask extends AsyncTask<Habit, Void, Void> {
+        @Override
+        protected Void doInBackground(Habit... habits) {
+            for (Habit habit : habits) {
+
+                Index index = new Index.Builder(habit).index("cmput301f17t03").type("user").build();
+
+                try {
+                    client.execute(index);
+
+                } catch (Exception e) {
+                    Log.i("Error", "The application failed to build and send habits");
+                }
+
+
+            }
+            return null;
+        }
+    }
+
+
 
     public static class GetUserProfile extends AsyncTask<String, Void, ArrayList<User>> {
         @Override

@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import dizhang.com.example.Control.EditHabitActivity;
 import dizhang.com.example.Control.HabitNewActivity;
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.tiramisu.R;
@@ -24,21 +26,47 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class HabitViewActivity extends AppCompatActivity {
-    Button createNew;
-
+    Button editHabit, deleteHabit;
+    TextView titleView, descView,dateView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_habit_manager);
+        setContentView(R.layout.activity_habit_view);
 
-        createNew = (Button) findViewById(R.id.createNew);
+        titleView = (TextView) findViewById(R.id.habitTitleView);
+        descView = (TextView) findViewById(R.id.habitDesView);
+        dateView  = (TextView) findViewById(R.id.habitDateView);
 
-        createNew.setOnClickListener(new View.OnClickListener() {
+        /**
+
+        final String title =getIntent().getStringExtra("title");
+        final String desc =getIntent().getStringExtra("des");
+        final String date = getIntent().getStringExtra("date");
+        titleView.setText(title);
+        descView.setText(desc);
+        dateView.setText(date);
+        *
+        */
+
+
+
+        editHabit = (Button) findViewById(R.id.editHabit);
+        deleteHabit = (Button) findViewById(R.id.deleteHabit);
+
+        editHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent newHabitInt = new Intent(getApplicationContext(), HabitNewActivity.class);
-                startActivity(newHabitInt);
+                Intent editHabitInt = new Intent(getApplicationContext(), EditHabitActivity.class);
+                startActivity(editHabitInt);
             }
         });
+        deleteHabit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent deleteHabitInt = new Intent(HabitViewActivity.this, HabitViewActivity.class);
+                startActivity(deleteHabitInt);
+            }
+        });
+
     }
 }

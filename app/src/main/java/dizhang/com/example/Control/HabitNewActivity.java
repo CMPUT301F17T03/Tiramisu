@@ -1,6 +1,7 @@
 package dizhang.com.example.Control;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,11 +11,19 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.Serializable;
 import java.lang.String;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import dizhang.com.example.Model.Habit;
+import dizhang.com.example.Model.HabitList;
+import dizhang.com.example.View.HabitManagerActivity;
+import dizhang.com.example.View.HabitViewActivity;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -32,11 +41,14 @@ import dizhang.com.example.tiramisu.R;
 public class HabitNewActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     ArrayList<String> dayOfWeek = new ArrayList<String>();
-    Button startDate;
+    Button startDate,addHabit;
     EditText newTitle, newDes;
     int day, month, year;
     int dayFinal, monthFinal, yearFinal;
     Date date;
+    Boolean lError = false;
+    ArrayList<Habit> newList = new ArrayList<Habit>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +58,7 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
         startDate = (Button) findViewById(R.id.startDate);
         newTitle = (EditText) findViewById(R.id.newTitle);
         newDes = (EditText) findViewById(R.id.newDes);
+        addHabit = (Button) findViewById(R.id.hdone);
 
 
         startDate.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +72,48 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
                 DatePickerDialog datePickerDialog = new DatePickerDialog(HabitNewActivity.this, HabitNewActivity.this,
                         year, month, day);
                 datePickerDialog.show();
+
+            }
+        });
+
+        addHabit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = newTitle.getText().toString();
+                String des = newDes.getText().toString();
+
+                if(title.length() > 20) {
+                    Toast.makeText(HabitNewActivity.this,"Tittle has to be less than 20 characters", Toast.LENGTH_LONG).show();
+
+                    lError = true;
+                } else if(title.length() == 0) {
+                    Toast.makeText(HabitNewActivity.this,"Tittle cannot be blank", Toast.LENGTH_LONG).show();
+                    lError = true;
+                }
+
+                if (des.length() > 30){
+                    Toast.makeText(HabitNewActivity.this,"Reason has to be less than 20 characters", Toast.LENGTH_LONG).show();
+                    lError = true;
+                } else if (des.length() == 0){
+                    Toast.makeText(HabitNewActivity.this,"Reason cannot be blank", Toast.LENGTH_LONG).show();
+                    lError = true;
+                }
+
+                if (title.length() <=20 && des.length() <= 30 && title.length() >0  && des.length() > 0) {
+                    lError = false;
+                }
+                if (lError != true) {
+
+                    Habit newHabit = new Habit(title,des,date,dayOfWeek);
+                    newList.add(newHabit);
+                    ElasticSearchController.addHabitTask addHabitTask = new ElasticSearchController.addHabitTask();
+                    addHabitTask.execute(newHabit.getTitle());
+
+                    Intent intent = new Intent(HabitNewActivity.this, HabitManagerActivity.class);
+                    startActivity(intent);
+
+                }
+
 
             }
         });
@@ -152,4 +207,6 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
         Log.d("dayOfWeek", dayOfWeek.toString());
 
     }
+
+
 }

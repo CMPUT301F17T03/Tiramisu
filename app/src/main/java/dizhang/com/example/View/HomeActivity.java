@@ -8,8 +8,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import dizhang.com.example.Control.FollowedActivity;
+import dizhang.com.example.Control.HabitNewActivity;
 import dizhang.com.example.Model.History;
 import dizhang.com.example.tiramisu.R;
 
@@ -29,6 +32,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mtoggle;
+    Button newHabit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,14 @@ public class HomeActivity extends AppCompatActivity {
 
         mDrawerLayout.addDrawerListener(mtoggle);
         mtoggle.syncState();
-
+        newHabit = (Button) findViewById(R.id.newHabit);
+        newHabit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newHabitInt = new Intent(HomeActivity.this, HabitNewActivity.class);
+                startActivity(newHabitInt);
+            }
+        });
         //testcode:
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -55,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(profileInt);
                         break;
                     case(R.id.manageHabit):
-                        Intent habitInt = new Intent(getApplicationContext(), HabitViewActivity.class);
+                        Intent habitInt = new Intent(getApplicationContext(), HabitManagerActivity.class);
                         startActivity(habitInt);
                         break;
                     case(R.id.manageEvent):
