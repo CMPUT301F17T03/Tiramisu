@@ -25,10 +25,25 @@ import java.util.ArrayList;
 
 import dizhang.com.example.tiramisu.R;
 
-public class LoginActivity extends AppCompatActivity{
+/**
+ * Class Name: LoginActivity
+ *
+ * Created by dz2 on 2017-10-23.
+ *
+ * Version: 1.0
+ *
+ * Copyright (c) Team03. CMPUT301. University of Alberta. All Rights Reserved. You may use,
+ * distribute or modify the code under terms and conditions of the Code of Students Behavior
+ * at University of Alberta
+ */
+
+public class LoginActivity extends AppCompatActivity {
 
     public TextView signupButton;
     public RelativeLayout loginButton;
+    EditText username;
+    EditText password;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,24 +55,56 @@ public class LoginActivity extends AppCompatActivity{
         signupButton = (TextView) findViewById(R.id.signupLayout);
         loginButton = (RelativeLayout) findViewById(R.id.loginLayout);
 
+        username = (EditText) findViewById(R.id.usernameLayout);
+        password = (EditText) findViewById(R.id.passwordLayout);
+        String usr = password.getText().toString();
+        String pwd = password.getText().toString();
 
 
-        loginButton.setOnClickListener(new View.OnClickListener(){
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            /* source code: https://stackoverflow.com/questions/30205771/android-login-page
+             */
+
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
+
+                if (username.getText().toString().equals("") || username.getText().toString().equals(null)) {
+                    Toast.makeText(getBaseContext(), "please enter the username", Toast.LENGTH_LONG).show();
+                } else if (password.getText().toString().equals("") || password.getText().toString().equals(null)) {
+
+                    Toast.makeText(getBaseContext(), "Password can't be empty", Toast.LENGTH_LONG).show();
+                } else {
+                    //need to create signup file so that we could call the username and password from there
+                    if (username.getText().toString().equals("lalalalal") && password.getText().toString().equals("lalalalal")) {
+
+                        Toast.makeText(getApplicationContext(), "logging in ... ", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getBaseContext(), "Successful", Toast.LENGTH_LONG).show();
+                    } else {
+
+                        Toast.makeText(getApplicationContext(), "Username and password should be correct", Toast.LENGTH_SHORT).show();
+                        password.setText(null);
+                        password.setText(null);
+                    }
+
+                    //Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    //startActivity(intent);
+                }
             }
         });
 
-        signupButton.setOnClickListener(new View.OnClickListener(){
+
+        signupButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
                 startActivity(intent);
             }
         });
-
-
     }
+
+
+
 
     public void onBackPressed(){
         Intent startMain = new Intent(Intent.ACTION_MAIN);
