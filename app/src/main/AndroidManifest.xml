@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dizhang.com.example.tiramisu">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -31,7 +32,7 @@
         <activity android:name="dizhang.com.example.View.EventViewActivity" />
         <activity android:name="dizhang.com.example.Control.HabitNewActivity" />
         <activity android:name="dizhang.com.example.Control.EditHabitActivity" />
-        <activity android:name="dizhang.com.example.Control.EditEventActivity" />
+        <activity android:name="dizhang.com.example.Control.EditProfileActivity" />
         <activity android:name="dizhang.com.example.View.RequestActivity" />
         <activity android:name="dizhang.com.example.Control.FollowedActivity"></activity>
     </application>

@@ -7,15 +7,77 @@
     android:background="@drawable/gradient"
     tools:context="dizhang.com.example.View.SignupActivity">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="signupLayout"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+    <RelativeLayout
+        android:layout_width="344dp"
+        android:layout_height="495dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/passwordSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/usernameSignup"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="23dp"
+            android:drawableStart="@drawable/ic_action_name"
+            android:ems="10"
+            android:hint="password"
+            android:inputType="textPassword"
+            android:textColor="@color/cardview_light_background" />
+
+        <EditText
+            android:id="@+id/confirmSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/passwordSignup"
+            android:layout_below="@+id/passwordSignup"
+            android:layout_marginTop="14dp"
+            android:drawableStart="@drawable/ic_action_name"
+            android:ems="10"
+            android:hint="confirm"
+            android:inputType="textPassword"
+            android:textColor="@color/cardview_light_background" />
+
+        <EditText
+            android:id="@+id/usernameSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/passwordSignup"
+            android:layout_centerVertical="true"
+            android:drawableStart="@drawable/ic_action_user"
+            android:ems="10"
+            android:hint="Username"
+            android:inputType="textPersonName"
+            android:textColor="@color/cardview_light_background" />
+
+        <Button
+            android:id="@+id/finishSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/confirmSignup"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:background="@android:color/holo_orange_light"
+            android:text="        Finish Signing Up        "
+            android:textColor="@color/cardview_light_background" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/usernameSignup"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="60dp"
+            android:text="Welcome New User!"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="30sp" />
+
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

@@ -39,7 +39,8 @@
 
         <RadioGroup
             android:layout_width="match_parent"
-            android:layout_height="72dp">
+            android:layout_height="72dp"
+            android:id="@+id/rgprofile">
 
             <RadioButton
                 android:id="@+id/radioMale"
@@ -47,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="male"
+                android:onClick="rbClick"
                 android:textColor="@color/cardview_light_background" />
 
             <RadioButton
@@ -55,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="female"
+                android:onClick="rbClick"
                 android:textColor="@color/cardview_light_background" />
 
             <RadioButton
@@ -63,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="other"
+                android:onClick="rbClick"
                 android:textColor="@color/cardview_light_background" />
         </RadioGroup>
 
