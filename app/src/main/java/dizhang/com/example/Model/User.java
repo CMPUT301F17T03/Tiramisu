@@ -28,9 +28,9 @@ public class User {
     private UserList requests = new UserList(); //requests sent to me
     private UserList following = new UserList(); //the users that I followed
 
-    public User(String username){
-        this.username = username;
-    }
+    //public User(String username){
+      //  this.username = username;
+    //}
 
 
     public String getUsername() {

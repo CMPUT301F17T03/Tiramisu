@@ -7,12 +7,14 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import dizhang.com.example.Model.User;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
+import io.searchbox.indices.mapping.PutMapping;
 
 /**
  * Class Name: ElasticSearchController
@@ -30,6 +32,7 @@ public class ElasticSearchController {
 
     private static JestDroidClient client;
 
+
     //private static final String APP_INDEX = "cmput301f17t03";
 
 
@@ -44,8 +47,33 @@ public class ElasticSearchController {
 
         }
     }
+    // Class to setInfo
+    public static class SetUserInfo extends AsyncTask<String, Void, Void> {
+        private User User =  new  User();
+        private String username = User.getUsername();
+        @Override
+        protected Void doInBackground(String... set_parameters) {
+            verifySettings();
+            ArrayList<User> user = new ArrayList<User>();
 
+            PutMapping putMapping = new PutMapping.Builder(
+                    "cmput301f17t03",
+                    username,
+                    // The format should be:
+                    //"{ \"my_type\" : { \"properties\" : { \"message\" : {\"type\" : \"string\", \"store\" : \"yes\"} } } }"
+                    "{ \"my_type\" : { \"properties\" : { \"username\" : \""+username + "\",\"userhabit\" : \"" +set_parameters+"\"} } }"
+            ).build();
+            try {
+                client.execute(putMapping);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
     public static class GetUserProfile extends AsyncTask<String, Void, ArrayList<User>> {
+        private User User =  new  User();
+        private String username = User.getUsername();
         @Override
         protected ArrayList<User> doInBackground(String... search_parameters) {
             verifySettings();
@@ -63,7 +91,7 @@ public class ElasticSearchController {
             // TODO Build the query
             Search search = new Search.Builder(query)
                     .addIndex("cmput301f17t03")
-                    .addType("user")
+                    .addType(username)
                     .build();
 
             try {
