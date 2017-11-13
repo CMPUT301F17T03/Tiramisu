@@ -61,6 +61,7 @@ public class HistoryActivity extends AppCompatActivity {
                 startActivity(mapInt);
             }
         });
+        /*
 
 
 
@@ -78,6 +79,7 @@ public class HistoryActivity extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        */
 
     }
 
