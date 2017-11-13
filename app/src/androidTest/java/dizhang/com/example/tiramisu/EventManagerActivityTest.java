@@ -36,6 +36,7 @@ public class EventManagerActivityTest extends ActivityInstrumentationTestCase2<E
     public void testStart() throws Exception {
         Activity activity = getActivity();
     }
+    /*
 
     public void testClickOnButton(){
         EventManagerActivity activity = (EventManagerActivity) solo.getCurrentActivity();
@@ -65,6 +66,7 @@ public class EventManagerActivityTest extends ActivityInstrumentationTestCase2<E
         Event event = (Event) EventList.getItemAtPosition(0);
         assertEquals("Test event comment", event.getComment());
         */
+    /*
 
 
         solo.assertCurrentActivity("Wrong Activity", EventViewActivity.class);
@@ -73,6 +75,7 @@ public class EventManagerActivityTest extends ActivityInstrumentationTestCase2<E
         solo.assertCurrentActivity("Wrong Activity", EventManagerActivity.class);
 
     }
+    */
 
 
     @After
