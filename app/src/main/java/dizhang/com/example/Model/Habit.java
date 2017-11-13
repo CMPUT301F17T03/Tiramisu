@@ -46,7 +46,11 @@ public class Habit {
      *@return
      */
 
+<<<<<<< HEAD
     public String getTitle() {
+=======
+    public  String getTitle() {
+>>>>>>> dc23c8d05d8a71d043b7f780d733a64a22828338
         return title;
     }
     /**
