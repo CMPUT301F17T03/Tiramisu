@@ -25,7 +25,14 @@ import dizhang.com.example.tiramisu.R;
  * distribute or modify the code under terms and conditions of the Code of Students Behavior
  * at University of Alberta
  */
-
+/**
+ * Represents a ShareActivity
+ * @version 1.0
+ * @see AppCompatActivity
+ * @see RequestActivity
+ * @see HomeActivity
+ * @since 1.0
+ */
 public class ShareActivity extends AppCompatActivity {
 
     public Button viewRequestButton;

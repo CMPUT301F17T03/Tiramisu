@@ -43,6 +43,15 @@ import dizhang.com.example.tiramisu.R;
  * at University of Alberta
  */
 
+/**
+ * Represents a HabitManagerActivity
+ * @version 1.0
+ * @see HabitNewActivity
+ * @see HabitViewActivity
+ * @see HomeActivity
+ * @since 1.0
+ */
+
 public class HabitManagerActivity extends AppCompatActivity {
     private static final String FILENAME = "file.save";
 

@@ -20,6 +20,14 @@ import dizhang.com.example.tiramisu.R;
  * distribute or modify the code under terms and conditions of the Code of Students Behavior
  * at University of Alberta
  */
+/**
+ * Represents a Profile Activity
+ * @version 1.0
+ * @see AppCompatActivity
+ * @see EditProfileActivity
+ * @see HomeActivity
+ * @since 1.0
+ */
 
 public class ProfileActivity extends AppCompatActivity {
 

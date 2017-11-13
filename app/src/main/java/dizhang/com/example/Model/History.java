@@ -13,22 +13,35 @@ import java.util.Date;
  * distribute or modify the code under terms and conditions of the Code of Students Behavior
  * at University of Alberta
  */
-
+/**
+ *Represents a History
+ * @version 1.0
+ * @since 1.0
+ */
 public class History {
     private Event event;
     private Date finishDate;
-
+    /**
+     *@return
+     */
     public Date getFinishDate() {
         return finishDate;
     }
-
+    /**
+     *@param finishDate
+     */
     public void setFinishDate(Date finishDate) {
         this.finishDate = finishDate;
     }
-
+    /**
+     * @return
+     */
     public Event getEvent() {
         return event;
     }
+    /**
+     *@param event
+     */
 
     public void setEvent(Event event) {
         this.event = event;

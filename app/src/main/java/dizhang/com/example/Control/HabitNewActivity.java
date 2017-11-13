@@ -51,6 +51,14 @@ import dizhang.com.example.tiramisu.R;
  * at University of Alberta
  */
 
+/**
+ * Represents a HabitNewActivity
+ * @version 1.0
+ * @see AppCompatActivity
+ * @see DatePickerDialog.OnDateSetListener
+ * @since 1.0
+ */
+
 public class HabitNewActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private static final String FILENAME = "file.save";
 

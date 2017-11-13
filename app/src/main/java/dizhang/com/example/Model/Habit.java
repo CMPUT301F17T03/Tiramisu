@@ -18,6 +18,11 @@ import java.util.Date;
  * at University of Alberta
  */
 
+/**
+   *Represents a Habit
+ * @version 1.0
+ * @since 1.0
+ */
 public class Habit {
     private String title;
     private String description;
@@ -25,50 +30,83 @@ public class Habit {
     private ArrayList<String> frequency;
     private EventList events = new EventList();
 
-
+    /**
+    * @pamram title
+    * @param description
+    * @param date
+    * @param frequency
+     */
     public Habit(String title, String description, Date date, ArrayList<String> frequency){
         this.title = title;
         this.description = description;
         this.date = date;
         this.frequency = frequency;
     }
+    /**
+     *@return
+     */
 
     public String getTitle() {
         return title;
     }
+    /**
+     *@param title
+     */
 
     public void setTitle(String title) {
         this.title = title;
     }
+    /**
+     *@return
+     */
 
     public String getDescription() {
         return description;
     }
 
+    /**
+     *@param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
+    /**
+     *@return
+     */
 
     public Date getDate() {
         return date;
     }
+    /**
+    *@param date
+     */
 
     public void setDate(Date date) {
         this.date = date;
     }
+    /**
+     *@return
+     */
 
     public ArrayList<String> getFrequency() {
         return frequency;
     }
-
+    /**
+     *@param frequency
+     */
     public void setFrequency(ArrayList<String> frequency) {
         this.frequency = frequency;
     }
+    /**
+     *@return
+     */
 
     public EventList getEvents() {
         return events;
     }
-
+    /**
+     *@param events
+     */
     public void setEvents(EventList events) {
         this.events = events;
     }

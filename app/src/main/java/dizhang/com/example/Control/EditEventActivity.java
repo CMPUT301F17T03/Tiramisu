@@ -16,6 +16,13 @@ import dizhang.com.example.tiramisu.R;
  * distribute or modify the code under terms and conditions of the Code of Students Behavior
  * at University of Alberta
  */
+/**
+ * Represents a EditEventActivity
+ *
+ * @version 1.0
+ * @see AppCompatActivity
+ * @since 1.0
+ */
 
 public class EditEventActivity extends AppCompatActivity {
 

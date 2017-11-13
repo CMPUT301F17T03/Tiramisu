@@ -27,6 +27,13 @@ import io.searchbox.indices.mapping.PutMapping;
  * distribute or modify the code under terms and conditions of the Code of Students Behavior
  * at University of Alberta
  */
+/**
+ * Represents a ElasticSearchController
+ *
+ * @version 1.0
+ * @since 1.0
+ */
+
 
 public class ElasticSearchController {
 
@@ -34,6 +41,7 @@ public class ElasticSearchController {
 
 
     //private static final String APP_INDEX = "cmput301f17t03";
+
 
 
     public static void verifySettings(){
@@ -48,6 +56,13 @@ public class ElasticSearchController {
         }
     }
     // Class to setInfo
+    /**
+     * Represents a SetUserInfo
+     * @version 1.0
+     * @see AsyncTask
+     * @since 1.0
+     */
+
     public static class SetUserInfo extends AsyncTask<String, Void, Void> {
         private User User =  new  User();
         private String username = User.getUsername();
@@ -71,6 +86,14 @@ public class ElasticSearchController {
             return null;
         }
     }
+
+    /**
+     * Represents a GerUseProfile
+     * @version 1.0
+     * @see AsyncTask
+     * @since 1.0
+     */
+
     public static class GetUserProfile extends AsyncTask<String, Void, ArrayList<User>> {
         private User User =  new  User();
         private String username = User.getUsername();

@@ -44,6 +44,18 @@ import dizhang.com.example.tiramisu.R;
  * at University of Alberta
  */
 
+/**
+ * Represents a EditHabitActivity
+ *
+ * @version 1.0
+ * @see AppCompatActivity
+ * @see DatePickerDialog.OnDateSetListener
+ * @see EditHabitActivity
+ * @see HabitManagerActivity
+ * @since 1.0
+ */
+
+
 public class EditHabitActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private static final String FILENAME = "file.save";
 
@@ -118,6 +130,11 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
 
 
     @Override
+    /**
+     * @param i
+     * @param i1
+     * @param i2
+     */
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
         yearFinal = i;
         monthFinal = i1;
@@ -127,6 +144,10 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
         date = new GregorianCalendar(yearFinal, monthFinal, dayFinal).getTime();
 
     }
+
+    /**
+     *@param view
+     */
 
     public void selectItem(View view) {
         boolean checked = ((CheckBox) view).isChecked();

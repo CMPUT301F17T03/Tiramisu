@@ -14,23 +14,39 @@ import java.util.ArrayList;
  * at University of Alberta
  */
 
+/**
+ * Represents a UserList
+ * @version 1.0
+ * @since 1.0
+ */
+
 public class UserList {
     private ArrayList<User> users = new ArrayList<User>();
 
     public UserList(){}
-
+    /**
+     *@param index
+     * @return
+     */
     public User getUser(int index) {
         return users.get(index);
     }
-
+    /**
+     *@param user
+     * @return
+     */
     public boolean hasUser (User user){
         return users.contains(user);
     }
-
+    /**
+     *@param user
+     */
     public void add(User user){
         users.add(user);
     }
-
+    /**
+     *@param user
+     */
     public void delete(User user) {
         users.remove(user);
     }

@@ -22,7 +22,19 @@ import dizhang.com.example.tiramisu.R;
  * distribute or modify the code under terms and conditions of the Code of Students Behavior
  * at University of Alberta
  */
-
+/**
+ * Represents a HomeActivity
+ * @version 1.0
+ * @see AppCompatActivity
+ * @see ProfileActivity
+ * @see HabitManagerActivity
+ * @see EventManagerActivity
+ * @see HistoryActivity
+ * @see ShareActivity
+ * @see MapActivity
+ * @see LoginActivity
+ * @since 1.0
+ */
 public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;

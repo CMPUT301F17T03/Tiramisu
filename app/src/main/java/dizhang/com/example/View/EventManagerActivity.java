@@ -18,6 +18,14 @@ import dizhang.com.example.tiramisu.R;
  * at University of Alberta
  */
 
+/**
+ * Represents a EventManagerActivity
+ * @version 1.0
+ * @see AppCompatActivity
+ * @see HomeActivity
+ * @since 1.0
+ */
+
 public class EventManagerActivity extends AppCompatActivity {
 
     @Override

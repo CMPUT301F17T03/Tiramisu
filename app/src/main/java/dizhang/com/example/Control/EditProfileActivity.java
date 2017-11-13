@@ -27,6 +27,16 @@ import dizhang.com.example.tiramisu.R;
  * at University of Alberta
  */
 
+/**
+ * Represents a EditProfileActivity
+ *
+ * @version 1.0
+ * @see AppCompatActivity
+ * @see ProfileActivity
+ * @since 1.0
+ */
+
+
 public class EditProfileActivity extends AppCompatActivity {
     private User user;
     EditText nickName, interest;

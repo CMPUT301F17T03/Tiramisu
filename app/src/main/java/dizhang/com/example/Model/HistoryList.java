@@ -14,22 +14,43 @@ import java.util.ArrayList;
  * at University of Alberta
  */
 
+/**
+ * Represents a HistoryList
+ * @version 1.0
+ * @since 1.0
+ */
+
 public class HistoryList {
     private ArrayList<History> historys = new ArrayList<History>();
 
     public HistoryList(){}
-
+    /**
+     *@param index
+     *@return
+     */
     public History getHistory(int index) {
         return historys.get(index);
     }
+    /**
+     *@param history
+     * @return
+     */
 
     public boolean hasHistory (History history){
         return historys.contains(history);
     }
+      /**
+     *@param history
+     * @return
+     */
 
     public void add(History history){
         historys.add(history);
     }
+    /**
+     *@param history
+     * @return
+     */
 
     public void delete(History history) {
         historys.remove(history);

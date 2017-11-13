@@ -22,6 +22,14 @@ import dizhang.com.example.tiramisu.R;
  * at University of Alberta
  */
 
+/**
+ * Represents a RequestActivity
+ * @version 1.0
+ * @see AppCompatActivity
+ * @see RequestActivity
+ * @since 1.0
+ */
+
 public class RequestActivity extends AppCompatActivity {
 
     ListView listView;
