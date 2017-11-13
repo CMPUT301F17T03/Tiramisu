@@ -45,6 +45,7 @@ import static android.provider.Telephony.Mms.Part.FILENAME;
  * @version 1.0
  * @see AppCompatActivity
  * @see HomeActivity
+ * @see EventViewActivity
  * @since 1.0
  */
 

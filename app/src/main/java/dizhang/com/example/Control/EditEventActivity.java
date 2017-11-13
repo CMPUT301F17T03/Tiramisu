@@ -48,6 +48,7 @@ import dizhang.com.example.tiramisu.R;
  *
  * @version 1.0
  * @see AppCompatActivity
+ * @see EventManagerActivity
  * @since 1.0
  */
 

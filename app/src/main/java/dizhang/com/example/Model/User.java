@@ -221,8 +221,16 @@ public class User {
     public void setComfirmpassword(String cpassword) {
         this.cpassword = cpassword;
     }
+    /**
+     * @return
+     */
 
     public ArrayList getsearchInfo(){ return searchInfo;}
+
+    /**
+     *
+     * @param searchInfo
+     */
 
     public void setsearchInfo(ArrayList searchInfo){ this.searchInfo = searchInfo;}
 

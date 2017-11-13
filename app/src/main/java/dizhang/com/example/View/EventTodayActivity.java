@@ -50,6 +50,7 @@ import dizhang.com.example.tiramisu.R;
  * Represents a MapActivity
  * @version 1.0
  * @see AppCompatActivity
+ * @see EventManagerActivity
  * @since 1.0
  */
 
