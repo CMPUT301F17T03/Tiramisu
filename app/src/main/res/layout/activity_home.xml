@@ -20,12 +20,6 @@
             android:textAlignment="center"
             android:textSize="24sp" />
 
-        <Button
-            android:id="@+id/newHabit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button"/>
-
         <ListView
             android:id="@+id/todayListview"
             android:layout_width="match_parent"

@@ -44,14 +44,7 @@ public class HomeActivity extends AppCompatActivity {
 
         mDrawerLayout.addDrawerListener(mtoggle);
         mtoggle.syncState();
-        newHabit = (Button) findViewById(R.id.newHabit);
-        newHabit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent newHabitInt = new Intent(HomeActivity.this, HabitNewActivity.class);
-                startActivity(newHabitInt);
-            }
-        });
+
         //testcode:
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
