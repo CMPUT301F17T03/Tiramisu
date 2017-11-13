@@ -39,4 +39,9 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onBackPressed(){
+        Intent homeInt = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(homeInt);
+    }
 }

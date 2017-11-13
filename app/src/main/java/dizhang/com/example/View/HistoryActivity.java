@@ -1,18 +1,16 @@
 package dizhang.com.example.View;
 
-<<<<<<< HEAD
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-=======
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
->>>>>>> 091e801f8c9d4451751498e044bc29bf2b79d0e0
 
 import java.lang.reflect.Method;
 
@@ -35,20 +33,18 @@ import dizhang.com.example.tiramisu.R;
 
 public class HistoryActivity extends AppCompatActivity {
 
-<<<<<<< HEAD
+
     Button historyMap;
-=======
     private ListView mainListView ;
     private ArrayAdapter<String> listAdapter ;
     private ElasticSearchController Elastic = new ElasticSearchController();
     private User user =  new  User();
->>>>>>> 091e801f8c9d4451751498e044bc29bf2b79d0e0
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-<<<<<<< HEAD
 
         historyMap = (Button) findViewById(R.id.historyMap);
 
@@ -59,9 +55,9 @@ public class HistoryActivity extends AppCompatActivity {
                 startActivity(mapInt);
             }
         });
-    }
-}
-=======
+
+
+
         mainListView = (ListView) findViewById(R.id.historyList);
         Context context = getApplicationContext();
 
@@ -77,6 +73,11 @@ public class HistoryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-    }}
+    }
 
->>>>>>> 091e801f8c9d4451751498e044bc29bf2b79d0e0
+    public void onBackPressed(){
+        Intent homeInt = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(homeInt);
+    }
+}
+

@@ -1,5 +1,6 @@
 package dizhang.com.example.View;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -23,5 +24,10 @@ public class EventManagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_manager);
+    }
+
+    public void onBackPressed(){
+        Intent homeInt = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(homeInt);
     }
 }

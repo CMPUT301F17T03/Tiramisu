@@ -81,6 +81,11 @@ public class HabitManagerActivity extends AppCompatActivity {
         });
     }
 
+    public void onBackPressed(){
+        Intent homeInt = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(homeInt);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
