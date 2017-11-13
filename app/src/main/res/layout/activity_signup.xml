@@ -20,6 +20,18 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
+            android:id="@+id/usernameSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/passwordSignup"
+            android:layout_centerVertical="true"
+            android:drawableStart="@drawable/ic_action_user"
+            android:ems="10"
+            android:hint="Username"
+            android:inputType="textPersonName"
+            android:textColor="@color/cardview_light_background" />
+
+        <EditText
             android:id="@+id/passwordSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,18 +55,6 @@
             android:ems="10"
             android:hint="confirm"
             android:inputType="textPassword"
-            android:textColor="@color/cardview_light_background" />
-
-        <EditText
-            android:id="@+id/usernameSignup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/passwordSignup"
-            android:layout_centerVertical="true"
-            android:drawableStart="@drawable/ic_action_user"
-            android:ems="10"
-            android:hint="Username"
-            android:inputType="textPersonName"
             android:textColor="@color/cardview_light_background" />
 
         <Button

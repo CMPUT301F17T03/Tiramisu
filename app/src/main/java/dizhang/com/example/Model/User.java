@@ -24,6 +24,7 @@ public class User {
     private EventList eventlist;
     private HistoryList history;
     private String password;
+    private String cpassword;
     private UserList fans = new UserList();     //users who follows me
     private UserList requests = new UserList(); //requests sent to me
     private UserList following = new UserList(); //the users that I followed
@@ -202,5 +203,19 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    /**
+     * @return
+     */
+    public String getComfirmpassword() {
+        return cpassword;
+    }
+
+    /**
+     * @param cpassword
+     */
+    public void setComfirmpassword(String cpassword) {
+        this.cpassword = cpassword;
+    }
+
 
 }

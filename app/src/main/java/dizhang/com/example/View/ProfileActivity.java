@@ -6,7 +6,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 import dizhang.com.example.Control.EditProfileActivity;
+import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -30,18 +44,21 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class ProfileActivity extends AppCompatActivity {
-
+    private static final String FILENAME = "file.save";
     Button editProfile;
+    ArrayList<User> newList = new ArrayList<User>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        loadFromFile();
 
         editProfile = (Button) findViewById(R.id.editProfile);
 
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent editProfileInt = new Intent(getApplicationContext(), EditProfileActivity.class);
                 startActivity(editProfileInt);
             }
@@ -52,4 +69,40 @@ public class ProfileActivity extends AppCompatActivity {
         Intent homeInt = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(homeInt);
     }
+
+    protected void onStart() {
+        super.onStart();
+        loadFromFile();
+
+    }
+    private void loadFromFile() {
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<User>>() {
+            }.getType();
+            newList = gson.fromJson(in, listType);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void saveInFile(){
+        try{
+            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(newList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 }

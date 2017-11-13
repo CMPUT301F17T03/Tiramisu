@@ -50,7 +50,7 @@ import dizhang.com.example.tiramisu.R;
  * @since 1.0
  */
 
-
+//still need something to finish
 public class EditProfileActivity extends AppCompatActivity {
     private static final String FILENAME = "file.save";
     private User user;
@@ -68,7 +68,8 @@ public class EditProfileActivity extends AppCompatActivity {
         loadFromFile();
         int index = getIntent().getIntExtra("index",0);
         String nickname = newList.get(index).getNickname();
-        String  interests = newList.get(index).getInterests();
+        String interests = newList.get(index).getInterests();
+        final String gender = newList.get(index).getGender();
 
         nickName = (EditText) findViewById(R.id.editNickname);
         nickName.setText(nickname);
@@ -79,7 +80,7 @@ public class EditProfileActivity extends AppCompatActivity {
         saveProf = (Button) findViewById(R.id.saveProfile);
 
         rgprofile = (RadioGroup) findViewById(R.id.rgprofile);
-        // not finished, cannot save the user's profile or make any changes on it
+
         saveProf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
