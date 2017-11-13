@@ -65,16 +65,18 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        loadFromFile();
+
         int index = getIntent().getIntExtra("index",0);
         String nickname = newList.get(index).getNickname();
         String  interests = newList.get(index).getInterests();
+        final String gender =newList.get(index).getGender();
 
         nickName = (EditText) findViewById(R.id.editNickname);
         nickName.setText(nickname);
 
         interest = (EditText) findViewById(R.id.editInterest);
         interest.setText(interests);
+        loadFromFile();
 
         saveProf = (Button) findViewById(R.id.saveProfile);
 
@@ -89,8 +91,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 newList.get(index).setNickname(nickname);
                 newList.get(index).setInterests(interests);
                 newList.get(index).setGender(gender);
-                saveInFile();
+
                 Intent profileInt = new Intent(getApplicationContext(), ProfileActivity.class);
+                saveInFile();
                 startActivity(profileInt);
             }
         });

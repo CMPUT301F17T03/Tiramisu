@@ -64,8 +64,8 @@ public class LoginActivity extends AppCompatActivity {
 
         username = (EditText) findViewById(R.id.usernameLayout);
         password = (EditText) findViewById(R.id.passwordLayout);
-        String usr = password.getText().toString();
-        String pwd = password.getText().toString();
+        //String usr = username.getText().toString();
+        //String pwd = password.getText().toString();
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -74,8 +74,8 @@ public class LoginActivity extends AppCompatActivity {
 
             public void onClick(View v) {
 
-                if (username.getText().toString().equals("") || username.getText().toString().equals(null)) {
-                    Toast.makeText(getBaseContext(), "please enter the username", Toast.LENGTH_LONG).show();
+                if ( username.getText().toString().equals("") || username.getText().toString().equals(null)) {
+                    Toast.makeText(getBaseContext(), "Please first enter Username", Toast.LENGTH_LONG).show();
                 } else if (password.getText().toString().equals("") || password.getText().toString().equals(null)) {
 
                     Toast.makeText(getBaseContext(), "Password can't be empty", Toast.LENGTH_LONG).show();
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                     //need to create signup file so that we could call the username and password from there
                     if (username.getText().toString().equals("lalalalal") && password.getText().toString().equals("lalalalal")) {
 
-                        Toast.makeText(getApplicationContext(), "logging in ... ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Logging in ... ", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
 
                         Toast.makeText(getApplicationContext(), "Username and password should be correct", Toast.LENGTH_SHORT).show();
-                        password.setText(null);
+                        username.setText(null);
                         password.setText(null);
                     }
                     // start the activity anyway because signup is empty
