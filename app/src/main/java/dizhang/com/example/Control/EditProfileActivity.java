@@ -1,5 +1,6 @@
 package dizhang.com.example.Control;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import dizhang.com.example.Model.User;
+import dizhang.com.example.View.ProfileActivity;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -45,6 +47,14 @@ public class EditProfileActivity extends AppCompatActivity {
 
         rgprofile = (RadioGroup) findViewById(R.id.rgprofile);
 
+        saveProf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent profileInt = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(profileInt);
+            }
+        });
+
 
     }
 
@@ -62,7 +72,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         gender = rbGender.getText().toString();
 
-        Toast.makeText(getBaseContext(), rbGender.getText(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(getBaseContext(), rbGender.getText(), Toast.LENGTH_LONG).show();
         Log.d("gender selected", gender);
 
     }
