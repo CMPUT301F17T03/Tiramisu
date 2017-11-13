@@ -209,9 +209,9 @@ public class User {
     }
 
     /**
-     * @param password
+     * @param cpassword
      */
-    public void setComfirmpassword(String password) {
+    public void setComfirmpassword(String cpassword) {
         this.cpassword = cpassword;
     }
 

@@ -50,7 +50,7 @@ import dizhang.com.example.tiramisu.R;
  * @since 1.0
  */
 
-
+//still need something to finish
 public class EditProfileActivity extends AppCompatActivity {
     private static final String FILENAME = "file.save";
     private User user;
@@ -65,23 +65,22 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_edit_profile);
-
+        loadFromFile();
         int index = getIntent().getIntExtra("index",0);
         String nickname = newList.get(index).getNickname();
-        String  interests = newList.get(index).getInterests();
-        final String gender =newList.get(index).getGender();
+        String interests = newList.get(index).getInterests();
+        final String gender = newList.get(index).getGender();
 
         nickName = (EditText) findViewById(R.id.editNickname);
         nickName.setText(nickname);
 
         interest = (EditText) findViewById(R.id.editInterest);
         interest.setText(interests);
-        loadFromFile();
 
         saveProf = (Button) findViewById(R.id.saveProfile);
 
         rgprofile = (RadioGroup) findViewById(R.id.rgprofile);
-        // not finished, cannot save the user's profile or make any changes on it
+
         saveProf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,9 +90,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 newList.get(index).setNickname(nickname);
                 newList.get(index).setInterests(interests);
                 newList.get(index).setGender(gender);
-
-                Intent profileInt = new Intent(getApplicationContext(), ProfileActivity.class);
                 saveInFile();
+                Intent profileInt = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(profileInt);
             }
         });
