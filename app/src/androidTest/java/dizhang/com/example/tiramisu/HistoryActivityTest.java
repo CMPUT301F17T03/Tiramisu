@@ -42,7 +42,7 @@ public class HistoryActivityTest extends ActivityInstrumentationTestCase2<Histor
 
         solo.assertCurrentActivity("Wrong Activity", HistoryActivity.class);
 
-        solo.enterText((EditText) solo.getView(R.id.editText), "Test Search");
+        //solo.enterText((EditText) solo.getView(R.id.editText), "Test Search");
         solo.clickOnButton("type");
         solo.clickOnButton("comment");
         solo.clickOnButton("See the Result in Map");
