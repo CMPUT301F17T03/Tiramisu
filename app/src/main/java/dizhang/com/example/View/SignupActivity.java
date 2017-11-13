@@ -44,10 +44,10 @@ import dizhang.com.example.tiramisu.R;
  * @since 1.0
  */
 public class SignupActivity extends AppCompatActivity {
-    private static final String FILENAME = "file.save";
+    /*private static final String FILENAME = "file.save";
     EditText Username;
     EditText Password;
-    EditText Confirmpassword;
+    EditText Confirmpassword;*/
     Button finishSignup;
     ArrayList<User> newList = new ArrayList<User>();
     //Boolean lError = false;
@@ -56,11 +56,11 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        final int index = getIntent().getIntExtra("index",0);
-        loadFromFile();
+        /*final int index = getIntent().getIntExtra("index",0);
+        //loadFromFile();
         Username = (EditText)  findViewById(R.id.usernameLayout);
         Password = (EditText)  findViewById(R.id.passwordLayout);
-        Confirmpassword = (EditText)  findViewById(R.id.confirmSignup);
+        Confirmpassword = (EditText)  findViewById(R.id.confirmSignup);*/
         finishSignup = (Button) findViewById(R.id.finishSignup);
         //String username = Username.getText().toString();
         //String password = Password.getText().toString();
@@ -69,7 +69,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (Username.getText().toString().length() < 3) {
+                /*if (Username.getText().toString().length() < 3) {
                     Toast.makeText(SignupActivity.this, "username has to be more than 3 characters ", Toast.LENGTH_LONG).show();
 
                     Username.setText(null);
@@ -96,13 +96,13 @@ public class SignupActivity extends AppCompatActivity {
                    else if () {
                     Toast.makeText(SignupActivity.this, "password cannot be blank", Toast.LENGTH_LONG).show();
                     lError = false;
-                }*/
+                }
 
                 newList.get(index).setUsername(Username.getText().toString());
                 newList.get(index).setPassword(Password.getText().toString());
-                newList.get(index).setComfirmpassword(Confirmpassword.getText().toString());
+                newList.get(index).setComfirmpassword(Confirmpassword.getText().toString());*/
                 Intent loginInt = new Intent(getApplicationContext(), LoginActivity.class);
-                saveInFile();
+                //saveInFile();
                 startActivity(loginInt);
             }
         });
@@ -114,7 +114,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
         loadFromFile();
@@ -148,5 +148,5 @@ public class SignupActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+*/
 }
