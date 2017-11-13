@@ -35,7 +35,6 @@
         <activity android:name="dizhang.com.example.Control.EditProfileActivity" />
         <activity android:name="dizhang.com.example.Control.EditEventActivity" />
         <activity android:name="dizhang.com.example.View.RequestActivity" />
-        <activity android:name="dizhang.com.example.Control.FollowedActivity"></activity>
     </application>
 
 </manifest>

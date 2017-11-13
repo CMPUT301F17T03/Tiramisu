@@ -5,15 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 
 import dizhang.com.example.Control.ElasticSearchController;
-import dizhang.com.example.Control.FollowedActivity;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
@@ -59,7 +56,7 @@ public class ShareActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
                 String text = bodyText.getText().toString();
-                Intent intent = new Intent(ShareActivity.this, HabitViewActivity.class);
+                //Intent intent = new Intent(ShareActivity.this, HabitViewActivity.class);
 
                 //Call ElasticSearch here
                 ElasticSearchController.GetUserProfile userProfile = new ElasticSearchController.GetUserProfile();

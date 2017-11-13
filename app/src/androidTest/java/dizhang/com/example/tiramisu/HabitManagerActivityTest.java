@@ -13,6 +13,7 @@ import org.junit.Before;
 import dizhang.com.example.Control.EditHabitActivity;
 import dizhang.com.example.Control.HabitNewActivity;
 import dizhang.com.example.View.HabitManagerActivity;
+import dizhang.com.example.View.HabitViewActivity;
 import dizhang.com.example.View.HomeActivity;
 
 /**
@@ -43,14 +44,15 @@ public class HabitManagerActivityTest extends ActivityInstrumentationTestCase2<H
 
         solo.assertCurrentActivity("Wrong Activity", HabitManagerActivity.class);
 
-        solo.clickOnButton("Create New");
+        solo.clickOnButton("Create a New Habit");
         solo.assertCurrentActivity("Wrong Activity", HabitNewActivity.class);
-        assertTrue(solo.waitForText("Habit New"));
+        //assertTrue(solo.waitForText("Habit New"));
         solo.enterText((EditText) solo.getView(R.id.newTitle), "Test Habit!");
         solo.enterText((EditText) solo.getView(R.id.newDes), "Test Habit!");
         //solo.enterText((EditText) solo.getView(R.id.editText2), "Test Habit!");
         solo.clickOnButton("Set Start Date");
-        solo.clickOnButton("done");
+        solo.goBack();
+        solo.clickOnButton("Done");
 
 
         //BELOW IS TO CHECK IF ITEM ACTUALLY ADDED TO THE LIST, CANNOT
@@ -66,9 +68,12 @@ public class HabitManagerActivityTest extends ActivityInstrumentationTestCase2<H
         solo.assertCurrentActivity("Wrong Activity", HabitManagerActivity.class);
 
         solo.clickInList(0);
-        solo.assertCurrentActivity("Wrong Activity", HabitNewActivity.class);
-        solo.enterText((EditText) solo.getView(R.id.newTitle), "Test Edit Habit!");
-        solo.enterText((EditText) solo.getView(R.id.newDes), "Test Edit Habit!");
+        solo.assertCurrentActivity("Wrong Activity", HabitViewActivity.class);
+        solo.clickOnButton("Edit this habit");
+        solo.clearEditText((EditText) solo.getView(R.id.editTitle));
+        solo.clearEditText((EditText) solo.getView(R.id.editDescription));
+        solo.enterText((EditText) solo.getView(R.id.editTitle), "Test Edit Habit!");
+        solo.enterText((EditText) solo.getView(R.id.editDescription), "Test Edit Habit!");
         //solo.enterText((EditText) solo.getView(R.id.editText2), "Test Edit Habit!");
         solo.clickOnButton("Done");
 
@@ -87,9 +92,9 @@ public class HabitManagerActivityTest extends ActivityInstrumentationTestCase2<H
         solo.assertCurrentActivity("Wrong Activity", HabitManagerActivity.class);
 
         solo.clickInList(0);
-        solo.assertCurrentActivity("Wrong Activity", EditHabitActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", HabitViewActivity.class);
 
-        solo.clickOnButton("Delete");
+        solo.clickOnButton("delete this habit");
         solo.assertCurrentActivity("Wrong Activity", HabitManagerActivity.class);
 
         solo.goBack();

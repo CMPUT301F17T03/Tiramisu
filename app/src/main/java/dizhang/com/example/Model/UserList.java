@@ -19,11 +19,11 @@ public class UserList {
 
     public UserList(){}
 
-    public User getuser(int index) {
+    public User getUser(int index) {
         return users.get(index);
     }
 
-    public boolean hasuser (User user){
+    public boolean hasUser (User user){
         return users.contains(user);
     }
 

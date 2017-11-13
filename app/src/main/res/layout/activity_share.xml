@@ -30,7 +30,7 @@
             android:id="@+id/searchUser"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Enter username"
+            android:hint="Enter username:"
             android:textColor="@android:color/darker_gray" />
 
         <Button

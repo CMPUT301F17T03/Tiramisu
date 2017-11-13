@@ -125,7 +125,8 @@
             android:id="@+id/hdone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Done"/>
+            android:background="@android:color/holo_orange_light"
+            android:text="Done" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

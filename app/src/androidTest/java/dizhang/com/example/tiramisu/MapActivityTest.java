@@ -9,6 +9,7 @@ import com.robotium.solo.Solo;
 import org.junit.After;
 import org.junit.Before;
 
+import dizhang.com.example.View.HomeActivity;
 import dizhang.com.example.View.MapActivity;
 
 /**
@@ -41,13 +42,16 @@ public class MapActivityTest extends ActivityInstrumentationTestCase2<MapActivit
 
         solo.assertCurrentActivity("Wrong Activity", MapActivity.class);
 
-        solo.clickOnButton("Followed");
-        solo.sleep(100000);
+       //solo.clickOnButton("Followed");
+        //solo.sleep(100000);
         //wait for result to load on the screen
 
-        solo.clickOnButton("Highlight");
-        solo.sleep(100000);
+        //solo.clickOnButton("Highlight");
+        //solo.sleep(100000);
         //wait for result to load on the screen
+        solo.goBack();
+        solo.assertCurrentActivity("Wrong Activity", HomeActivity.class);
+
 
     }
 

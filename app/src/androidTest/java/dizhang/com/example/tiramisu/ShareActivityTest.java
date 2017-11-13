@@ -10,7 +10,6 @@ import com.robotium.solo.Solo;
 import org.junit.After;
 import org.junit.Before;
 
-import dizhang.com.example.Control.FollowedActivity;
 import dizhang.com.example.View.RequestActivity;
 import dizhang.com.example.View.ShareActivity;
 
@@ -44,21 +43,21 @@ public class ShareActivityTest extends ActivityInstrumentationTestCase2<ShareAct
 
         solo.assertCurrentActivity("Wrong Activity", ShareActivity.class);
 
-        solo.clickInList(0);
-        solo.assertCurrentActivity("Wrong Activity", FollowedActivity.class);
-        solo.waitForText("Test follow");
+        //solo.clickInList(0);
+        //solo.assertCurrentActivity("Wrong Activity", FollowedActivity.class);
+        //solo.waitForText("Test follow");
 
-        solo.goBack();
+        //solo.goBack();
         solo.assertCurrentActivity("Wrong Activity", ShareActivity.class);
 
         solo.enterText((EditText) solo.getView(R.id.searchUser), "TestUsername");
-        solo.clickOnButton("Sent a Request");
+        solo.clickOnButton("send following request");
 
-        solo.clickOnButton("Check Request From Others");
+        solo.clickOnButton("requests list");
         solo.assertCurrentActivity("Wrong Activity", RequestActivity.class);
 
-        solo.clickInList(0, 1);
-        solo.clickInList(0, 2);
+        //solo.clickInList(0, 1);
+        //solo.clickInList(0, 2);
         solo.goBack();
 
         solo.assertCurrentActivity("Wrong Activity", ShareActivity.class);

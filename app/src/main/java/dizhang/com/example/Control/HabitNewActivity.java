@@ -131,6 +131,7 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
                         dayOfWeek.add("Sun");
                     }
                     Habit newHabit = new Habit(title, des, date, dayOfWeek);
+
                     newList.add(newHabit);
                     saveInFile();
                     Intent intent = new Intent(HabitNewActivity.this, HabitManagerActivity.class);
