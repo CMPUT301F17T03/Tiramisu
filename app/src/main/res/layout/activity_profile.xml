@@ -8,8 +8,8 @@
     tools:context="dizhang.com.example.View.ProfileActivity">
 
     <LinearLayout
-        android:layout_width="344dp"
-        android:layout_height="495dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -20,44 +20,90 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/idDisplay"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="33dp"
-            android:text="my user id:"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="24sp" />
+            android:layout_height="44dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/nickNameDisplay"
-            android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:text="my nick name:"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="24sp" />
+            <TextView
+                android:id="@+id/username1"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="My username: "
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/genderDisplay"
-            android:layout_width="match_parent"
-            android:layout_height="49dp"
-            android:text="gender:"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="24sp" />
+            <TextView
+                android:id="@+id/usernameViewProf"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="12312321"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/interestDisplay"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="119dp"
-            android:text="interests:"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
+            android:layout_height="37dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/gender1"
+                android:layout_width="39dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="gender:"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/genderViewProf"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="male"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="93dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/interest1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="interests:"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/interestViewProf"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="User didn't write anything"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="144dp"
+            android:layout_weight="0" />
 
         <Button
             android:id="@+id/editProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="Edit My Profile"
-            android:textColor="@color/cardview_light_background" />
+            android:text="edit my profile" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -74,13 +74,6 @@
             android:layout_height="48dp"
             android:textSize="18sp"/>
 
-        <Button
-            android:id="@+id/returnhabit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/holo_orange_light"
-            android:text="Return"/>
-
         <Space
             android:layout_width="match_parent"
             android:layout_height="5dp"/>

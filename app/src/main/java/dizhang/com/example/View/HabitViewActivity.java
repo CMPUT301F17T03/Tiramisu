@@ -42,7 +42,7 @@ import dizhang.com.example.tiramisu.R;
 public class HabitViewActivity extends AppCompatActivity {
     private static final String FILENAME = "file.save";
 
-    Button editHabit, deleteHabit,returnHabit;
+    Button editHabit, deleteHabit;
     TextView titleView, descView,dateView,frequencyView;
     ArrayList<Habit> newList = new ArrayList<Habit>();
 
@@ -81,15 +81,15 @@ public class HabitViewActivity extends AppCompatActivity {
 
         editHabit = (Button) findViewById(R.id.editHabit);
         deleteHabit = (Button) findViewById(R.id.deleteHabit);
-        returnHabit = (Button) findViewById(R.id.returnhabit);
+        //returnHabit = (Button) findViewById(R.id.returnhabit);
 
-        returnHabit.setOnClickListener(new View.OnClickListener() {
+        /*returnHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HabitViewActivity.this, HabitManagerActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         editHabit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +111,11 @@ public class HabitViewActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void onBackPressed(){
+        Intent homeInt = new Intent(getApplicationContext(), HabitManagerActivity.class);
+        startActivity(homeInt);
     }
 
 // code from LonelyTwitter
