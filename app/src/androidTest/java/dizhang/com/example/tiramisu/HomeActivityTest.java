@@ -1,6 +1,7 @@
 package dizhang.com.example.tiramisu;
 
 import android.app.Activity;
+import android.support.v4.widget.DrawerLayout;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
@@ -46,41 +47,57 @@ public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActiv
     public void testClickOnItem(){
         HomeActivity activity = (HomeActivity) solo.getCurrentActivity();
 
+        DrawerLayout drawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawerLayout);
+
         solo.assertCurrentActivity("Wrong Activity", HomeActivity.class);
 
-        solo.clickInList(0);
-        solo.assertCurrentActivity("Wrong Activity", EventManagerActivity.class);
-        assertTrue(solo.waitForText("Event Manager"));
-        solo.goBack();
+        //solo.clickInList(0);
+        //solo.assertCurrentActivity("Wrong Activity", EventManagerActivity.class);
+        //assertTrue(solo.waitForText("Event Manager"));
+        //solo.goBack();
 
-        solo.clickOnView(solo.getView(R.id.drawerLayout));
-        solo.clickOnMenuItem("myProfile");
+
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("My Profile");
         solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
         solo.goBack();
 
 
-        solo.clickOnMenuItem("manageHabit");
+
+
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("Manage Habit");
         solo.assertCurrentActivity("Wrong Activity", HabitManagerActivity.class);
         solo.goBack();
 
-        solo.clickOnMenuItem("eventHistory");
+
+
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("Manage Event");
+        solo.assertCurrentActivity("Wrong Activity", EventManagerActivity.class);
+        solo.goBack();
+
+
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("Event History");
         solo.assertCurrentActivity("Wrong Activity", HistoryActivity.class);
         solo.goBack();
 
-        solo.clickOnMenuItem("shareCenter");
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("Sharing Center");
         solo.assertCurrentActivity("Wrong Activity", ShareActivity.class);
         solo.goBack();
 
-        solo.clickOnMenuItem("map");
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("Map");
         solo.assertCurrentActivity("Wrong Activity", MapActivity.class);
         solo.goBack();
 
-        solo.clickOnMenuItem("logout");
+        //solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("Logout");
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
 
-        solo.clickOnView(solo.getView("loginLayout"));
-        solo.assertCurrentActivity("Wrong Activity", HomeActivity.class);
-        assertTrue(solo.waitForText("Today's Event"));
+
 
     }
 

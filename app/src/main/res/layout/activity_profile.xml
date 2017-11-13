@@ -22,7 +22,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="44dp"
+            android:layout_height="42dp"
             android:orientation="horizontal">
 
             <TextView
@@ -46,12 +46,36 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/nickname1"
+                android:layout_width="10dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="My Nickname:"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/nicknameViewProf"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="James"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="37dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/gender1"
-                android:layout_width="39dp"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="gender:"
@@ -76,7 +100,7 @@
 
             <TextView
                 android:id="@+id/interest1"
-                android:layout_width="wrap_content"
+                android:layout_width="155dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="interests:"

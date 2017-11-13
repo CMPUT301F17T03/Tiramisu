@@ -69,7 +69,7 @@ public class EditProfileActivity extends AppCompatActivity {
         int index = getIntent().getIntExtra("index",0);
         String nickname = newList.get(index).getNickname();
         String interests = newList.get(index).getInterests();
-        final String gender = newList.get(index).getGender();
+        //final String gender = newList.get(index).getGender();
 
         nickName = (EditText) findViewById(R.id.editNickname);
         nickName.setText(nickname);

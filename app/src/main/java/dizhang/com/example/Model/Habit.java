@@ -46,7 +46,7 @@ public class Habit {
      *@return
      */
 
-    public static String getTitle() {
+    public  String getTitle() {
         return title;
     }
     /**

@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import dizhang.com.example.Control.HabitNewActivity;
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.EventList;
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.tiramisu.R;
@@ -52,7 +53,7 @@ public class EventManagerActivity extends AppCompatActivity {
     ListView eventList;
     ArrayList<String> listItem = new ArrayList<String>();
     ArrayAdapter<String> adapter;
-    ArrayList<Habit> newList = new ArrayList<Habit>();
+    ArrayList<Event> newList = new ArrayList<Event>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,8 @@ public class EventManagerActivity extends AppCompatActivity {
         loadFromFile();
         listItem.clear();
         for (int i = 0 ; i < newList.size(); i++){
-            String title = newList.get(i).getTitle();
+            Habit habit = newList.get(i).getHabit();
+            String title = habit.getTitle();
             listItem.add(title);
         }
 
@@ -109,7 +111,7 @@ public class EventManagerActivity extends AppCompatActivity {
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 
-            Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
             newList = gson.fromJson(in,listType);
         }catch (FileNotFoundException e){
             e.printStackTrace();

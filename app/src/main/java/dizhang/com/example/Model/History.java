@@ -21,6 +21,11 @@ import java.util.Date;
 public class History {
     private Event event;
     private Date finishDate;
+
+    public History (Event event, Date finishDate) {
+        this.event = event;
+        this.finishDate = finishDate;
+    }
     /**
      *@return
      */

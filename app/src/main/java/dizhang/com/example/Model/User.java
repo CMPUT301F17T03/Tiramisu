@@ -30,10 +30,19 @@ public class User {
     private UserList fans = new UserList();     //users who follows me
     private UserList requests = new UserList(); //requests sent to me
     private UserList following = new UserList(); //the users that I followed
+<<<<<<< HEAD
     private ArrayList searchInfo;
     //public User(String username){
     //  this.username = username;
     //}
+=======
+
+    public User(String username, String password){
+      this.username = username;
+      this.password = password;
+    }
+    public User(){}
+>>>>>>> f88e2593e1f3b7fce3b55f8741945d41ed8d7bf5
 
     /**
      * @return

@@ -51,7 +51,7 @@ public class EventViewActivity extends AppCompatActivity {
 
     Button Edit;
     TextView eventTitleView,locationView,eventDateView,commentView;
-    ArrayList<Habit> newList = new ArrayList<Habit>();
+    ArrayList<Event> newList = new ArrayList<Event>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +67,13 @@ public class EventViewActivity extends AppCompatActivity {
 
         int index = getIntent().getIntExtra("index",0);
 
-        String title = newList.get(index).getTitle();
+        Habit habit = newList.get(index).getHabit();
+        String title = habit.getTitle();
         String des = newList.get(index).getComment();
 
-        String location = newList.get(index).getLocation();
+        Location location = newList.get(index).getLocation();
+        String loc= Location.convert(location.getLatitude(), Location.FORMAT_DEGREES) + " " + Location.convert(location.getLongitude(), Location.FORMAT_DEGREES);
+
         StringBuilder freq = new StringBuilder();
 
         Date date = newList.get(index).getDate();
@@ -78,7 +81,7 @@ public class EventViewActivity extends AppCompatActivity {
         eventTitleView.setText(title);
         commentView.setText(des);
         eventDateView.setText(startDate);
-        locationView.setText(location);
+        locationView.setText(loc);
 
         Edit.setOnClickListener(new View.OnClickListener() {
             @Override

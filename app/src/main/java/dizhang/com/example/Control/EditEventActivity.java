@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,6 +25,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.View.EventManagerActivity;
 import dizhang.com.example.View.HabitManagerActivity;
@@ -52,15 +54,11 @@ import dizhang.com.example.tiramisu.R;
 public class EditEventActivity extends AppCompatActivity  {
     private static final String FILENAME = "event.save";
 
-    ArrayList<String> dayOfWeek = new ArrayList<String>();
+
     Button Delete, Save,changeLocation;
-    EditText editDes;
+    EditText editCom;
     TextView editTitle;
-    int day, month, year;
-    int dayFinal, monthFinal, yearFinal;
-    Date date;
-    Boolean lError = false;
-    ArrayList<Habit> newList = new ArrayList<Habit>();
+    ArrayList<Event> newList = new ArrayList<Event>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,24 +67,30 @@ public class EditEventActivity extends AppCompatActivity  {
 
         loadFromFile();
         int index = getIntent().getIntExtra("index",0);
-        String title = newList.get(index).getTitle();
-        String comment = newList.get(index).getDescription();
+        Habit habit = newList.get(index).getHabit();
+        String title = habit.getTitle();
+        String comment = newList.get(index).getComment();
 
         editTitle = (TextView) findViewById(R.id.eventTitleE);
-        editDes = (EditText) findViewById(R.id.editDescription);
+        editCom = (EditText) findViewById(R.id.commentE);
         Delete = (Button) findViewById(R.id.Delete);
         changeLocation = (Button) findViewById(R.id.changeLocation);
         Save = (Button) findViewById(R.id.Save);
         editTitle.setText(title);
-        editDes.setText(comment);
+        editCom.setText(comment);
 
 
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int index = getIntent().getIntExtra("index",0);
-                String comment  = editDes.getText().toString();
-                newList.get(index).setDescription(comment);
+                String comment  = editCom.getText().toString();
+
+                if (comment.length() > 20) {
+                    Toast.makeText(EditEventActivity.this, "Comment has to be not more than 20 characters", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                newList.get(index).setComment(comment);
 
                 Intent intent = new Intent(EditEventActivity.this, EventManagerActivity.class);
                 saveInFile();

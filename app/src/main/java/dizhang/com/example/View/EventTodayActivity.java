@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import dizhang.com.example.Control.EditEventActivity;
 import dizhang.com.example.Control.EditHabitActivity;
 import dizhang.com.example.Control.HabitNewActivity;
 import dizhang.com.example.Model.Event;
@@ -82,7 +84,11 @@ public class EventTodayActivity extends AppCompatActivity {
 
                 String comm  = comment.getText().toString();
 
-                newList.get(index).setComment(comm);
+
+                if (comment.length() > 20) {
+                    Toast.makeText(EventTodayActivity.this, "Comment has to be not more than 20 characters", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 Intent intent = new Intent(EventTodayActivity.this, EventManagerActivity.class);
                 saveInFile();
