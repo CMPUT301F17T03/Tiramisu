@@ -96,7 +96,7 @@ public class SignupActivity extends AppCompatActivity {
                    else if () {
                     Toast.makeText(SignupActivity.this, "password cannot be blank", Toast.LENGTH_LONG).show();
                     lError = false;
-                }
+                } 
 
                 newList.get(index).setUsername(Username.getText().toString());
                 newList.get(index).setPassword(Password.getText().toString());
