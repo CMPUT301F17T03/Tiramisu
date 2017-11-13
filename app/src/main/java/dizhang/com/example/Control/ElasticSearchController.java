@@ -97,6 +97,7 @@ public class ElasticSearchController {
     public static class GetUserProfile extends AsyncTask<String, Void, ArrayList<User>> {
         private User User =  new  User();
         private String username = User.getUsername();
+        private ArrayList searchInfo = User.getsearchInfo();
         @Override
         protected ArrayList<User> doInBackground(String... search_parameters) {
             verifySettings();
@@ -106,7 +107,7 @@ public class ElasticSearchController {
 
             String query = "{\n" +
                     "    \"query\" : {\n" +
-                    "        \"term\" : { \"username\" : \""  +  search_parameters[0] + "\"} \n" +
+                    "        \"term\" : { \"username\" : \""  +  searchInfo + "\"} \n" +
                     "    }\n" +
                     "}";
 

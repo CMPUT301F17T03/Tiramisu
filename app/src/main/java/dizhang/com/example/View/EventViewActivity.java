@@ -1,8 +1,30 @@
 package dizhang.com.example.View;
 
+import android.content.Intent;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Date;
+
+import dizhang.com.example.Control.EditEventActivity;
+import dizhang.com.example.Control.EditHabitActivity;
+import dizhang.com.example.Model.Event;
+import dizhang.com.example.Model.Habit;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -25,10 +47,66 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class EventViewActivity extends AppCompatActivity {
+    private static final String FILENAME = "event.save";
+
+    Button Edit;
+    TextView eventTitleView,locationView,eventDateView,commentView;
+    ArrayList<Habit> newList = new ArrayList<Habit>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_today);
+
+        eventTitleView = (TextView) findViewById(R.id.eventTitleView);
+        locationView = (TextView) findViewById(R.id.locationView);
+        eventDateView  = (TextView) findViewById(R.id.eventDateView);
+        commentView = (TextView) findViewById(R.id.commentView);
+        Edit = (Button) findViewById(R.id.EditEvent);
+        loadFromFile();
+
+        int index = getIntent().getIntExtra("index",0);
+
+        String title = newList.get(index).getTitle();
+        String des = newList.get(index).getComment();
+
+        String location = newList.get(index).getLocation();
+        StringBuilder freq = new StringBuilder();
+
+        Date date = newList.get(index).getDate();
+        String startDate = date.toString();
+        eventTitleView.setText(title);
+        commentView.setText(des);
+        eventDateView.setText(startDate);
+        locationView.setText(location);
+
+        Edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int index = getIntent().getIntExtra("index",0);
+                Intent edit = new Intent(getApplicationContext(), EditEventActivity.class);
+                edit.putExtra("index", index);
+                startActivity(edit);
+            }
+        });
+
+
+
+
+    }
+
+    private void loadFromFile(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
+            newList = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
