@@ -1,13 +1,34 @@
 package dizhang.com.example.View;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Date;
+
+import dizhang.com.example.Control.ElasticSearchController;
 import dizhang.com.example.Control.HabitNewActivity;
+import dizhang.com.example.Model.Habit;
+import dizhang.com.example.Model.HabitList;
+import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -23,10 +44,14 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class HabitManagerActivity extends AppCompatActivity {
+    private static final String FILENAME = "file.save";
 
     Button createNew;
-
     ListView habitList;
+    ArrayList<String> listItem = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
+    ArrayList<Habit> newList = new ArrayList<Habit>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +61,7 @@ public class HabitManagerActivity extends AppCompatActivity {
         createNew = (Button) findViewById(R.id.createNew);
         habitList = (ListView) findViewById(R.id.habitList);
 
+
         createNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,8 +70,57 @@ public class HabitManagerActivity extends AppCompatActivity {
             }
         });
 
+        habitList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(HabitManagerActivity.this, HabitViewActivity.class);
+                intent.putExtra("index",i);
+                startActivity(intent);
 
+            }
+        });
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        /*
+        ElasticSearchController.GetUserProfile getUserProfile = new ElasticSearchController.GetUserProfile();
+        getUserProfile.execute("what");
+        try{
+            userList = getUserProfile.get();
+
+        } catch (Exception e){
+            Log.i("Error","Failed to get users from the async object");
+        }
+        */
+        //TODO get user from elasticsearch and get habit from user
+
+        loadFromFile();
+        listItem.clear();
+        for (int i = 0 ; i < newList.size(); i++){
+            String title = newList.get(i).getTitle();
+            listItem.add(title);
+        }
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listItem);
+        habitList.setAdapter(adapter);
 
     }
+    private void loadFromFile(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
+            newList = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
 }

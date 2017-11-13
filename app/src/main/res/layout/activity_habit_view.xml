@@ -21,43 +21,76 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Habit:"
+            android:textSize="25sp"/>
+
+        <TextView
             android:id="@+id/habitTitleView"
             android:layout_width="match_parent"
-            android:layout_height="31dp"
-            android:text="title:"
-            android:textSize="18sp" />
+            android:layout_height="52dp"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description:"
+            android:textSize="25sp"/>
 
         <TextView
             android:id="@+id/habitDesView"
             android:layout_width="match_parent"
-            android:layout_height="92dp"
-            android:text="description:"
-            android:textSize="18sp" />
+            android:layout_height="69dp"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date Started:"
+            android:textSize="25sp"/>
 
         <TextView
             android:id="@+id/habitDateView"
             android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:text="date started:"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Frequency:"
+            android:textSize="25sp"/>
 
         <TextView
             android:id="@+id/frequencyView"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="frequency:"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
+
+        <Button
+            android:id="@+id/returnhabit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_orange_light"
+            android:text="Return"/>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="150dp" />
+            android:layout_height="5dp"/>
 
         <Button
             android:id="@+id/editHabit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="Edit this habit" />
+            android:text="Edit this habit"/>
 
         <Space
             android:layout_width="match_parent"

@@ -18,7 +18,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <EditText
             android:id="@+id/newTitle"
@@ -29,7 +30,7 @@
             android:inputType="textPersonName"
             android:textColor="@color/cardview_light_background"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"/>
 
         <EditText
             android:id="@+id/newDes"
@@ -38,14 +39,14 @@
             android:ems="10"
             android:hint="Describe the reason of this habit:"
             android:inputType="textPersonName"
-            android:textColor="@color/cardview_light_background" />
+            android:textColor="@color/cardview_light_background"/>
 
         <Button
             android:id="@+id/startDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="Set Start Date" />
+            android:text="Set Start Date"/>
 
         <TextView
             android:id="@+id/textView7"
@@ -53,7 +54,7 @@
             android:layout_height="wrap_content"
             android:text="Choose Frequency: "
             android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -62,7 +63,7 @@
             android:text=" S      M     T     W     R      F     S"
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@color/cardview_light_background"
-            android:textSize="24sp" />
+            android:textSize="24sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -119,6 +120,12 @@
                 android:layout_weight="1"
                 android:onClick="selectItem"/>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/hdone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Done"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
