@@ -31,8 +31,8 @@ import dizhang.com.example.tiramisu.R;
 
 public class ShareActivity extends AppCompatActivity {
 
-    public Button requestButton;
-    public Button searchButton;
+    public Button viewRequestButton;
+    public Button sendRequestButton;
     private EditText bodyText;
     private ArrayList<User> userList = new ArrayList<User>();
     //private ArrayAdapter<User> adapter;
@@ -44,17 +44,17 @@ public class ShareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_share);
 
         bodyText = (EditText) findViewById(R.id.searchUser);
-        requestButton = (Button) findViewById(R.id.requestList);
-        searchButton = (Button) findViewById(R.id.searchHabits);
+        viewRequestButton = (Button) findViewById(R.id.requestList);
+        sendRequestButton = (Button) findViewById(R.id.sendRequest);
 
-        requestButton.setOnClickListener(new View.OnClickListener(){
+        viewRequestButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Intent intent = new Intent(ShareActivity.this, RequestActivity.class);
                 startActivity(intent);
             }
         });
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        sendRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
