@@ -29,152 +29,176 @@ public class User {
     private UserList following = new UserList(); //the users that I followed
 
     //public User(String username){
-      //  this.username = username;
+    //  this.username = username;
     //}
 
-  /**
+    /**
      * @return
      */
 
     public String getUsername() {
         return username;
     }
+
     /**
-     *@param username
+     * @param username
      */
     public void setUsername(String username) {
         this.username = username;
     }
+
     /**
      * @return
      */
     public String getNickname() {
         return nickname;
     }
+
     /**
-     *@param nickname
+     * @param nickname
      */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
     /**
      * @return
      */
     public String getGender() {
         return gender;
     }
+
     /**
-     *@param gender
+     * @param gender
      */
     public void setGender(String gender) {
         this.gender = gender;
     }
+
     /**
      * @return
      */
     public String getInterests() {
         return interests;
     }
+
     /**
-     *@param interests
+     * @param interests
      */
     public void setInterests(String interests) {
         this.interests = interests;
     }
+
     /**
      * @return
      */
     public Picture getProfilePic() {
         return profilePic;
     }
+
     /**
-     *@param profilePic
+     * @param profilePic
      */
     public void setProfilePic(Picture profilePic) {
         this.profilePic = profilePic;
     }
+
     /**
      * @return
      */
     public HabitList getHabitlist() {
         return habitlist;
     }
+
     /**
-     *@param habitlist
+     * @param habitlist
      */
     public void setHabitlist(HabitList habitlist) {
         this.habitlist = habitlist;
     }
+
     /**
      * @return
      */
     public EventList getEventlist() {
         return eventlist;
     }
+
     /**
-     *@param eventlist
+     * @param eventlist
      */
     public void setEventlist(EventList eventlist) {
         this.eventlist = eventlist;
     }
+
     /**
      * @return
      */
     public HistoryList getHistory() {
         return history;
     }
+
     /**
-     *@param history
+     * @param history
      */
     public void setHistory(HistoryList history) {
         this.history = history;
     }
+
     /**
      * @return
      */
     public UserList getFans() {
         return fans;
     }
+
     /**
-     *@param fans
+     * @param fans
      */
     public void setFans(UserList fans) {
         this.fans = fans;
     }
+
     /**
      * @return
      */
     public UserList getRequests() {
         return requests;
     }
+
     /**
-     *@param requests
+     * @param requests
      */
     public void setRequests(UserList requests) {
         this.requests = requests;
     }
+
     /**
      * @return
      */
     public UserList getFollowing() {
         return following;
     }
+
     /**
-     *@param following
+     * @param following
      */
     public void setFollowing(UserList following) {
         this.following = following;
     }
+
     /**
      * @return
      */
     public String getPassword() {
         return password;
     }
+
     /**
-     *@param password
+     * @param password
      */
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

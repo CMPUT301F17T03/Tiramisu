@@ -79,11 +79,16 @@ public class EditProfileActivity extends AppCompatActivity {
         saveProf = (Button) findViewById(R.id.saveProfile);
 
         rgprofile = (RadioGroup) findViewById(R.id.rgprofile);
-
+        // not finished, cannot save the user's profile or make any changes on it
         saveProf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                int index = getIntent().getIntExtra("index",0);
+                String nickname = nickName.getText().toString();
+                String interests = interest.getText().toString();
+                newList.get(index).setNickname(nickname);
+                newList.get(index).setInterests(interests);
+                newList.get(index).setGender(gender);
                 saveInFile();
                 Intent profileInt = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(profileInt);
