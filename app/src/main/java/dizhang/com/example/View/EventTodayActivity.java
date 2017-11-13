@@ -1,12 +1,11 @@
-package dizhang.com.example.Control;
+package dizhang.com.example.View;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,19 +20,23 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
+import dizhang.com.example.Control.EditHabitActivity;
+import dizhang.com.example.Control.HabitNewActivity;
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.Habit;
-import dizhang.com.example.View.EventManagerActivity;
-import dizhang.com.example.View.HabitManagerActivity;
-import dizhang.com.example.View.HabitViewActivity;
 import dizhang.com.example.tiramisu.R;
 
 /**
- * Class Name: EditEventActivity
+ * Class Name: EventTodayActivity
  *
- * Created by dz2 on 2017-11-06.
+ * Created by dz2 on 2017-11-13.
  *
  * Version: 1.0
  *
@@ -42,78 +45,69 @@ import dizhang.com.example.tiramisu.R;
  * at University of Alberta
  */
 /**
- * Represents a EditEventActivity
- *
+ * Represents a MapActivity
  * @version 1.0
  * @see AppCompatActivity
  * @since 1.0
  */
 
-public class EditEventActivity extends AppCompatActivity  {
+public class EventTodayActivity extends AppCompatActivity {
     private static final String FILENAME = "event.save";
-
-    ArrayList<String> dayOfWeek = new ArrayList<String>();
-    Button Delete, Save,changeLocation;
-    EditText editDes;
-    TextView editTitle;
-    int day, month, year;
-    int dayFinal, monthFinal, yearFinal;
+    private static final String HabitFILENAME = "file.save";
     Date date;
-    Boolean lError = false;
-    ArrayList<Habit> newList = new ArrayList<Habit>();
+    Button addLocation, Complete;
+    EditText comment;
+    TextView eventTitle,location;
+
+    ArrayList<Event> newList = new ArrayList<Event>();
+    ArrayList<Habit> habitList = new ArrayList<Habit>();
+
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_event);
-
-
+        setContentView(R.layout.activity_event_today);
         loadFromFile();
-        int index = getIntent().getIntExtra("index",0);
-        String title = newList.get(index).getTitle();
-        String comment = newList.get(index).getDescription();
 
-        editTitle = (TextView) findViewById(R.id.eventTitleE);
-        editDes = (EditText) findViewById(R.id.editDescription);
-        Delete = (Button) findViewById(R.id.Delete);
-        changeLocation = (Button) findViewById(R.id.changeLocation);
-        Save = (Button) findViewById(R.id.Save);
-        editTitle.setText(title);
-        editDes.setText(comment);
+        eventTitle = (TextView) findViewById(R.id.eventTitle);
+        location = (TextView) findViewById(R.id.location);
+        addLocation = (Button) findViewById(R.id.addLocation);
+        comment = (EditText) findViewById(R.id.comment);
+        Complete = (Button) findViewById(R.id.Complete);
 
-
-        Save.setOnClickListener(new View.OnClickListener() {
+        Complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int index = getIntent().getIntExtra("index",0);
-                String comment  = editDes.getText().toString();
-                newList.get(index).setDescription(comment);
 
-                Intent intent = new Intent(EditEventActivity.this, EventManagerActivity.class);
+                String comm  = comment.getText().toString();
+
+                newList.get(index).setComment(comm);
+
+                Intent intent = new Intent(EventTodayActivity.this, EventManagerActivity.class);
                 saveInFile();
                 startActivity(intent);
+                Calendar c = new GregorianCalendar();
+                c.set(Calendar.HOUR_OF_DAY, 0); //anything 0 - 23
+                c.set(Calendar.MINUTE, 0);
+                c.set(Calendar.SECOND, 0);
+                date = c.getTime();
+                Event newEvent = new Event(habitList.get(index), date, comm);
+                newEvent.setComment(comm);
+                newList.add(newEvent);
             }
         });
 
-        Delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int index = getIntent().getIntExtra("index",0);
-                Intent intent = new Intent(EditEventActivity.this, EventManagerActivity.class);
-                newList.remove(index);
-                saveInFile();
-                startActivity(intent);
-            }
-        });
     }
 
     private void loadFromFile(){
         try{
-            FileInputStream fis = openFileInput(FILENAME);
+            FileInputStream fis = openFileInput(HabitFILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 
             Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
-            newList = gson.fromJson(in,listType);
+            habitList = gson.fromJson(in,listType);
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }catch (IOException e){
@@ -135,4 +129,6 @@ public class EditEventActivity extends AppCompatActivity  {
             e.printStackTrace();
         }
     }
+
+
 }

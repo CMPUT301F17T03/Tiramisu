@@ -2,6 +2,8 @@ package dizhang.com.example.Model;
 
 import android.graphics.Picture;
 
+import java.util.ArrayList;
+
 /**
  * Class Name: User
  *
@@ -28,7 +30,7 @@ public class User {
     private UserList fans = new UserList();     //users who follows me
     private UserList requests = new UserList(); //requests sent to me
     private UserList following = new UserList(); //the users that I followed
-
+    private ArrayList searchInfo;
     //public User(String username){
     //  this.username = username;
     //}
@@ -214,6 +216,10 @@ public class User {
     public void setComfirmpassword(String cpassword) {
         this.cpassword = cpassword;
     }
+
+    public ArrayList getsearchInfo(){ return searchInfo;}
+
+    public void setsearchInfo(ArrayList searchInfo){ this.searchInfo = searchInfo;}
 
 
 }

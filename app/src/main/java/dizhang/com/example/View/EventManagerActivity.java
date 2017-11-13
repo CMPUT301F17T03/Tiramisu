@@ -3,8 +3,29 @@ package dizhang.com.example.View;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
+import dizhang.com.example.Control.HabitNewActivity;
+import dizhang.com.example.Model.EventList;
+import dizhang.com.example.Model.Habit;
 import dizhang.com.example.tiramisu.R;
+
+import static android.provider.Telephony.Mms.Part.FILENAME;
 
 /**
  * Class Name: EventManagerActivity
@@ -27,15 +48,73 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class EventManagerActivity extends AppCompatActivity {
+    private static final String FILENAME = "event.save";
+    ListView eventList;
+    ArrayList<String> listItem = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
+    ArrayList<Habit> newList = new ArrayList<Habit>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_manager);
+
+        eventList = (ListView) findViewById(R.id.eventList);
+
+
+        eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(EventManagerActivity.this, EventViewActivity.class);
+                intent.putExtra("index",i);
+                startActivity(intent);
+
+            }
+        });
     }
 
     public void onBackPressed(){
         Intent homeInt = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(homeInt);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        /*
+        ElasticSearchController.GetUserProfile getUserProfile = new ElasticSearchController.GetUserProfile();
+        getUserProfile.execute("what");
+        try{
+            userList = getUserProfile.get();
+
+        } catch (Exception e){
+            Log.i("Error","Failed to get users from the async object");
+        }
+        */
+        //TODO get user from elasticsearch and get habit from user
+
+        loadFromFile();
+        listItem.clear();
+        for (int i = 0 ; i < newList.size(); i++){
+            String title = newList.get(i).getTitle();
+            listItem.add(title);
+        }
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listItem);
+
+    }
+    private void loadFromFile(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
+            newList = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
