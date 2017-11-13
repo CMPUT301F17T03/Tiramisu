@@ -75,17 +75,18 @@ public class ProfileActivity extends AppCompatActivity {
         loadFromFile();
 
     }
-    private void loadFromFile(){
-        try{
+    private void loadFromFile() {
+        try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 
-            Type listType = new TypeToken<ArrayList<User>>(){}.getType();
-            newList = gson.fromJson(in,listType);
-        }catch (FileNotFoundException e){
+            Type listType = new TypeToken<ArrayList<User>>() {
+            }.getType();
+            newList = gson.fromJson(in, listType);
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
