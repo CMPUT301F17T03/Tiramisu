@@ -11,6 +11,20 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
+import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.View.ProfileActivity;
 import dizhang.com.example.tiramisu.R;
@@ -38,20 +52,29 @@ import dizhang.com.example.tiramisu.R;
 
 
 public class EditProfileActivity extends AppCompatActivity {
+    private static final String FILENAME = "file.save";
     private User user;
     EditText nickName, interest;
     String gender;
     RadioButton rbGender;
     Button saveProf;
     RadioGroup rgprofile;
+    ArrayList<User> newList = new ArrayList<User>();
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        loadFromFile();
+        int index = getIntent().getIntExtra("index",0);
+        String nickname = newList.get(index).getNickname();
+        String  interests = newList.get(index).getInterests();
 
         nickName = (EditText) findViewById(R.id.editNickname);
+        nickName.setText(nickname);
+
         interest = (EditText) findViewById(R.id.editInterest);
+        interest.setText(interests);
 
         saveProf = (Button) findViewById(R.id.saveProfile);
 
@@ -60,6 +83,8 @@ public class EditProfileActivity extends AppCompatActivity {
         saveProf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                saveInFile();
                 Intent profileInt = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(profileInt);
             }
@@ -86,4 +111,41 @@ public class EditProfileActivity extends AppCompatActivity {
         Log.d("gender selected", gender);
 
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadFromFile();
+
+    }
+    private void loadFromFile(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<User>>(){}.getType();
+            newList = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    private void saveInFile(){
+        try{
+            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(newList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 }
