@@ -20,9 +20,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
+import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -45,11 +57,13 @@ import dizhang.com.example.tiramisu.R;
  * @since 1.0
  */
 public class LoginActivity extends AppCompatActivity {
+    private static final String FILENAME = "profile.save";
 
     public TextView signupButton;
     public RelativeLayout loginButton;
     EditText username;
     EditText password;
+    ArrayList<User> newList = new ArrayList<User>();
 
 
     @Override
@@ -64,8 +78,6 @@ public class LoginActivity extends AppCompatActivity {
 
         username = (EditText) findViewById(R.id.usernameLayout);
         password = (EditText) findViewById(R.id.passwordLayout);
-        //String usr = username.getText().toString();
-        //String pwd = password.getText().toString();
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +103,12 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
 
                         Toast.makeText(getApplicationContext(), "Username and password should be correct", Toast.LENGTH_SHORT).show();
+                        User user = new User();
+                        user.setUsername(username.getText().toString());
+                        user.setPassword(password.getText().toString());
+                        newList.clear();
+                        newList.add(user);
+                        saveInFile();
                         username.setText(null);
                         password.setText(null);
                     }
@@ -118,6 +136,41 @@ public class LoginActivity extends AppCompatActivity {
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
+    }
+
+    protected void onStart() {
+        super.onStart();
+        loadFromFile();
+    }
+
+    private void loadFromFile() {
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<User>>() {
+            }.getType();
+            newList = gson.fromJson(in, listType);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void saveInFile(){
+        try{
+            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(newList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 

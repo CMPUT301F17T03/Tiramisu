@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.reflect.TypeToken;
@@ -52,9 +53,10 @@ import dizhang.com.example.tiramisu.R;
 
 //still need something to finish
 public class EditProfileActivity extends AppCompatActivity {
-    private static final String FILENAME = "file.save";
-    private User user;
+    private static final String FILENAME = "profile.save";
+    //private User user;
     EditText nickName, interest;
+    TextView id;
     String gender;
     RadioButton rbGender;
     Button saveProf;
@@ -65,17 +67,39 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
         loadFromFile();
-        int index = getIntent().getIntExtra("index",0);
-        String nickname = newList.get(index).getNickname();
-        String interests = newList.get(index).getInterests();
+        User user = newList.get(0);
+        //String nickname = user.getNickname();
+        //String interests = newList.get(index).getInterests();
         //final String gender = newList.get(index).getGender();
+        id = (TextView) findViewById(R.id.usernameEditProf);
 
         nickName = (EditText) findViewById(R.id.editNickname);
-        nickName.setText(nickname);
+        //nickName.setText(nickname);
 
         interest = (EditText) findViewById(R.id.editInterest);
-        interest.setText(interests);
+        //interest.setText(interests);
+        id.setText(user.getUsername().toString());
+
+        if (user.getNickname() == null) {
+
+        }
+        else{
+            Log.d("seeeeeeeeeeeeeee List", "still goes to hereeeeeeeee2");
+
+            nickName.setText(user.getNickname());
+        }
+        if (user.getInterests() == null) {
+
+        }
+        else{
+            Log.d("seeeeeeeeeeeeeee List", "still goes to hereeeeeeeee3");
+
+            interest.setText(user.getInterests());
+        }
+
+
 
         saveProf = (Button) findViewById(R.id.saveProfile);
 
@@ -122,7 +146,7 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        loadFromFile();
+        //loadFromFile();
 
     }
     private void loadFromFile(){

@@ -58,9 +58,7 @@ public class User {
     /**
      * @return
      */
-    public String getNickname() {
-        return nickname;
-    }
+    public String getNickname() { return nickname; }
 
     /**
      * @param nickname

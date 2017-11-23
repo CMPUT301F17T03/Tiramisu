@@ -3,12 +3,15 @@ package dizhang.com.example.View;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -45,7 +48,7 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class ProfileActivity extends AppCompatActivity {
-    private static final String FILENAME = "file.save";
+    private static final String FILENAME = "profile.save";
     Button editProfile;
     TextView usernameViewProf, genderViewProf, interestViewProf,nicknameViewProf;
     ArrayList<User> newList = new ArrayList<User>();
@@ -64,10 +67,33 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         User user = newList.get(0);
-        usernameViewProf.setText(user.getUsername());
-        genderViewProf.setText(user.getGender());
-        interestViewProf.setText(user.getInterests());
-        nicknameViewProf.setText(user.getNickname());
+        if (user.getGender() == null) {
+        }
+        else{
+            Log.d("seeeeeeeeeeeeeee List", "still goes to hereeeeeeeee");
+            genderViewProf.setText(user.getGender());
+        }
+        if (user.getNickname() == null) {
+
+        }
+        else{
+            Log.d("seeeeeeeeeeeeeee List", "still goes to hereeeeeeeee2");
+
+            nicknameViewProf.setText(user.getNickname());
+        }
+        if (user.getInterests() == null) {
+
+        }
+        else{
+            Log.d("seeeeeeeeeeeeeee List", "still goes to hereeeeeeeee3");
+
+            interestViewProf.setText(user.getInterests());
+        }
+        //Log.d("seeeeeeeeeeeeeee List", user.getGender().toString());
+        usernameViewProf.setText(user.getUsername().toString());
+        //genderViewProf.setText(user.getGender());
+        //interestViewProf.setText(user.getInterests());
+        //nicknameViewProf.setText(user.getNickname());
 
 
         editProfile.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +113,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        loadFromFile();
+        //loadFromFile();
 
     }
     private void loadFromFile() {
