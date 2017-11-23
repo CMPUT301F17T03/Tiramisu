@@ -7,9 +7,34 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+
+import dizhang.com.example.Control.HabitNewActivity;
+import dizhang.com.example.Model.Habit;
 import dizhang.com.example.tiramisu.R;
+
+
+import static java.sql.DriverManager.println;
 
 /**
  * Class Name: HomeActivity
@@ -37,13 +62,43 @@ import dizhang.com.example.tiramisu.R;
  */
 public class HomeActivity extends AppCompatActivity {
 
+    private static final String FILENAME = "file.save";
+
+
+
+    ListView habitList;
+    ArrayList<String> listItem = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
+    ArrayList<Habit> newList = new ArrayList<Habit>();
+
+
+
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mtoggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
+        habitList = (ListView) findViewById(R.id.todayListview);
+
+
+        habitList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(HomeActivity.this, EventTodayActivity.class);
+                intent.putExtra("index",i);
+                startActivity(intent);
+
+            }
+        });
+
+        //super.onCreate(savedInstanceState);
+
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mtoggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
@@ -112,4 +167,58 @@ public class HomeActivity extends AppCompatActivity {
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        /*
+        ElasticSearchController.GetUserProfile getUserProfile = new ElasticSearchController.GetUserProfile();
+        getUserProfile.execute("what");
+        try{
+            userList = getUserProfile.get();
+
+        } catch (Exception e){
+            Log.i("Error","Failed to get users from the async object");
+        }
+        */
+        //TODO get user from elasticsearch and get habit from user
+        Calendar calendar = Calendar.getInstance();
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+
+        //This part will add the habit only happend today
+        List<String> days = new ArrayList<>(Arrays.asList("Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"));
+        String Today = days.get(dayOfWeek);
+        loadFromFile();
+        listItem.clear();
+        for (int i = 0 ; i < newList.size(); i++){
+            if( newList.get(i).getFrequency().contains(Today)){
+
+                String title = newList.get(i).getTitle();
+                listItem.add(title);
+            }
+        }
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listItem);
+        habitList.setAdapter(adapter);
+
+    }
+    private void loadFromFile(){
+        try{
+            Log.d("myTag", "Before");
+            FileInputStream fis = openFileInput(FILENAME);
+            Log.d("myTag", "This is my message");
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
+            newList = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
 }
