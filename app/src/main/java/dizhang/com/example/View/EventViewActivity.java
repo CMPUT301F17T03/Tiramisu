@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -50,29 +51,33 @@ public class EventViewActivity extends AppCompatActivity {
     private static final String FILENAME = "event.save";
 
     Button Edit;
+    ImageView Image;
     TextView eventTitleView,locationView,eventDateView,commentView;
     ArrayList<Event> newList = new ArrayList<Event>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_today);
-
+        setContentView(R.layout.activity_event_view);
+        int index = getIntent().getIntExtra("index",0);
         eventTitleView = (TextView) findViewById(R.id.eventTitleView);
         locationView = (TextView) findViewById(R.id.locationView);
         eventDateView  = (TextView) findViewById(R.id.eventDateView);
         commentView = (TextView) findViewById(R.id.commentView);
+        Image = (ImageView) findViewById(R.id.imageView);
+
+
         Edit = (Button) findViewById(R.id.EditEvent);
         loadFromFile();
 
-        int index = getIntent().getIntExtra("index",0);
+        Image.setImageBitmap(newList.get(index).getPicture());
 
-        Habit habit = newList.get(index).getHabit();
-        String title = habit.getTitle();
+
+
+        String title = newList.get(index).getTitle();
         String des = newList.get(index).getComment();
 
-        Location location = newList.get(index).getLocation();
-        String loc= Location.convert(location.getLatitude(), Location.FORMAT_DEGREES) + " " + Location.convert(location.getLongitude(), Location.FORMAT_DEGREES);
+        //Location location = newList.get(index).getLocation();
 
         StringBuilder freq = new StringBuilder();
 
@@ -81,7 +86,6 @@ public class EventViewActivity extends AppCompatActivity {
         eventTitleView.setText(title);
         commentView.setText(des);
         eventDateView.setText(startDate);
-        locationView.setText(loc);
 
         Edit.setOnClickListener(new View.OnClickListener() {
             @Override

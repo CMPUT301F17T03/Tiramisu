@@ -86,7 +86,6 @@ public class HomeActivity extends AppCompatActivity {
 
         habitList = (ListView) findViewById(R.id.todayListview);
 
-
         habitList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

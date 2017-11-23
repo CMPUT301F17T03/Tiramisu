@@ -24,6 +24,7 @@
         <activity android:name="dizhang.com.example.View.SignupActivity" />
         <activity android:name="dizhang.com.example.View.HabitManagerActivity" />
         <activity android:name="dizhang.com.example.View.EventManagerActivity" />
+        <activity android:name="dizhang.com.example.View.EventTodayActivity" />
         <activity android:name="dizhang.com.example.View.MapActivity" />
         <activity android:name="dizhang.com.example.View.ShareActivity" />
         <activity android:name="dizhang.com.example.View.HistoryActivity" />

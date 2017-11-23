@@ -98,13 +98,13 @@ public class EventManagerActivity extends AppCompatActivity {
         loadFromFile();
         listItem.clear();
         for (int i = 0 ; i < newList.size(); i++){
-            Habit habit = newList.get(i).getHabit();
-            String title = habit.getTitle();
+            Event event = newList.get(i);
+            String title = event.getTitle();
             listItem.add(title);
         }
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listItem);
-
+        eventList.setAdapter(adapter);
     }
     private void loadFromFile(){
         try{

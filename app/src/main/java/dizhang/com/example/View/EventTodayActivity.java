@@ -2,11 +2,16 @@ package dizhang.com.example.View;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
@@ -57,10 +63,12 @@ import dizhang.com.example.tiramisu.R;
 public class EventTodayActivity extends AppCompatActivity {
     private static final String FILENAME = "event.save";
     private static final String HabitFILENAME = "file.save";
+
     Date date;
-    Button addLocation, Complete;
+    Button addLocation, Complete,picture;
     EditText comment;
     TextView eventTitle,location;
+    ImageView Image;
 
     ArrayList<Event> newList = new ArrayList<Event>();
     ArrayList<Habit> habitList = new ArrayList<Habit>();
@@ -68,20 +76,36 @@ public class EventTodayActivity extends AppCompatActivity {
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
+        int index = getIntent().getIntExtra("index",0);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_today);
         loadFromFile();
-
+        loadFromEventFile();
+        picture = (Button) findViewById(R.id.picture);
         eventTitle = (TextView) findViewById(R.id.eventTitle);
         location = (TextView) findViewById(R.id.location);
         addLocation = (Button) findViewById(R.id.addLocation);
         comment = (EditText) findViewById(R.id.comment);
         Complete = (Button) findViewById(R.id.Complete);
+        Image  = (ImageView)findViewById(R.id.Image);
+        eventTitle.setText(habitList.get(index).getTitle());
+
+        picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, 1);
+            }
+            });
 
         Complete.setOnClickListener(new View.OnClickListener() {
+            int index = getIntent().getIntExtra("index",0);
+
+
             @Override
             public void onClick(View view) {
-                int index = getIntent().getIntExtra("index",0);
+
 
                 String comm  = comment.getText().toString();
 
@@ -92,7 +116,7 @@ public class EventTodayActivity extends AppCompatActivity {
                 }
 
                 Intent intent = new Intent(EventTodayActivity.this, EventManagerActivity.class);
-                saveInFile();
+
                 startActivity(intent);
                 Calendar c = new GregorianCalendar();
                 c.set(Calendar.HOUR_OF_DAY, 0); //anything 0 - 23
@@ -100,13 +124,37 @@ public class EventTodayActivity extends AppCompatActivity {
                 c.set(Calendar.SECOND, 0);
                 date = c.getTime();
                 Event newEvent = new Event(habitList.get(index), date, comm);
-                newEvent.setComment(comm);
+                newEvent.setTitle(habitList.get(index).getTitle());
+                BitmapDrawable drawable = (BitmapDrawable) Image.getDrawable();
+                Bitmap bitmap = drawable.getBitmap();
+                newEvent.setPicture( bitmap);
                 newList.add(newEvent);
+                saveInFile();
             }
         });
 
     }
+    @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
 
+
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+                Image.setImageBitmap(selectedImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(EventTodayActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+            Toast.makeText(EventTodayActivity.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
+        }
+    }
     private void loadFromFile(){
         try{
             FileInputStream fis = openFileInput(HabitFILENAME);
@@ -115,6 +163,21 @@ public class EventTodayActivity extends AppCompatActivity {
 
             Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
             habitList = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFromEventFile(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
+            newList = gson.fromJson(in,listType);
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }catch (IOException e){

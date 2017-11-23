@@ -1,5 +1,6 @@
 package dizhang.com.example.Model;
 
+import android.graphics.Bitmap;
 import android.graphics.Picture;
 import android.location.Location;
 
@@ -26,8 +27,9 @@ public class Event {
     private Habit habit;
     private String comment;
     private Date date;
-    private Picture picture;
+    private Bitmap picture;
     private Location location;
+    private String title;
 
     /**
      *@param habit
@@ -55,7 +57,7 @@ public class Event {
      * @param picture
      */
 
-    public Event(Habit habit, Date date, Picture picture) {
+    public Event(Habit habit, Date date, Bitmap picture) {
         this.habit = habit;
         this.date = date;
         this.picture = picture;
@@ -90,7 +92,7 @@ public class Event {
      * @param comment
      * @param picture
      */
-    public Event(Habit habit, Date date, String comment, Picture picture) {
+    public Event(Habit habit, Date date, String comment, Bitmap picture) {
         this.habit = habit;
         this.date = date;
         this.comment = comment;
@@ -102,7 +104,7 @@ public class Event {
      * @param picture
      *@param location
      */
-    public Event(Habit habit, Date date, Picture picture, Location location) {
+    public Event(Habit habit, Date date, Bitmap picture, Location location) {
         this.habit = habit;
         this.date = date;
         this.picture = picture;
@@ -115,7 +117,7 @@ public class Event {
      * @param picture
      * @param location
      */
-    public Event(Habit habit, Date date, String comment, Picture picture, Location location) {
+    public Event(Habit habit, Date date, String comment, Bitmap picture, Location location) {
         this.habit = habit;
         this.date = date;
         this.comment = comment;
@@ -154,23 +156,29 @@ public class Event {
      *@return
      */
 
+    /**
+     *@param
+     */
     public Date getDate() {
         return date;
     }
-    /**
-     *@param date
-     */
-
 
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public void setTitle(String title){ this.title = title;}
+
+    public String getTitle() {
+        return title;
+    }
+
     /**
      *@return
      */
 
 
-    public Picture getPicture() {
+    public Bitmap getPicture() {
         return picture;
     }
     /**
@@ -178,7 +186,7 @@ public class Event {
      */
 
 
-    public void setPicture(Picture picture) {
+    public void setPicture(Bitmap picture) {
         this.picture = picture;
     }
     /**
