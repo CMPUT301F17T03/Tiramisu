@@ -176,7 +176,7 @@ public class EventTodayActivity extends AppCompatActivity {
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 
-            Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
             newList = gson.fromJson(in,listType);
         }catch (FileNotFoundException e){
             e.printStackTrace();
