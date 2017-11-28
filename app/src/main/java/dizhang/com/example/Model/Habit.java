@@ -29,6 +29,7 @@ public class Habit {
     private Date date;
     private ArrayList<String> frequency;
     private EventList events = new EventList();
+    private String LastDate;
 
     /**
     * @pamram title
@@ -100,7 +101,13 @@ public class Habit {
     /**
      *@return
      */
+    public String getLast() {
+        return LastDate;
+    }
 
+    public void setLast(String date){
+        this.LastDate = date;
+    }
     public EventList getEvents() {
         return events;
     }

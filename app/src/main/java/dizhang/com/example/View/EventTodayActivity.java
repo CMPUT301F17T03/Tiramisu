@@ -129,7 +129,13 @@ public class EventTodayActivity extends AppCompatActivity {
                 Bitmap bitmap = drawable.getBitmap();
                 newEvent.setPicture( bitmap);
                 newList.add(newEvent);
+
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                Date date = new Date();
+                String Today_date = dateFormat.format(date);
+                habitList.get(index).setLast(Today_date);
                 saveInFile();
+                saveHabit();
             }
         });
 
@@ -184,7 +190,20 @@ public class EventTodayActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    private void saveHabit(){
+        try{
+            FileOutputStream fos = openFileOutput(HabitFILENAME, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(habitList,writer);
+            writer.flush();
 
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     private void saveInFile(){
         try{
             FileOutputStream fos = openFileOutput(FILENAME, 0);

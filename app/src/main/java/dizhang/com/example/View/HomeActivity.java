@@ -24,9 +24,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import dizhang.com.example.Control.HabitNewActivity;
@@ -183,18 +186,23 @@ public class HomeActivity extends AppCompatActivity {
         //TODO get user from elasticsearch and get habit from user
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        Date date = new Date();
+        String Today_date = dateFormat.format(date);
         //This part will add the habit only happend today
-        List<String> days = new ArrayList<>(Arrays.asList("Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"));
+        List<String> days = new ArrayList<>(Arrays.asList("Sat","Sun","Mon","Tue","Wed","Thu","Fri"));
         String Today = days.get(dayOfWeek);
         loadFromFile();
         listItem.clear();
         for (int i = 0 ; i < newList.size(); i++){
             if( newList.get(i).getFrequency().contains(Today)){
-
-                String title = newList.get(i).getTitle();
-                listItem.add(title);
+                if ( newList.get(i).getLast().equals( Today_date)) {
+                    continue;
+                }
+                else{
+                    String title = newList.get(i).getTitle();
+                    listItem.add(title);
+                }
             }
         }
 
