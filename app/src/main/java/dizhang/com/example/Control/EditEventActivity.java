@@ -88,7 +88,7 @@ public class EditEventActivity extends AppCompatActivity  {
         Image  = (ImageView)findViewById(R.id.evenImageE);
         editTitle.setText(title);
         editCom.setText(comment);
-        Image.setImageBitmap(newList.get(index).getPicture());
+        //Image.setImageBitmap(newList.get(index).getPicture());
 
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +110,7 @@ public class EditEventActivity extends AppCompatActivity  {
 
                 BitmapDrawable drawable = (BitmapDrawable) Image.getDrawable();
                 Bitmap bitmap = drawable.getBitmap();
-                newList.get(index).setPicture( bitmap);
+                //newList.get(index).setPicture( bitmap);
                 newList.get(index).setComment(comment);
                 saveInFile();
             }

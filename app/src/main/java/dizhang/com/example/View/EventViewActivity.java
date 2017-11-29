@@ -1,7 +1,15 @@
 package dizhang.com.example.View;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,14 +17,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -49,11 +60,14 @@ import dizhang.com.example.tiramisu.R;
 
 public class EventViewActivity extends AppCompatActivity {
     private static final String FILENAME = "event.save";
-
+    public Uri picture_Uri;
+    private String path;
     Button Edit;
     ImageView Image;
     TextView eventTitleView,locationView,eventDateView,commentView;
     ArrayList<Event> newList = new ArrayList<Event>();
+    public Event CurrntEvent;
+    private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,12 +81,20 @@ public class EventViewActivity extends AppCompatActivity {
         Image = (ImageView) findViewById(R.id.imageView);
 
 
+
         Edit = (Button) findViewById(R.id.EditEvent);
         loadFromFile();
 
-        Image.setImageBitmap(newList.get(index).getPicture());
+
+        path = newList.get(index).getPicture();
+        Permission();
+        Toast.makeText(EventViewActivity.this, path, Toast.LENGTH_LONG).show();
+        System.out.println(path);
+        if ( !path.equals( "empty")) {
+            showPicture();
 
 
+        }
 
         String title = newList.get(index).getTitle();
         String des = newList.get(index).getComment();
@@ -101,7 +123,46 @@ public class EventViewActivity extends AppCompatActivity {
 
 
     }
+    private void showPicture(){
+        File imgFile = new  File(path);
 
+        if(imgFile.exists()){
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+
+
+            Image.setImageBitmap(myBitmap);
+        }
+    }
+    private void Permission(){
+// Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(EventViewActivity.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(EventViewActivity.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(EventViewActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1
+                        );
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
     private void loadFromFile(){
         try{
             FileInputStream fis = openFileInput(FILENAME);
@@ -116,4 +177,6 @@ public class EventViewActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
 }

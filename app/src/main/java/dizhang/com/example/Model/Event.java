@@ -3,6 +3,7 @@ package dizhang.com.example.Model;
 import android.graphics.Bitmap;
 import android.graphics.Picture;
 import android.location.Location;
+import android.net.Uri;
 
 import java.util.Date;
 
@@ -27,7 +28,7 @@ public class Event {
     private Habit habit;
     private String comment;
     private Date date;
-    private Bitmap picture;
+    private String picture;
     private Location location;
     private String title;
 
@@ -56,12 +57,6 @@ public class Event {
      * @param date
      * @param picture
      */
-
-    public Event(Habit habit, Date date, Bitmap picture) {
-        this.habit = habit;
-        this.date = date;
-        this.picture = picture;
-    }
 
     /**
     *@param habit
@@ -92,24 +87,13 @@ public class Event {
      * @param comment
      * @param picture
      */
-    public Event(Habit habit, Date date, String comment, Bitmap picture) {
-        this.habit = habit;
-        this.date = date;
-        this.comment = comment;
-        this.picture = picture;
-    }
     /**
      *@param habit
      * @param date
      * @param picture
      *@param location
      */
-    public Event(Habit habit, Date date, Bitmap picture, Location location) {
-        this.habit = habit;
-        this.date = date;
-        this.picture = picture;
-        this.location = location;
-    }
+
     /**
      *@param habit
      * @param date
@@ -117,7 +101,7 @@ public class Event {
      * @param picture
      * @param location
      */
-    public Event(Habit habit, Date date, String comment, Bitmap picture, Location location) {
+    public Event(Habit habit, Date date, String comment, String picture, Location location) {
         this.habit = habit;
         this.date = date;
         this.comment = comment;
@@ -178,7 +162,7 @@ public class Event {
      */
 
 
-    public Bitmap getPicture() {
+    public String getPicture() {
         return picture;
     }
     /**
@@ -186,7 +170,7 @@ public class Event {
      */
 
 
-    public void setPicture(Bitmap picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
     /**

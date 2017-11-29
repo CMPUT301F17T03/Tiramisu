@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -93,7 +94,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(HomeActivity.this, EventTodayActivity.class);
-                intent.putExtra("index",i);
+                Toast.makeText(HomeActivity.this, listItem.get(i), Toast.LENGTH_LONG).show();
+
+                intent.putExtra("name",listItem.get(i));
                 startActivity(intent);
 
             }

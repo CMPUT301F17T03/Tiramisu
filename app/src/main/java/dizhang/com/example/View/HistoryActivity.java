@@ -5,16 +5,29 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import dizhang.com.example.Control.ElasticSearchController;
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
@@ -38,22 +51,23 @@ import dizhang.com.example.tiramisu.R;
  * @since 1.0
  */
 public class HistoryActivity extends AppCompatActivity {
+    ArrayList<Event> newList = new ArrayList<Event>();
+    private static final String FILENAME = "event.save";
+    Button historyMap,searchComment,searchName;
+    ListView mainListView ;
+    EditText input;
+    ArrayList<String> listItem = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
 
-
-    Button historyMap;
-    private ListView mainListView ;
-    private ArrayAdapter<String> listAdapter ;
-    private ElasticSearchController Elastic = new ElasticSearchController();
-    private User user =  new  User();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
+        mainListView= (ListView) findViewById(R.id.historyList);
         historyMap = (Button) findViewById(R.id.historyMap);
-
+        input = (EditText) findViewById(R.id.searchHistory);
         historyMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,29 +75,85 @@ public class HistoryActivity extends AppCompatActivity {
                 startActivity(mapInt);
             }
         });
-        /*
+        searchComment = (Button) findViewById(R.id.searchComment);
 
+        searchComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //what if input nothing
+                String comment= input.getText().toString();
+                listItem.clear();
+                for (int i = 0 ; i < newList.size(); i++){
+                    String Eventcomment = newList.get(i).getComment();
+                    if( Eventcomment.contains(comment)) {
+                        String title = newList.get(i).getTitle();
+                        listItem.add(title);
+                    }
 
+                }
 
-        mainListView = (ListView) findViewById(R.id.historyList);
-        Context context = getApplicationContext();
+                adapter.notifyDataSetChanged();
 
-        ElasticSearchController.GetUserProfile elastic = new ElasticSearchController.GetUserProfile();
-        Class clazz = elastic.getClass();
-        String username = user.getUsername();
+                mainListView.setAdapter(adapter);
 
-        try {
-            Method searchResult = clazz.getDeclaredMethod("doInBackground", Class.forName(username));
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        */
+            }
+        });
+
+        mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(HistoryActivity.this, EventViewActivity.class);
+                intent.putExtra("index",i);
+                startActivity(intent);
+
+            }
+        });
 
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        /*
+        ElasticSearchController.GetUserProfile getUserProfile = new ElasticSearchController.GetUserProfile();
+        getUserProfile.execute("what");
+        try{
+            userList = getUserProfile.get();
+
+        } catch (Exception e){
+            Log.i("Error","Failed to get users from the async object");
+        }
+        */
+        //TODO get user from elasticsearch and get habit from user
+        //This part will add the habit only happend today
+        loadFromEventFile();
+        listItem.clear();
+        for (int i = 0 ; i < newList.size(); i++){
+            String title = newList.get(i).getTitle();
+            listItem.add(title);
+
+
+        }
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listItem);
+        mainListView.setAdapter(adapter);
+
+    }
+    private void loadFromEventFile(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
+            newList = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     public void onBackPressed(){
         Intent homeInt = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(homeInt);

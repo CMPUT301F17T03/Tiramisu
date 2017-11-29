@@ -2,11 +2,13 @@ package dizhang.com.example.View;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -64,6 +66,8 @@ public class EventTodayActivity extends AppCompatActivity {
     private static final String FILENAME = "event.save";
     private static final String HabitFILENAME = "file.save";
 
+    public String realPath;
+    public Habit Current_Habit;
     Date date;
     Button addLocation, Complete,picture;
     EditText comment;
@@ -76,11 +80,16 @@ public class EventTodayActivity extends AppCompatActivity {
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
-        int index = getIntent().getIntExtra("index",0);
+        String name = getIntent().getStringExtra("name");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_today);
         loadFromFile();
+        for (int i = 0 ; i < habitList.size(); i++){
+            if (habitList.get(i).getTitle().equals(name)){
+                Current_Habit=habitList.get(i);
+            }
+        }
         loadFromEventFile();
         picture = (Button) findViewById(R.id.picture);
         eventTitle = (TextView) findViewById(R.id.eventTitle);
@@ -89,8 +98,8 @@ public class EventTodayActivity extends AppCompatActivity {
         comment = (EditText) findViewById(R.id.comment);
         Complete = (Button) findViewById(R.id.Complete);
         Image  = (ImageView)findViewById(R.id.Image);
-        eventTitle.setText(habitList.get(index).getTitle());
-
+        eventTitle.setText(name);
+        realPath = "empty";
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -100,7 +109,7 @@ public class EventTodayActivity extends AppCompatActivity {
             });
 
         Complete.setOnClickListener(new View.OnClickListener() {
-            int index = getIntent().getIntExtra("index",0);
+
 
 
             @Override
@@ -123,17 +132,15 @@ public class EventTodayActivity extends AppCompatActivity {
                 c.set(Calendar.MINUTE, 0);
                 c.set(Calendar.SECOND, 0);
                 date = c.getTime();
-                Event newEvent = new Event(habitList.get(index), date, comm);
-                newEvent.setTitle(habitList.get(index).getTitle());
-                BitmapDrawable drawable = (BitmapDrawable) Image.getDrawable();
-                Bitmap bitmap = drawable.getBitmap();
-                newEvent.setPicture( bitmap);
+                Event newEvent = new Event(Current_Habit, date, comm);
+                newEvent.setTitle(Current_Habit.getTitle());
+                newEvent.setPicture( realPath);
                 newList.add(newEvent);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 Date date = new Date();
                 String Today_date = dateFormat.format(date);
-                habitList.get(index).setLast(Today_date);
+                Current_Habit.setLast(Today_date);
                 saveInFile();
                 saveHabit();
             }
@@ -148,8 +155,12 @@ public class EventTodayActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             try {
                 final Uri imageUri = data.getData();
+
+
+                realPath=getRealPathFromURI(imageUri);
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                Toast.makeText(EventTodayActivity.this, realPath, Toast.LENGTH_LONG).show();
 
                 Image.setImageBitmap(selectedImage);
             } catch (FileNotFoundException e) {
@@ -176,6 +187,12 @@ public class EventTodayActivity extends AppCompatActivity {
         }
     }
 
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }
     private void loadFromEventFile(){
         try{
             FileInputStream fis = openFileInput(FILENAME);
