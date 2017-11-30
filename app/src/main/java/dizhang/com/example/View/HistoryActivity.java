@@ -58,7 +58,7 @@ public class HistoryActivity extends AppCompatActivity {
     EditText input;
     ArrayList<String> listItem = new ArrayList<String>();
     ArrayAdapter<String> adapter;
-
+    ArrayList<Integer> SelectIndex = new ArrayList<Integer>();
 
 
     @Override
@@ -76,24 +76,53 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
         searchComment = (Button) findViewById(R.id.searchComment);
+        searchName = (Button) findViewById(R.id.searchType);
+
+        searchName.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                //what if input nothing
+                String Name= input.getText().toString();
+                ArrayList<Integer> Select = new ArrayList<Integer>();
+                listItem.clear();
+                for (int i = 0 ; i < newList.size(); i++){
+                    String Eventcomment = newList.get(i).getTitle();
+                    if( Eventcomment.contains(Name)) {
+                        String title = newList.get(i).getTitle();
+                        listItem.add(title);
+                        Select.add(i);
+                    }
+
+                }
+
+                adapter.notifyDataSetChanged();
+                SelectIndex = Select;
+                mainListView.setAdapter(adapter);
+
+            }
+        });
 
         searchComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //what if input nothing
                 String comment= input.getText().toString();
+                ArrayList<Integer> Select = new ArrayList<Integer>();
+
                 listItem.clear();
                 for (int i = 0 ; i < newList.size(); i++){
                     String Eventcomment = newList.get(i).getComment();
                     if( Eventcomment.contains(comment)) {
                         String title = newList.get(i).getTitle();
                         listItem.add(title);
+                        Select.add(i);
                     }
 
                 }
 
                 adapter.notifyDataSetChanged();
-
+                SelectIndex = Select;
                 mainListView.setAdapter(adapter);
 
             }
@@ -103,7 +132,8 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(HistoryActivity.this, EventViewActivity.class);
-                intent.putExtra("index",i);
+
+                intent.putExtra("index",SelectIndex.get(i));
                 startActivity(intent);
 
             }
@@ -129,15 +159,19 @@ public class HistoryActivity extends AppCompatActivity {
         //This part will add the habit only happend today
         loadFromEventFile();
         listItem.clear();
+        ArrayList<Integer> Select = new ArrayList<Integer>();
+
         for (int i = 0 ; i < newList.size(); i++){
             String title = newList.get(i).getTitle();
             listItem.add(title);
-
+            Select.add(i);
 
         }
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listItem);
         mainListView.setAdapter(adapter);
+        SelectIndex = Select;
+
 
     }
     private void loadFromEventFile(){
