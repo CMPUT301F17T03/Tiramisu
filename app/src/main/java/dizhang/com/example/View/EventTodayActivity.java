@@ -1,15 +1,25 @@
 package dizhang.com.example.View;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,6 +64,7 @@ import dizhang.com.example.tiramisu.R;
  * distribute or modify the code under terms and conditions of the Code of Students Behavior
  * at University of Alberta
  */
+
 /**
  * Represents a MapActivity
  * @version 1.0
@@ -69,54 +80,103 @@ public class EventTodayActivity extends AppCompatActivity {
     public String realPath;
     public Habit Current_Habit;
     Date date;
-    Button addLocation, Complete,picture;
+    Button addLocation, Complete, picture;
     EditText comment;
-    TextView eventTitle,location;
+    TextView eventTitle, locationToday;
     ImageView Image;
+    String myLocation;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     ArrayList<Event> newList = new ArrayList<Event>();
     ArrayList<Habit> habitList = new ArrayList<Habit>();
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         String name = getIntent().getStringExtra("name");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_today);
         loadFromFile();
-        for (int i = 0 ; i < habitList.size(); i++){
-            if (habitList.get(i).getTitle().equals(name)){
-                Current_Habit=habitList.get(i);
+        for (int i = 0; i < habitList.size(); i++) {
+            if (habitList.get(i).getTitle().equals(name)) {
+                Current_Habit = habitList.get(i);
             }
         }
         loadFromEventFile();
         picture = (Button) findViewById(R.id.picture);
         eventTitle = (TextView) findViewById(R.id.eventTitle);
-        location = (TextView) findViewById(R.id.location);
         addLocation = (Button) findViewById(R.id.addLocation);
         comment = (EditText) findViewById(R.id.comment);
         Complete = (Button) findViewById(R.id.Complete);
-        Image  = (ImageView)findViewById(R.id.Image);
+        Image = (ImageView) findViewById(R.id.Image);
+        locationToday = (TextView) findViewById(R.id.locationToday);
         eventTitle.setText(name);
         realPath = "empty";
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                //locationToday.clearComposingText();
+                myLocation = location.getLatitude() + " " + location.getLongitude();
+                locationToday.append(location.getLatitude() + " " + location.getLongitude());
+                Log.d("Onlocation", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+                Log.d("Case", "Case222222222222222222222222222222");
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+                Log.d("Case", "Case222222222222222222222222222222");
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+
+            }
+        };
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.INTERNET
+                }, 2);
+                return;
+            }
+        }
+        else{
+            configureButton();
+        }
+        
+
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            public void onClick(View view) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, 1);
             }
-            });
+        });
+
 
         Complete.setOnClickListener(new View.OnClickListener() {
-
 
 
             @Override
             public void onClick(View view) {
 
 
-                String comm  = comment.getText().toString();
+                String comm = comment.getText().toString();
 
 
                 if (comment.length() > 20) {
@@ -134,7 +194,7 @@ public class EventTodayActivity extends AppCompatActivity {
                 date = c.getTime();
                 Event newEvent = new Event(Current_Habit, date, comm);
                 newEvent.setTitle(Current_Habit.getTitle());
-                newEvent.setPicture( realPath);
+                newEvent.setPicture(realPath);
                 newList.add(newEvent);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -147,6 +207,27 @@ public class EventTodayActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 2:
+                if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    configureButton();
+                return;
+        }
+    }
+
+    private void configureButton() {
+        addLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                locationManager.requestLocationUpdates("gps", 5000, 10, locationListener);
+            }
+        });
+    }
+
+
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);

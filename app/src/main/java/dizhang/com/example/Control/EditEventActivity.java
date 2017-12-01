@@ -1,11 +1,20 @@
 package dizhang.com.example.Control;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -50,6 +59,7 @@ import dizhang.com.example.tiramisu.R;
  * distribute or modify the code under terms and conditions of the Code of Students Behavior
  * at University of Alberta
  */
+
 /**
  * Represents a EditEventActivity
  *
@@ -59,15 +69,19 @@ import dizhang.com.example.tiramisu.R;
  * @since 1.0
  */
 
-public class EditEventActivity extends AppCompatActivity  {
+public class EditEventActivity extends AppCompatActivity {
     private static final String FILENAME = "event.save";
 
 
-    Button Delete, Save,changeLocation;
+    Button Delete, Save, changeLocation;
     EditText editCom;
-    TextView editTitle;
+    TextView editTitle, locationDisplay;
     ImageView Image;
+    String myLocation;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
     ArrayList<Event> newList = new ArrayList<Event>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,12 +89,41 @@ public class EditEventActivity extends AppCompatActivity  {
 
 
         loadFromFile();
-        int index = getIntent().getIntExtra("index",0);
+        int index = getIntent().getIntExtra("index", 0);
         Habit habit = newList.get(index).getHabit();
         String title = habit.getTitle();
         String comment = newList.get(index).getComment();
 
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                myLocation = location.getLatitude()+" "+location.getLongitude();
+                locationDisplay.setText(myLocation);
+
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+
+            }
+        };
+
+
         editTitle = (TextView) findViewById(R.id.eventTitleE);
+        //locationDisplay = (TextView) findViewById(R.id.locationToday);
         editCom = (EditText) findViewById(R.id.commentE);
         Delete = (Button) findViewById(R.id.Delete);
         changeLocation = (Button) findViewById(R.id.changeLocation);
@@ -89,6 +132,13 @@ public class EditEventActivity extends AppCompatActivity  {
         editTitle.setText(title);
         editCom.setText(comment);
         //Image.setImageBitmap(newList.get(index).getPicture());
+
+        changeLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                configureButton();
+            }
+        });
 
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +183,30 @@ public class EditEventActivity extends AppCompatActivity  {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 2:
+                if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+        }
+    }
+
+    private void configureButton() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.INTERNET
+                }, 2);
+            }
+
+        } else {
+            locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+        }
     }
 
     private void loadFromFile(){
