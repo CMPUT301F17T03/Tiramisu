@@ -60,7 +60,7 @@ public class HabitManagerActivity extends AppCompatActivity {
     ArrayList<String> listItem = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     ArrayList<Habit> newList = new ArrayList<Habit>();
-
+    ArrayList<User> userList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,25 +98,35 @@ public class HabitManagerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        /*
         ElasticSearchController.GetUserProfile getUserProfile = new ElasticSearchController.GetUserProfile();
-        getUserProfile.execute("what");
+        getUserProfile.execute();
+
         try{
             userList = getUserProfile.get();
 
         } catch (Exception e){
             Log.i("Error","Failed to get users from the async object");
         }
-        */
-        //TODO get user from elasticsearch and get habit from user
 
+        ArrayList<Habit> hList = new ArrayList<Habit>();
+        for (int x = 0; x < userList.size(); x++){
+            hList.add(userList.get(x).getHabit());
+        }
+
+        listItem.clear();
+        for (int i = 0; i <hList.size(); i++){
+            String title = hList.get(i).getTitle();
+            listItem.add(title);
+        }
+
+        /*
         loadFromFile();
         listItem.clear();
         for (int i = 0 ; i < newList.size(); i++){
             String title = newList.get(i).getTitle();
             listItem.add(title);
         }
-
+        */
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listItem);
         habitList.setAdapter(adapter);
 

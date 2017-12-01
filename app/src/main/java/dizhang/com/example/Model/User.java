@@ -23,6 +23,7 @@ public class User {
     private String interests;
     private Picture profilePic;
     private HabitList habitlist;
+    private Habit habit;
     private EventList eventlist;
     private HistoryList history;
     private String password;
@@ -39,6 +40,14 @@ public class User {
     public User(){}
 
     private ArrayList searchInfo;
+
+    public Habit getHabit() {
+        return habit;
+    }
+
+    public void setHabit(Habit habit) {
+        this.habit = habit;
+    }
 
     /**
      * @return
