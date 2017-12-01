@@ -7,12 +7,16 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+import org.w3c.dom.Document;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
+import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import io.searchbox.indices.mapping.PutMapping;
@@ -144,12 +148,16 @@ public class ElasticSearchController {
 
             ArrayList<Habit> habit = new ArrayList<Habit>();
 
-
+            /*
             String query = "{\n" +
                     "    \"query\" : {\n" +
-                    "        \"term\" : { \"username\" : \""  +  search_parameters + "\"} \n" +
+                    "        \"term\" : { \"title\" : \""  +  search_parameters[0] + "\"} \n" +
                     "    }\n" +
                     "}";
+            */
+            String query = "{\n" +
+                    " \"query\" :{\n" +
+                    " \"term\"  :{ \"title\": \"" + search_parameters + "\"}}}";
 
 
             // TODO Build the query
@@ -174,6 +182,35 @@ public class ElasticSearchController {
             }
 
             return habit;
+        }
+    }
+
+    public static class addHabitTask extends AsyncTask<Habit, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Habit... habits) {
+            verifySettings();
+            for (Habit habit : habits){
+                Index index = new Index.Builder(habit)
+                        .index("cmput301f17t03")
+                        .type("habit")
+                        .build();
+                try{
+                    DocumentResult execute = client.execute(index);
+                    if(execute.isSucceeded()){
+                        habit.setId(execute.getId());
+                        System.out.println(habit.getId());
+                    }
+
+                }catch (Exception e){
+                    Log.i("Error", "The application failed to build and send the habit");
+
+                }
+
+
+            }
+            return null;
         }
     }
 

@@ -6,6 +6,8 @@ import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Class Name: Habit
  *
@@ -30,6 +32,9 @@ public class Habit {
     private ArrayList<String> frequency;
     private EventList events = new EventList();
     private String LastDate;
+    @JestId
+    private String id;
+
 
     /**
     * @pamram title
@@ -43,6 +48,15 @@ public class Habit {
         this.date = date;
         this.frequency = frequency;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     /**
      *@return
      */

@@ -82,12 +82,14 @@ public class HabitViewActivity extends AppCompatActivity {
         String title = eList.get(index).getTitle();
         String des = eList.get(index).getDescription();
         String startDate = eList.get(index).getDate();
+        ArrayList<String> frequency = eList.get(index).getFrequency();
+
         /*
         String title = newList.get(index).getTitle();
         String des = newList.get(index).getDescription();
         String date = newList.get(index).getDate();
         String startDate = date.toString();
-        */
+
 
         ArrayList<String> frequency = newList.get(index).getFrequency();
         StringBuilder freq = new StringBuilder();
@@ -95,12 +97,13 @@ public class HabitViewActivity extends AppCompatActivity {
             freq.append(s);
             freq.append(",");
         }
-
-
+        frequencyView.setText(freq.toString());
+        */
+        frequencyView.setText(frequency.toString());
         titleView.setText(title);
         descView.setText(des);
         dateView.setText(startDate);
-        frequencyView.setText(freq.toString());
+
 
 
 

@@ -141,8 +141,12 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
                     String sdate = date.toString();
                     System.out.println(sdate);
                     Habit newHabit = new Habit(title, des, sdate, dayOfWeek);
+                    ElasticSearchController.addHabitTask addHabitTask = new ElasticSearchController.addHabitTask();
+                    addHabitTask.execute(newHabit);
+
                     newHabit.setLast("0");
                     newList.add(newHabit);
+
                     saveInFile();
                     Intent intent = new Intent(HabitNewActivity.this, HabitManagerActivity.class);
                     startActivity(intent);
