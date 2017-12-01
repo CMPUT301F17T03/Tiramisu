@@ -25,7 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Habit:"
-            android:textSize="25sp"/>
+            android:textColor="@color/cardview_light_background"
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/habitTitleView"
@@ -39,7 +40,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Description:"
-            android:textSize="25sp"/>
+            android:textColor="@color/cardview_light_background"
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/habitDesView"
@@ -53,7 +55,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Date Started:"
-            android:textSize="25sp"/>
+            android:textColor="@color/cardview_light_background"
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/habitDateView"
@@ -66,7 +69,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Frequency:"
-            android:textSize="25sp"/>
+            android:textColor="@color/cardview_light_background"
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/frequencyView"
@@ -83,7 +87,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="Edit this habit"/>
+            android:text="Edit this habit"
+            android:textColor="@color/cardview_light_background" />
 
         <Space
             android:layout_width="match_parent"
@@ -94,6 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="delete this habit" />
+            android:text="delete this habit"
+            android:textColor="@color/cardview_light_background" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

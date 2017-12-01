@@ -26,8 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title:"
-            android:textColor="@android:color/background_dark"
-            android:textSize="20sp"/>
+            android:textColor="@color/cardview_light_background"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/editTitle"
@@ -45,8 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Reason:"
-            android:textColor="@android:color/background_dark"
-            android:textSize="20sp"/>
+            android:textColor="@color/cardview_light_background"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/editDescription"
@@ -62,7 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="Set Start Date"/>
+            android:text="Set Start Date"
+            android:textColor="@color/cardview_light_background" />
 
         <TextView
             android:id="@+id/textView7"
@@ -142,7 +143,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="Done" />
+            android:text="Done"
+            android:textColor="@color/cardview_light_background" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -25,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />
 
         <ImageView
@@ -38,7 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="change location to current" />
+            android:text="change location to current"
+            android:textColor="@color/cardview_light_background" />
 
         <Space
             android:layout_width="match_parent"
@@ -50,15 +52,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="Delete" />
+            android:text="Delete"
+            android:textColor="@color/cardview_light_background" />
 
         <EditText
             android:id="@+id/commentE"
             android:layout_width="match_parent"
             android:layout_height="112dp"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="comment:" />
+            android:hint="Comment:"
+            android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/Save"
@@ -66,6 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="Save changes" />
+            android:text="Save changes"
+            android:textColor="@color/cardview_light_background" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

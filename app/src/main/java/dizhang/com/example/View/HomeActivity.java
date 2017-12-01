@@ -209,7 +209,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listItem);
+        adapter = new ArrayAdapter<String>(this, R.layout.list_item,listItem);
         habitList.setAdapter(adapter);
 
     }

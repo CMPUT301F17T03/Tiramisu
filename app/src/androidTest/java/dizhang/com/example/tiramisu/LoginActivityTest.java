@@ -40,6 +40,13 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         LoginActivity activity = (LoginActivity) solo.getCurrentActivity();
 
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+
+        solo.clickOnText("Sign up here");
+        solo.assertCurrentActivity("Wrong Activity", SignupActivity.class);
+        //assertTrue(solo.waitForText("signupLayout"));
+
+        solo.goBack();
+        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
         solo.enterText((EditText) solo.getView(R.id.usernameLayout), "Admin");
         solo.enterText((EditText) solo.getView(R.id.passwordLayout), "Admin");
 
@@ -47,14 +54,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         solo.assertCurrentActivity("Wrong Activity", HomeActivity.class);
         assertTrue(solo.waitForText("Today's Event"));
 
-        solo.goBack();
-
-        solo.clickOnText("Sign up here");
-        solo.assertCurrentActivity("Wrong Activity", SignupActivity.class);
-        assertTrue(solo.waitForText("signupLayout"));
-
-        solo.goBack();
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
     }
 
 

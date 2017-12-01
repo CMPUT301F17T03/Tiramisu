@@ -46,7 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="Set Start Date"/>
+            android:text="Set Start Date"
+            android:textColor="@color/cardview_light_background" />
 
         <TextView
             android:id="@+id/textView7"
@@ -126,7 +127,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="Done" />
+            android:text="Done"
+            android:textColor="@color/cardview_light_background" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

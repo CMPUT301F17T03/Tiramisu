@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title of Event:"
+            android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />
 
         <ImageView
@@ -40,13 +41,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="Add Picture" />
+            android:text="Add Picture"
+            android:textColor="@color/cardview_light_background" />
 
         <TextView
             android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Location: "
+            android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />
 
         <EditText
@@ -54,8 +57,8 @@
             android:layout_width="match_parent"
             android:layout_height="96dp"
             android:ems="10"
+            android:hint="Comment:"
             android:inputType="textPersonName"
-            android:text="comment:"
             android:textAlignment="textStart" />
 
         <Button
@@ -63,7 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="add current location" />
+            android:text="add current location"
+            android:textColor="@color/cardview_light_background" />
 
         <Space
             android:layout_width="match_parent"
@@ -74,6 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="Complete this event" />
+            android:text="Complete this event"
+            android:textColor="@color/cardview_light_background" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

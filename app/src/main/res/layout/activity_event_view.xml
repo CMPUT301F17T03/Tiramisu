@@ -25,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="37dp"
             android:text="TextView"
+            android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />
 
         <ImageView
@@ -38,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="38dp"
             android:text="Location:"
+            android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />
 
         <TextView
@@ -45,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:text="Date:"
+            android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />
 
         <TextView
@@ -52,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="106dp"
             android:text="Comment:"
+            android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />
 
         <Button
@@ -60,7 +64,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
-            android:text="edit this event" />
+            android:text="edit this event"
+            android:textColor="@color/cardview_light_background" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

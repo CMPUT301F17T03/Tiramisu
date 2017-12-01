@@ -103,7 +103,7 @@ public class EventManagerActivity extends AppCompatActivity {
             listItem.add(title);
         }
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listItem);
+        adapter = new ArrayAdapter<String>(this, R.layout.list_item,listItem);
         eventList.setAdapter(adapter);
     }
     private void loadFromFile(){

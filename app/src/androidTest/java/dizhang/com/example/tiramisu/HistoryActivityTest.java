@@ -56,7 +56,7 @@ public class HistoryActivityTest extends ActivityInstrumentationTestCase2<Histor
         solo.assertCurrentActivity("Wrong Activity", EventViewActivity.class);
 
         //this will delete the item from historyList:
-        solo.clickLongInList(0);
+        //solo.clickLongInList(0);
 
         //check if it really delete item in the historyList
         /*

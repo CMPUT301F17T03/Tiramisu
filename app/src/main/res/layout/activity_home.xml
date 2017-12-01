@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:text="Today's Event"
             android:textAlignment="center"
+            android:textColor="@color/cardview_light_background"
             android:textSize="24sp" />
 
         <ListView
