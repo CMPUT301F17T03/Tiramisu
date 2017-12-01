@@ -1,10 +1,8 @@
 package dizhang.com.example.View;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,19 +15,16 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
 
-import dizhang.com.example.Control.ElasticSearchController;
 import dizhang.com.example.Control.HabitNewActivity;
 import dizhang.com.example.Model.Habit;
-import dizhang.com.example.Model.HabitList;
-import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
+
+//import dizhang.com.example.Control.ElasticSearchController;
 
 /**
  * Class Name: HabitManagerActivity

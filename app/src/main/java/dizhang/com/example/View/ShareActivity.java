@@ -1,8 +1,8 @@
 package dizhang.com.example.View;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 
-import dizhang.com.example.Control.ElasticSearchController;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
@@ -66,10 +65,10 @@ public class ShareActivity extends AppCompatActivity {
                 //Intent intent = new Intent(ShareActivity.this, HabitViewActivity.class);
 
                 //Call ElasticSearch here
-                ElasticSearchController.GetUserProfile userProfile = new ElasticSearchController.GetUserProfile();
-                userProfile.execute(text);
+                //ElasticSearchController.GetUserProfile userProfile = new ElasticSearchController.GetUserProfile();
+                //userProfile.execute(text);
                 try {
-                    userList.addAll(userProfile.get());
+                    //userList.addAll(userProfile.get());
                 } catch (Exception e) {
                     Log.i("Eroor", "Failed to get the user from the async object");
                 }

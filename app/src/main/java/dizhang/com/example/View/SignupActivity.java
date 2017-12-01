@@ -1,25 +1,19 @@
 package dizhang.com.example.View;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import dizhang.com.example.Model.User;
@@ -44,10 +38,11 @@ import dizhang.com.example.tiramisu.R;
  * @since 1.0
  */
 public class SignupActivity extends AppCompatActivity {
-    /*private static final String FILENAME = "file.save";
-    EditText Username;
-    EditText Password;
-    EditText Confirmpassword;*/
+
+    EditText Username,Confirmpassword,Password;
+
+    private static final String FILENAME = "User.save";
+    /*EditText Confirmpassword;*/
     Button finishSignup;
     ArrayList<User> newList = new ArrayList<User>();
     //Boolean lError = false;
@@ -56,19 +51,30 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        /*final int index = getIntent().getIntExtra("index",0);
+        /*final int index = getIntent().getIntExtra("index",0);*/
         //loadFromFile();
-        Username = (EditText)  findViewById(R.id.usernameLayout);
-        Password = (EditText)  findViewById(R.id.passwordLayout);
-        Confirmpassword = (EditText)  findViewById(R.id.confirmSignup);*/
+        Username = (EditText)  findViewById(R.id.usernameSignup);
+        Password = (EditText)  findViewById(R.id.passwordSignup);
+        Confirmpassword = (EditText)  findViewById(R.id.confirmSignup);
         finishSignup = (Button) findViewById(R.id.finishSignup);
-        //String username = Username.getText().toString();
-        //String password = Password.getText().toString();
-        //String cpassword = Confirmpassword.getText().toString();
         finishSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                String username = Username.getText().toString();
+                String password = Password.getText().toString();
+                String cpassword = Confirmpassword.getText().toString();
+                User newUser = new User(username, password);
+                newList.add(newUser);
+                saveInFile();
+                ElasticSearchController Elastic = new ElasticSearchController(newUser);
+
+                System.out.print("Hello World" +
+                        "this is in ");
+                Log.d("myTag", "This is my message");
+
+                Elastic.new Signup()
+                        .execute();
                 /*if (Username.getText().toString().length() < 3) {
                     Toast.makeText(SignupActivity.this, "username has to be more than 3 characters ", Toast.LENGTH_LONG).show();
 
@@ -108,11 +114,24 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    private void saveInFile(){
+        try{
+            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(newList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     public void onBackPressed(){
         Intent loginInt = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(loginInt);
     }
-
 
     /*@Override
     protected void onStart() {

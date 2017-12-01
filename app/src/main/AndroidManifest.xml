@@ -44,5 +44,4 @@
         <activity android:name="dizhang.com.example.Control.EditEventActivity" />
         <activity android:name="dizhang.com.example.View.RequestActivity" />
     </application>
-
 </manifest>
