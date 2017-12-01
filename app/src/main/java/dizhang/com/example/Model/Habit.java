@@ -26,7 +26,7 @@ import java.util.Date;
 public class Habit {
     private String title;
     private String description;
-    private Date date;
+    private String date;
     private ArrayList<String> frequency;
     private EventList events = new EventList();
     private String LastDate;
@@ -37,7 +37,7 @@ public class Habit {
     * @param date
     * @param frequency
      */
-    public Habit(String title, String description, Date date, ArrayList<String> frequency){
+    public Habit(String title, String description, String date, ArrayList<String> frequency){
         this.title = title;
         this.description = description;
         this.date = date;
@@ -75,14 +75,14 @@ public class Habit {
      *@return
      */
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
     /**
     *@param date
      */
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
     /**

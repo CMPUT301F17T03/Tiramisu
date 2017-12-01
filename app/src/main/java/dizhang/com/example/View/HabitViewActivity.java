@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.provider.BlockedNumberContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import dizhang.com.example.Control.EditHabitActivity;
+import dizhang.com.example.Control.ElasticSearchController;
 import dizhang.com.example.Control.HabitNewActivity;
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.tiramisu.R;
@@ -55,6 +57,7 @@ public class HabitViewActivity extends AppCompatActivity {
     TextView titleView, descView,dateView,frequencyView;
     ArrayList<Habit> newList = new ArrayList<Habit>();
 
+    ArrayList<Habit> eList = new ArrayList<Habit>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +71,32 @@ public class HabitViewActivity extends AppCompatActivity {
         loadFromFile();
 
         int index = getIntent().getIntExtra("index",0);
+        ElasticSearchController.getHabitTask getHabitTask = new ElasticSearchController.getHabitTask();
+        getHabitTask.execute();
+        try{
+            eList = getHabitTask.get();
+        } catch (Exception e) {
+            Log.i("Error", "failed to get habit from the async object");
+        }
 
+        String title = eList.get(index).getTitle();
+        String des = eList.get(index).getDescription();
+        String startDate = eList.get(index).getDate();
+        /*
         String title = newList.get(index).getTitle();
         String des = newList.get(index).getDescription();
+        String date = newList.get(index).getDate();
+        String startDate = date.toString();
+        */
+
         ArrayList<String> frequency = newList.get(index).getFrequency();
         StringBuilder freq = new StringBuilder();
         for (String s : frequency){
             freq.append(s);
             freq.append(",");
         }
-        Date date = newList.get(index).getDate();
-        String startDate = date.toString();
+
+
         titleView.setText(title);
         descView.setText(des);
         dateView.setText(startDate);

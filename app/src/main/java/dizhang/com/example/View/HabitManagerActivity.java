@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import dizhang.com.example.Control.ElasticSearchController;
 import dizhang.com.example.Control.HabitNewActivity;
@@ -61,6 +62,8 @@ public class HabitManagerActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayList<Habit> newList = new ArrayList<Habit>();
     ArrayList<User> userList = new ArrayList<>();
+    ArrayList<Habit> eList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,8 @@ public class HabitManagerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        /*
         ElasticSearchController.GetUserProfile getUserProfile = new ElasticSearchController.GetUserProfile();
         getUserProfile.execute();
 
@@ -119,7 +124,7 @@ public class HabitManagerActivity extends AppCompatActivity {
             listItem.add(title);
         }
 
-        /*
+
         loadFromFile();
         listItem.clear();
         for (int i = 0 ; i < newList.size(); i++){
@@ -127,6 +132,19 @@ public class HabitManagerActivity extends AppCompatActivity {
             listItem.add(title);
         }
         */
+        ElasticSearchController.getHabitTask getHabitTask = new ElasticSearchController.getHabitTask();
+        getHabitTask.execute();
+        try{
+            eList = getHabitTask.get();
+        } catch (Exception e) {
+            Log.i("Error", "failed to get habit from the async object");
+        }
+        listItem.clear();
+        for (int i = 0 ; i < eList.size(); i++) {
+            String title = eList.get(i).getTitle();
+            listItem.add(title);
+        }
+
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listItem);
         habitList.setAdapter(adapter);
 

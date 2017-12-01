@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
@@ -95,9 +96,7 @@ public class ElasticSearchController {
      */
 
     public static class GetUserProfile extends AsyncTask<String, Void, ArrayList<User>> {
-        private User User =  new  User();
-        private String username = User.getUsername();
-        private ArrayList searchInfo = User.getsearchInfo();
+
         @Override
         protected ArrayList<User> doInBackground(String... search_parameters) {
             verifySettings();
@@ -107,7 +106,7 @@ public class ElasticSearchController {
 
             String query = "{\n" +
                     "    \"query\" : {\n" +
-                    "        \"term\" : { \"username\" : \""  +  searchInfo + "\"} \n" +
+                    "        \"term\" : { \"username\" : \""  +  search_parameters + "\"} \n" +
                     "    }\n" +
                     "}";
 
@@ -115,7 +114,7 @@ public class ElasticSearchController {
             // TODO Build the query
             Search search = new Search.Builder(query)
                     .addIndex("cmput301f17t03")
-                    .addType(username)
+                    .addType("user")
                     .build();
 
             try {
@@ -134,6 +133,47 @@ public class ElasticSearchController {
             }
 
             return user;
+        }
+    }
+
+    public static class getHabitTask extends AsyncTask<String, Void, ArrayList<Habit>> {
+
+        @Override
+        protected ArrayList<Habit> doInBackground(String... search_parameters) {
+            verifySettings();
+
+            ArrayList<Habit> habit = new ArrayList<Habit>();
+
+
+            String query = "{\n" +
+                    "    \"query\" : {\n" +
+                    "        \"term\" : { \"username\" : \""  +  search_parameters + "\"} \n" +
+                    "    }\n" +
+                    "}";
+
+
+            // TODO Build the query
+            Search search = new Search.Builder(query)
+                    .addIndex("cmput301f17t03")
+                    .addType("habit")
+                    .build();
+
+            try {
+                // TODO get the results of the query
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<Habit> foundHabit = result.getSourceAsObjectList(Habit.class);
+                    habit.addAll(foundHabit);
+                }
+                else {
+                    Log.i("Error","the search query failed to find any user that matched.");
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+
+            return habit;
         }
     }
 
