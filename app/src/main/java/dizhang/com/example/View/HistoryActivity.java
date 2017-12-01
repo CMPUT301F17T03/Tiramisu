@@ -2,15 +2,12 @@ package dizhang.com.example.View;
 
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -22,14 +19,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import dizhang.com.example.Control.ElasticSearchController;
 import dizhang.com.example.Model.Event;
-import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
+
+//import dizhang.com.example.Control.ElasticSearchController;
 
 
 /**
