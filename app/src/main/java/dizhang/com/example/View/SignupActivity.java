@@ -7,15 +7,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
@@ -42,9 +49,12 @@ public class SignupActivity extends AppCompatActivity {
     EditText Username,Confirmpassword,Password;
 
     private static final String FILENAME = "User.save";
+    private static final String FILENAME2 = "event.save";
     /*EditText Confirmpassword;*/
     Button finishSignup;
     ArrayList<User> newList = new ArrayList<User>();
+    ArrayList<Event> eventlist = new ArrayList<Event>();
+
     //Boolean lError = false;
     //not working in this part, still finding methods to store data : (
     @Override
@@ -67,14 +77,22 @@ public class SignupActivity extends AppCompatActivity {
                 User newUser = new User(username, password);
                 newList.add(newUser);
                 saveInFile();
-                ElasticSearchController Elastic = new ElasticSearchController(newUser);
+                loadFromFile();
+                //ElasticSearchController Elastic = new ElasticSearchController(newUser);
 
-                System.out.print("Hello World" +
-                        "this is in ");
                 Log.d("myTag", "This is my message");
 
-                Elastic.new Signup()
-                        .execute();
+                //Elastic.new Signup().execute();
+
+
+                ElasticSearchController.AddUserTask addUserTask
+                        = new ElasticSearchController.AddUserTask();
+                addUserTask.execute(newUser);
+                existedUser(username);
+                //Log.d("myTag", tuser.getPassword());
+
+                //System.out.println(tuser.getUsername());
+                //Elastic.new LoadfromElastic().execute();
                 /*if (Username.getText().toString().length() < 3) {
                     Toast.makeText(SignupActivity.this, "username has to be more than 3 characters ", Toast.LENGTH_LONG).show();
 
@@ -133,6 +151,39 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(loginInt);
     }
 
+
+    private void loadFromFile(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME2);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
+            eventlist = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private boolean existedUser (String name) {
+        ElasticSearchController.IsExist isExist = new ElasticSearchController.IsExist();
+        isExist.execute(name);
+
+        try {
+            if (isExist.get()) {
+                Toast.makeText(getApplicationContext(), name + "is indeed exist lol .", Toast.LENGTH_SHORT).show();
+
+                return true;
+            } else {
+                Toast.makeText(getApplicationContext(), name + " does not exist.", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
     /*@Override
     protected void onStart() {
         super.onStart();

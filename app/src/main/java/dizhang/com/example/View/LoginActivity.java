@@ -1,23 +1,12 @@
 package dizhang.com.example.View;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-//import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.common.reflect.TypeToken;
@@ -33,9 +22,10 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
+
+//import android.support.v7.app.ActionBarActivity;
 
 /**
  * Class Name: LoginActivity
@@ -103,9 +93,8 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
 
                         Toast.makeText(getApplicationContext(), "Username and password should be correct", Toast.LENGTH_SHORT).show();
-                        User user = new User();
-                        user.setUsername(username.getText().toString());
-                        user.setPassword(password.getText().toString());
+                        User user = new User(username.getText().toString(),password.getText().toString());
+
                         newList.clear();
                         newList.add(user);
                         saveInFile();
