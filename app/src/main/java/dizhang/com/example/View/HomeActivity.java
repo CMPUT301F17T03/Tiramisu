@@ -63,13 +63,13 @@ import dizhang.com.example.tiramisu.R;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String FILENAME = "User.save";
-
+    User CurrentUser = new User();
 
 
     ListView habitList;
     ArrayList<String> listItem = new ArrayList<String>();
     ArrayAdapter<String> adapter;
-    User CurrentUser = new User();
+
 
 
 

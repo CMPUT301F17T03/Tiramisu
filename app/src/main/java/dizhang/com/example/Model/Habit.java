@@ -37,6 +37,7 @@ public class Habit {
     * @param date
     * @param frequency
      */
+    public Habit(){}
     public Habit(String title, String description, Date date, ArrayList<String> frequency){
         this.title = title;
         this.description = description;

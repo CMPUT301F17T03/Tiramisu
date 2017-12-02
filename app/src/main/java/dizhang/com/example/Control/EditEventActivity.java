@@ -90,8 +90,7 @@ public class EditEventActivity extends AppCompatActivity {
 
         loadFromFile();
         int index = getIntent().getIntExtra("index", 0);
-        Habit habit = newList.get(index).getHabit();
-        String title = habit.getTitle();
+        String title = newList.get(index).getTitle();
         String comment = newList.get(index).getComment();
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
