@@ -17,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -77,7 +78,7 @@ public class EditEventActivity extends AppCompatActivity {
     EditText editCom;
     TextView editTitle, locationDisplay;
     ImageView Image;
-    String myLocation;
+    Location myLocation;
     private LocationManager locationManager;
     private LocationListener locationListener;
     ArrayList<Event> newList = new ArrayList<Event>();
@@ -94,22 +95,42 @@ public class EditEventActivity extends AppCompatActivity {
         String title = habit.getTitle();
         String comment = newList.get(index).getComment();
 
+        if (newList.get(index).getLocation() == null){
+
+        }
+        else{
+            Log.d("else", "elseInViewheyyyyyyyyyyyyyyyy");
+            myLocation = newList.get(index).getLocation();
+            //int lat = (int) Math.ceil(loc.getLatitude());
+            //int lon = (int) Math.ceil(loc.getLongitude());
+
+            Log.d("read", "read okay!!!!!!!!! but setText no...");
+            //locationView.setText("(" + lat + "  ,  " + lon + ")");
+        }
+
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                myLocation = location.getLatitude()+" "+location.getLongitude();
-                locationDisplay.setText(myLocation);
+                //locationToday.clearComposingText();
+                myLocation = location;
+                int lat = (int) Math.ceil(location.getLatitude());
+                int lon = (int) Math.ceil(location.getLongitude());
+                //.setText("(" + lat + "  ,  " + lon + ")");
+                Log.d("Onlocation", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
             }
 
             @Override
             public void onStatusChanged(String s, int i, Bundle bundle) {
+                Log.d("Case", "Case222222222222222222222222222222");
 
             }
 
             @Override
             public void onProviderEnabled(String s) {
+                Log.d("Case", "Case2222222222222222222222222222223");
 
             }
 
@@ -120,6 +141,25 @@ public class EditEventActivity extends AppCompatActivity {
 
             }
         };
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.INTERNET
+                }, 2);
+                return;
+            }
+        } else {
+            configureButton();
+        }
+
+        changeLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                configureButton();
+            }
+        });
 
 
         editTitle = (TextView) findViewById(R.id.eventTitleE);
@@ -133,12 +173,6 @@ public class EditEventActivity extends AppCompatActivity {
         editCom.setText(comment);
         //Image.setImageBitmap(newList.get(index).getPicture());
 
-        changeLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                configureButton();
-            }
-        });
 
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +196,8 @@ public class EditEventActivity extends AppCompatActivity {
                 Bitmap bitmap = drawable.getBitmap();
                 //newList.get(index).setPicture( bitmap);
                 newList.get(index).setComment(comment);
+                newList.get(index).setLocation(myLocation);
+                Log.d("location", myLocation.toString());
                 saveInFile();
             }
         });
@@ -189,24 +225,24 @@ public class EditEventActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 2:
-                if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    configureButton();
+                return;
         }
     }
 
     private void configureButton() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.INTERNET
-                }, 2);
-            }
-
-        } else {
-            locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
         }
+        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
     }
 
     private void loadFromFile(){

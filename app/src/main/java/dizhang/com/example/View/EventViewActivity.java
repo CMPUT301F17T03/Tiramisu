@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -98,6 +99,18 @@ public class EventViewActivity extends AppCompatActivity {
 
         String title = newList.get(index).getTitle();
         String des = newList.get(index).getComment();
+        if (newList.get(index).getLocation() == null){
+
+        }
+        else{
+            Log.d("else", "elseInViewheyyyyyyyyyyyyyyyy");
+            Location loc = newList.get(index).getLocation();
+            int lat = (int) Math.ceil(loc.getLatitude());
+            int lon = (int) Math.ceil(loc.getLongitude());
+
+            Log.d("read", "read okay!!!!!!!!! but setText no...");
+            locationView.setText("(" + lat + "  ,  " + lon + ")");
+        }
 
         //Location location = newList.get(index).getLocation();
 

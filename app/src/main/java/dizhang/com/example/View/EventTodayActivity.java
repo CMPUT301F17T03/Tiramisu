@@ -84,7 +84,7 @@ public class EventTodayActivity extends AppCompatActivity {
     EditText comment;
     TextView eventTitle, locationToday;
     ImageView Image;
-    String myLocation;
+    Location myLocation;
     private LocationManager locationManager;
     private LocationListener locationListener;
 
@@ -119,8 +119,10 @@ public class EventTodayActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
                 //locationToday.clearComposingText();
-                myLocation = location.getLatitude() + " " + location.getLongitude();
-                locationToday.append(location.getLatitude() + " " + location.getLongitude());
+                myLocation = location;
+                int lat = (int) Math.ceil(location.getLatitude());
+                int lon = (int) Math.ceil(location.getLongitude());
+                locationToday.setText("(" + lat + "  ,  " + lon + ")");
                 Log.d("Onlocation", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
             }
@@ -133,7 +135,7 @@ public class EventTodayActivity extends AppCompatActivity {
 
             @Override
             public void onProviderEnabled(String s) {
-                Log.d("Case", "Case222222222222222222222222222222");
+                Log.d("Case", "Case2222222222222222222222222222223");
 
             }
 
@@ -153,11 +155,18 @@ public class EventTodayActivity extends AppCompatActivity {
                 }, 2);
                 return;
             }
-        }
-        else{
+        } else {
             configureButton();
         }
-        
+
+
+        addLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                configureButton();
+            }
+        });
+
 
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,6 +204,7 @@ public class EventTodayActivity extends AppCompatActivity {
                 Event newEvent = new Event(Current_Habit, date, comm);
                 newEvent.setTitle(Current_Habit.getTitle());
                 newEvent.setPicture(realPath);
+                newEvent.setLocation(myLocation);
                 newList.add(newEvent);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -212,19 +222,24 @@ public class EventTodayActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 2:
-                if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     configureButton();
                 return;
         }
     }
 
     private void configureButton() {
-        addLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                locationManager.requestLocationUpdates("gps", 5000, 10, locationListener);
-            }
-        });
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
     }
 
 
