@@ -43,13 +43,13 @@ import dizhang.com.example.tiramisu.R;
  */
 public class LoginActivity extends AppCompatActivity {
     private static final String FILENAME = "User.save";
+    public static String uname;
 
     public TextView signupButton;
     public RelativeLayout loginButton;
     EditText username;
     EditText password;
     User CurrentUser = new User();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +95,10 @@ public class LoginActivity extends AppCompatActivity {
                         CurrentUser=getuser;
                         saveInFile();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        uname=CurrentUser.getUsername();
+
+                        intent.putExtra("username",CurrentUser.getUsername());
+
                         startActivity(intent);
                         }
                         else{
@@ -125,6 +129,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 
 

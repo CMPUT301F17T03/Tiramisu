@@ -35,8 +35,10 @@ import java.util.GregorianCalendar;
 
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.HabitList;
+import dizhang.com.example.View.ElasticSearchController;
 import dizhang.com.example.View.HabitManagerActivity;
 import dizhang.com.example.View.HabitViewActivity;
+import dizhang.com.example.View.LoginActivity;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -138,8 +140,13 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
                         dayOfWeek.add("Sat");
                         dayOfWeek.add("Sun");
                     }
-                    Habit newHabit = new Habit(title, des, date, dayOfWeek);
-                    newHabit.setLast("0");
+                    String username = LoginActivity.uname;
+                    String sdate = date.toString();
+                    System.out.println(sdate);
+                    Habit newHabit = new Habit(title, des, sdate, dayOfWeek,username);
+                    ElasticSearchController.addHabitTask addHabitTask = new ElasticSearchController.addHabitTask();
+                    addHabitTask.execute(newHabit);
+                    //newHabit.setLast("0");
                     newList.add(newHabit);
                     saveInFile();
                     Intent intent = new Intent(HabitNewActivity.this, HabitManagerActivity.class);

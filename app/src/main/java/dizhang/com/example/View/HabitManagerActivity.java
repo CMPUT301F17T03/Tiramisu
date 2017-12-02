@@ -1,8 +1,10 @@
 package dizhang.com.example.View;
 
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,16 +17,20 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.ExecutionException;
+
 
 import dizhang.com.example.Control.HabitNewActivity;
 import dizhang.com.example.Model.Habit;
+import dizhang.com.example.Model.HabitList;
+import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
-
-//import dizhang.com.example.Control.ElasticSearchController;
 
 /**
  * Class Name: HabitManagerActivity
@@ -55,12 +61,15 @@ public class HabitManagerActivity extends AppCompatActivity {
     ArrayList<String> listItem = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     ArrayList<Habit> newList = new ArrayList<Habit>();
+    ArrayList<User> userList = new ArrayList<>();
+    ArrayList<Habit> eList = new ArrayList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit_manager);
+
 
         createNew = (Button) findViewById(R.id.createNew);
         habitList = (ListView) findViewById(R.id.habitList);
@@ -83,6 +92,7 @@ public class HabitManagerActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     public void onBackPressed(){
@@ -93,17 +103,29 @@ public class HabitManagerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         /*
         ElasticSearchController.GetUserProfile getUserProfile = new ElasticSearchController.GetUserProfile();
-        getUserProfile.execute("what");
+        getUserProfile.execute();
+
         try{
             userList = getUserProfile.get();
 
         } catch (Exception e){
             Log.i("Error","Failed to get users from the async object");
         }
-        */
-        //TODO get user from elasticsearch and get habit from user
+
+        ArrayList<Habit> hList = new ArrayList<Habit>();
+        for (int x = 0; x < userList.size(); x++){
+            hList.add(userList.get(x).getHabit());
+        }
+
+        listItem.clear();
+        for (int i = 0; i <hList.size(); i++){
+            String title = hList.get(i).getTitle();
+            listItem.add(title);
+        }
+
 
         loadFromFile();
         listItem.clear();
@@ -111,11 +133,40 @@ public class HabitManagerActivity extends AppCompatActivity {
             String title = newList.get(i).getTitle();
             listItem.add(title);
         }
+        */
+        String username = LoginActivity.uname;
+        ElasticSearchController.getHabitTask getHabitTask = new ElasticSearchController.getHabitTask();
+        getHabitTask.execute(username);
 
-        adapter = new ArrayAdapter<String>(this, R.layout.list_item,listItem);
+        try{
+            eList = getHabitTask.get();
+        } catch (Exception e) {
+            Log.i("Error", "failed to get habit from the async object");
+        }
+        listItem.clear();
+        for (int i = 0 ; i < eList.size(); i++) {
+            String title = eList.get(i).getTitle();
+            listItem.add(title);
+        }
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listItem);
         habitList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        adapter.notifyDataSetChanged();
+    }
+
     private void loadFromFile(){
         try{
             FileInputStream fis = openFileInput(FILENAME);
