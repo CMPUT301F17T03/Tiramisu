@@ -56,7 +56,7 @@ public class HabitViewActivity extends AppCompatActivity {
     TextView titleView, descView,dateView,frequencyView;
     ArrayList<Habit> newList = new ArrayList<Habit>();
 
-    ArrayList<Habit> eList = new ArrayList<Habit>();
+    ArrayList<Habit> userHabit = new ArrayList<Habit>();//will contain all the habit from current user
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,16 +76,16 @@ public class HabitViewActivity extends AppCompatActivity {
         ElasticSearchController.getHabitTask getHabitTask = new ElasticSearchController.getHabitTask();
         getHabitTask.execute(username);
         try{
-            eList = getHabitTask.get();
+            userHabit = getHabitTask.get();
         } catch (Exception e) {
             Log.i("Error", "failed to get habit from the async object");
         }
 
-        String title = eList.get(index).getTitle();
-        String des = eList.get(index).getDescription();
-        String startDate = eList.get(index).getDate();
+        String title = userHabit.get(index).getTitle();
+        String des = userHabit.get(index).getDescription();
+        String startDate = userHabit.get(index).getDate();
 
-        ArrayList<String> frequency = eList.get(index).getFrequency();
+        ArrayList<String> frequency = userHabit.get(index).getFrequency();
 
         /*
         String title = newList.get(index).getTitle();
@@ -139,7 +139,7 @@ public class HabitViewActivity extends AppCompatActivity {
                 int index = getIntent().getIntExtra("index",0);
                 Intent intent = new Intent(HabitViewActivity.this, HabitManagerActivity.class);
                 ElasticSearchController.delHabitTask delHabitTask = new ElasticSearchController.delHabitTask();
-                delHabitTask.execute(eList.get(index));
+                delHabitTask.execute(userHabit.get(index));
                 saveInFile();
                 startActivity(intent);
             }

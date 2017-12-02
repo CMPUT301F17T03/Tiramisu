@@ -62,7 +62,7 @@ public class HabitManagerActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayList<Habit> newList = new ArrayList<Habit>();
     ArrayList<User> userList = new ArrayList<>();
-    ArrayList<Habit> eList = new ArrayList<>();
+    ArrayList<Habit> userHabit = new ArrayList<>();
 
 
     @Override
@@ -139,13 +139,13 @@ public class HabitManagerActivity extends AppCompatActivity {
         getHabitTask.execute(username);
 
         try{
-            eList = getHabitTask.get();
+            userHabit = getHabitTask.get();
         } catch (Exception e) {
             Log.i("Error", "failed to get habit from the async object");
         }
         listItem.clear();
-        for (int i = 0 ; i < eList.size(); i++) {
-            String title = eList.get(i).getTitle();
+        for (int i = 0 ; i < userHabit.size(); i++) {
+            String title = userHabit.get(i).getTitle();
             listItem.add(title);
         }
 
