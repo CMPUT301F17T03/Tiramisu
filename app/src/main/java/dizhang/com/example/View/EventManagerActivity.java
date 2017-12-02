@@ -50,7 +50,8 @@ import static android.provider.Telephony.Mms.Part.FILENAME;
  */
 
 public class EventManagerActivity extends AppCompatActivity {
-    private static final String FILENAME = "event.save";
+    private static final String FILENAME = "Event.save";
+
     ListView eventList;
     ArrayList<String> listItem = new ArrayList<String>();
     ArrayAdapter<String> adapter;

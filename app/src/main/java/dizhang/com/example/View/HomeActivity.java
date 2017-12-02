@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
+import dizhang.com.example.Control.ElasticSearchController;
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
@@ -63,8 +63,8 @@ import dizhang.com.example.tiramisu.R;
  */
 public class HomeActivity extends AppCompatActivity {
 
-    private static final String FILENAME = "User.save";
-    User CurrentUser = new User();
+    private static final String HabitFILE = "Habit.save";
+    //User CurrentUser = new User();
 
 
     ListView habitList;
@@ -178,43 +178,33 @@ public class HomeActivity extends AppCompatActivity {
         //TODO get user from elasticsearch and get habit from user
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        DateFormat dateFormat = new SimpleDateFormat("EE", Locale.ENGLISH);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
         String Today_date = dateFormat.format(date);
 
 
         //This part will add the habit only happend today
-        //ArrayList<String> days = new ArrayList<>(Arrays.asList("Sat","Sun","Mon","Tue","Wed","Thu","Fri"));
-        ///String Today = days.get(dayOfWeek);
+        ArrayList<String> days = new ArrayList<String>(Arrays.asList(" ","Sun","Mon","Tue","Wed","Thu","Fri","Sat"));
+        String Today = days.get(dayOfWeek);
         loadFromFile();
 
         String username = LoginActivity.uname;
-        ElasticSearchController.getHabitTask getHabitTask = new ElasticSearchController.getHabitTask();
-        getHabitTask.execute(username);
-
-        try{
-            eList = getHabitTask.get();
-        } catch (Exception e) {
-            Log.i("Error", "failed to get habit from the async object");
-        }
-
         listItem.clear();
 
         for (int i = 0 ; i < eList.size(); i++){
-            if( eList.get(i).getFrequency().contains(Today_date)){
-
-                String title = eList.get(i).getTitle();
-                listItem.add(title);
-
-                /*
+            if( eList.get(i).getFrequency().contains(Today)){
+                System.out.println(eList.get(i).getLast());
+                System.out.println(Today_date);
                 if ( eList.get(i).getLast().equals( Today_date)) {
 
                     continue;
                 }
                 else{
 
+                    String title = eList.get(i).getTitle();
+                    listItem.add(title);
                 }
-                */
+
             }
 
 
@@ -227,13 +217,13 @@ public class HomeActivity extends AppCompatActivity {
     private void loadFromFile(){
         try{
 
-            FileInputStream fis = openFileInput(FILENAME);
+            FileInputStream fis = openFileInput(HabitFILE);
             Log.d("myTag", "This is my message");
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 
-            Type Usertype = new TypeToken<User>(){}.getType();
-            CurrentUser = gson.fromJson(in,Usertype);
+            Type Habittype = new TypeToken<ArrayList<Habit>>(){}.getType();
+            eList = gson.fromJson(in,Habittype);
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }catch (IOException e){
