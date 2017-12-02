@@ -60,7 +60,7 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class EventViewActivity extends AppCompatActivity {
-    private static final String FILENAME = "event.save";
+    private static final String FILENAME = "Event.save";
     public Uri picture_Uri;
     private String path;
     Button Edit;

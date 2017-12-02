@@ -1,6 +1,5 @@
 package dizhang.com.example.View;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,18 +16,16 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 
+import dizhang.com.example.Control.ElasticSearchController;
+import dizhang.com.example.Control.ElasticSearchHabit;
 import dizhang.com.example.Control.HabitNewActivity;
 import dizhang.com.example.Model.Habit;
-import dizhang.com.example.Model.HabitList;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
@@ -54,7 +51,7 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class HabitManagerActivity extends AppCompatActivity {
-    private static final String FILENAME = "file.save";
+    private static final String HabitFILE = "Habit.save";
 
     Button createNew;
     ListView habitList;
@@ -62,7 +59,7 @@ public class HabitManagerActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayList<Habit> newList = new ArrayList<Habit>();
     ArrayList<User> userList = new ArrayList<>();
-    ArrayList<Habit> userHabit = new ArrayList<>();
+    //ArrayList<Habit> userHabit = new ArrayList<>();
 
 
     @Override
@@ -134,18 +131,10 @@ public class HabitManagerActivity extends AppCompatActivity {
             listItem.add(title);
         }
         */
-        String username = LoginActivity.uname;
-        ElasticSearchController.getHabitTask getHabitTask = new ElasticSearchController.getHabitTask();
-        getHabitTask.execute(username);
-
-        try{
-            userHabit = getHabitTask.get();
-        } catch (Exception e) {
-            Log.i("Error", "failed to get habit from the async object");
-        }
+        loadFromFile();
         listItem.clear();
-        for (int i = 0 ; i < userHabit.size(); i++) {
-            String title = userHabit.get(i).getTitle();
+        for (int i = 0 ; i < newList.size(); i++) {
+            String title = newList.get(i).getTitle();
             listItem.add(title);
         }
 
@@ -169,7 +158,7 @@ public class HabitManagerActivity extends AppCompatActivity {
 
     private void loadFromFile(){
         try{
-            FileInputStream fis = openFileInput(FILENAME);
+            FileInputStream fis = openFileInput(HabitFILE);
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 

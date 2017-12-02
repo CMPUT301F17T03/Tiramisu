@@ -43,7 +43,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
+import dizhang.com.example.Control.ElasticSearchEvent;
+import dizhang.com.example.Control.ElasticSearchHabit;
 import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
@@ -71,9 +74,11 @@ import dizhang.com.example.tiramisu.R;
 
 public class EventTodayActivity extends AppCompatActivity {
 
-    private static final String FILENAME = "User.save";
-    User CurrentUser = new User();
-
+    private static final String EventFile = "Event.save";
+    private static final String HabitFILE = "Habit.save";
+    //User CurrentUser = new User();
+    ArrayList<Habit> habitList = new ArrayList<Habit>();
+    ArrayList<Event> EventList = new ArrayList<Event>();
     public String realPath;
     Habit Current_Habit = new Habit();
     Date date;
@@ -81,7 +86,12 @@ public class EventTodayActivity extends AppCompatActivity {
     EditText comment;
     TextView eventTitle, locationToday;
     ImageView Image;
+<<<<<<< HEAD
     Location myLocation;
+=======
+    String myLocation;
+    private static int index = -1;
+>>>>>>> f303ae70889e75a602c1778247dc143470c76a01
     private LocationManager locationManager;
     private LocationListener locationListener;
 
@@ -90,13 +100,14 @@ public class EventTodayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         String name = getIntent().getStringExtra("name");
         loadFromFile();
-        ArrayList<Habit> habitList = CurrentUser.getHabitlist();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_today);
-        loadFromFile();
+        loadFromHabit();
         for (int i = 0; i < habitList.size(); i++) {
             if (habitList.get(i).getTitle().equals(name)) {
                 Current_Habit = habitList.get(i);
+                index = i;
             }
         }
 
@@ -205,17 +216,29 @@ public class EventTodayActivity extends AppCompatActivity {
                 Event newEvent = new Event(Current_Habit.getTitle(), date, comm);
 
                 newEvent.setPicture(realPath);
+<<<<<<< HEAD
                 Log.d("dataType", myLocation.toString());
                 newEvent.setLocation(myLocation);
                 //newList.add(newEvent);
 
                 CurrentUser.addEvent(newEvent);
+=======
+                newEvent.setUsername(LoginActivity.uname);
+                EventList.add(newEvent);
+>>>>>>> f303ae70889e75a602c1778247dc143470c76a01
 
+                ElasticSearchEvent.addEventTask addEventTask = new ElasticSearchEvent.addEventTask();
+                addEventTask.execute(newEvent);
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 Date date = new Date();
                 String Today_date = dateFormat.format(date);
-                Current_Habit.setLast(Today_date);
+                habitList.get(index).setLast(Today_date);
+
+                ElasticSearchHabit.updateHabitTask updateHabitTask = new ElasticSearchHabit.updateHabitTask();
+                updateHabitTask.execute(habitList.get(index));
+
                 saveInFile();
+                SaveHabit();
 
             }
         });
@@ -296,19 +319,52 @@ public class EventTodayActivity extends AppCompatActivity {
     private void loadFromFile(){
         try{
 
-            FileInputStream fis = openFileInput(FILENAME);
+            FileInputStream fis = openFileInput(EventFile);
             Log.d("myTag", "This is my message");
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 
-            Type Usertype = new TypeToken<User>(){}.getType();
-            CurrentUser = gson.fromJson(in,Usertype);
+            Type Usertype = new TypeToken<ArrayList<Event>>(){}.getType();
+            EventList = gson.fromJson(in,Usertype);
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }catch (IOException e){
             e.printStackTrace();
         }
     }
+
+    private void loadFromHabit(){
+        try{
+
+            FileInputStream fis = openFileInput(HabitFILE);
+            Log.d("myTag", "This is my message");
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type Usertype = new TypeToken<ArrayList<Habit>>(){}.getType();
+            habitList = gson.fromJson(in,Usertype);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void SaveHabit(){
+        try{
+            FileOutputStream fos = openFileOutput(HabitFILE, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(habitList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
     public String getRealPathFromURI(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
@@ -317,10 +373,10 @@ public class EventTodayActivity extends AppCompatActivity {
     }
     private void saveInFile(){
         try{
-            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            FileOutputStream fos = openFileOutput(EventFile, 0);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             Gson gson =new Gson();
-            gson.toJson(CurrentUser,writer);
+            gson.toJson(EventList,writer);
             writer.flush();
 
         }catch (FileNotFoundException e){

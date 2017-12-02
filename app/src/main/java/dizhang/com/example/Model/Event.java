@@ -4,6 +4,8 @@ import android.location.Location;
 
 import java.util.Date;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Class Name: Event
  *
@@ -28,6 +30,9 @@ public class Event {
     private String picture;
     private Location location;
     private String title;
+    private String username;
+    @JestId
+    private String Id;
 
     /**
      *@param habit
@@ -120,10 +125,24 @@ public class Event {
     public String getPicture() {
         return picture;
     }
-    /**
-     *@param picture
-     */
 
+
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public void setPicture(String picture) {
         this.picture = picture;

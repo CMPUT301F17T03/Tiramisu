@@ -1,4 +1,4 @@
-package dizhang.com.example.View;
+package dizhang.com.example.Control;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -10,6 +10,7 @@ import com.searchly.jestdroid.JestDroidClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
 import io.searchbox.client.JestResult;
@@ -19,6 +20,11 @@ import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
+
+/**
+ * Created by frost on 2017-12-02.
+ */
+
 
 /**
  * Class Name: ElasticSearchController
@@ -39,74 +45,22 @@ import io.searchbox.core.SearchResult;
  */
 
 
-public class ElasticSearchController {
+public class ElasticSearchEvent {
 
 
 
     private static JestDroidClient client;
     private static String indexString = "cmput301f17t03";
-    private static String typeString = "user";
-
-    public static class AddUserTask extends AsyncTask<User, Void, Void> {
-
-        @Override
-        protected Void doInBackground(User... users) {
-            verifySettings();
-
-            for (User user : users) {
-                Index index = new Index.Builder(user).index(indexString).type(typeString).id(user.getUsername()).build();
-
-                try {
-                    // where is the client
-                    DocumentResult result = client.execute(index);
-                    System.out.println(result.getJsonString());
-                    if (result.isSucceeded()) {
-                        Log.d("In AsyncTask ID", result.getId());
-                        //user.setAid(result.getId());
-                    } else {
-                        Log.i("Error", "Elasticsearch was not able to add the user.");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.i("Error", "The application failed to build and send the user");
-                }
-
-            }
-            return null;
-        }
-    }
-
-    public static class IsExist extends AsyncTask<String, Void, User> {
-        @Override
-        protected User doInBackground(String... params){
-            verifySettings();
-
-            User user = new User();
-
-            Get get = new Get.Builder(indexString, params[0]).type(typeString).build();
-            Log.d("usertest", params[0]);
-
-            try {
-                JestResult result = client.execute(get);
-                user = result.getSourceAsObject(User.class);
-            } catch (Exception e) {
-                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
-            }
+    private static String typeString = "event";
 
 
-            return user;
-        }
-
-    }
-
-
-    public static class getHabitTask extends AsyncTask<String, Void, ArrayList<Habit>> {
+    public static class getEventTask extends AsyncTask<String, Void, ArrayList<Event>> {
 
         @Override
-        protected ArrayList<Habit> doInBackground(String... search_parameters) {
+        protected ArrayList<Event> doInBackground(String... search_parameters) {
             verifySettings();
 
-            ArrayList<Habit> habit = new ArrayList<Habit>();
+            ArrayList<Event> events = new ArrayList<Event>();
 
             String query = "{\n" +
                     " \"query\" :{\n" +
@@ -115,16 +69,16 @@ public class ElasticSearchController {
 
             // TODO Build the query
             Search search = new Search.Builder(query)
-                    .addIndex("cmput301f17t03")
-                    .addType("habit")
+                    .addIndex(indexString)
+                    .addType(typeString)
                     .build();
 
             try {
                 // TODO get the results of the query
                 SearchResult result = client.execute(search);
                 if (result.isSucceeded()) {
-                    List<Habit> foundHabit = result.getSourceAsObjectList(Habit.class);
-                    habit.addAll(foundHabit);
+                    List<Event> foundHabit = result.getSourceAsObjectList(Event.class);
+                    events.addAll(foundHabit);
                 }
                 else {
                     Log.i("Error","the search query failed to find any user that matched.");
@@ -134,23 +88,23 @@ public class ElasticSearchController {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
             }
 
-            return habit;
+            return events;
         }
     }
 
-    public static class addHabitTask extends AsyncTask<Habit,Void,Void>{
+    public static class addEventTask extends AsyncTask<Event,Void,Void>{
         @Override
-        protected Void doInBackground(Habit... habits) {
+        protected Void doInBackground(Event... events) {
             verifySettings();
 
-            for (Habit habit : habits){
-                Index index = new Index.Builder(habit).index("cmput301f17t03").type("habit").build();
+            for (Event event : events){
+                Index index = new Index.Builder(event).index(indexString).type(typeString).build();
 
                 try{
                     DocumentResult result = client.execute(index);
 
                     if(result.isSucceeded()){
-                        habit.setId(result.getId());
+                        event.setId(result.getId());
                     }else {
                         Log.i("Error", "failed to add habit");
                     }
@@ -163,19 +117,19 @@ public class ElasticSearchController {
             return null;
         }
     }
-    public static class updateHabitTask extends AsyncTask<Habit,Void,Void>{
+    public static class updateEventTask extends AsyncTask<Event,Void,Void>{
         @Override
-        protected Void doInBackground(Habit... habits) {
+        protected Void doInBackground(Event... events) {
             verifySettings();
 
-            for (Habit habit : habits){
-                Index index = new Index.Builder(habit).index("cmput301f17t03").type("habit").id(habit.getId()).build();
+            for (Event event : events){
+                Index index = new Index.Builder(event).index(indexString).type(typeString).id(event.getId()).build();
 
                 try{
                     DocumentResult result = client.execute(index);
 
                     if(result.isSucceeded()){
-                        habit.setId(result.getId());
+                        event.setId(result.getId());
                     }else {
                         Log.i("Error", "failed to add habit");
                     }
@@ -189,13 +143,13 @@ public class ElasticSearchController {
         }
     }
 
-    public static class delHabitTask extends AsyncTask<Habit,Void,Void>{
+    public static class delHabitTask extends AsyncTask<Event,Void,Void>{
         @Override
-        protected Void doInBackground(Habit... habits) {
+        protected Void doInBackground(Event... events) {
             verifySettings();
 
-            for (Habit habit : habits){
-                Delete index = new Delete.Builder(habit.getId()).index("cmput301f17t03").type("habit").build();
+            for (Event event : events){
+                Delete index = new Delete.Builder(event.getId()).index(indexString).type(typeString).build();
 
                 try{
                     DocumentResult result = client.execute(index);
@@ -224,11 +178,11 @@ public class ElasticSearchController {
 
 }
 
-    // Class to setInfo
-    /**
-     * Represents a SetUserInfo
-     * @version 1.0
-     * @see AsyncTask
-     *
-*/
+// Class to setInfo
+/**
+ * Represents a SetUserInfo
+ * @version 1.0
+ * @see AsyncTask
+ *
+ */
 

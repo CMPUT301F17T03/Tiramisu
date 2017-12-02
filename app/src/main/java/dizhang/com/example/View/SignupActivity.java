@@ -22,6 +22,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import dizhang.com.example.Control.ElasticSearchController;
 import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;

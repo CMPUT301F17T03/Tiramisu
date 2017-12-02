@@ -3,6 +3,7 @@ package dizhang.com.example.View;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -15,8 +16,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import dizhang.com.example.Control.ElasticSearchController;
+import dizhang.com.example.Control.ElasticSearchEvent;
+import dizhang.com.example.Control.ElasticSearchHabit;
+import dizhang.com.example.Model.Event;
+import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
@@ -43,6 +50,11 @@ import dizhang.com.example.tiramisu.R;
  */
 public class LoginActivity extends AppCompatActivity {
     private static final String FILENAME = "User.save";
+    private static final String HabitFILE = "Habit.save";
+    private static final String EventFile = "Event.save";
+    ArrayList<Habit> userHabit = new ArrayList<Habit>();
+    ArrayList<Event> userEvent = new ArrayList<Event>();
+
     public static String uname;
 
     public TextView signupButton;
@@ -50,6 +62,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText username;
     EditText password;
     User CurrentUser = new User();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +107,31 @@ public class LoginActivity extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), "Logging in ... ", Toast.LENGTH_SHORT).show();
                         CurrentUser=getuser;
-                        saveInFile();
+
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         uname=CurrentUser.getUsername();
 
+
+                            ElasticSearchHabit.getHabitTask getHabitTask = new ElasticSearchHabit.getHabitTask();
+                            getHabitTask.execute(uname);
+
+                            try{
+                                userHabit = getHabitTask.get();
+                            } catch (Exception e) {
+                                Log.i("Error", "failed to get habit from the async object");
+                            }
+
+                            ElasticSearchEvent.getEventTask getEventTask = new ElasticSearchEvent.getEventTask();
+                            getEventTask.execute(uname);
+
+                            try{
+                                userEvent = getEventTask.get();
+                            } catch (Exception e) {
+                                Log.i("Error", "failed to get habit from the async object");
+                            }
+                            saveUser();
+                            saveHabit();
+                            saveEvent();
                         intent.putExtra("username",CurrentUser.getUsername());
 
                         startActivity(intent);
@@ -142,12 +177,42 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(startMain);
     }
 
-    private void saveInFile(){
+    private void saveUser(){
         try{
             FileOutputStream fos = openFileOutput(FILENAME, 0);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             Gson gson =new Gson();
             gson.toJson(CurrentUser,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveHabit(){
+        try{
+            FileOutputStream fos = openFileOutput(HabitFILE, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(userHabit,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveEvent(){
+        try{
+            FileOutputStream fos = openFileOutput(EventFile, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(userEvent,writer);
             writer.flush();
 
         }catch (FileNotFoundException e){

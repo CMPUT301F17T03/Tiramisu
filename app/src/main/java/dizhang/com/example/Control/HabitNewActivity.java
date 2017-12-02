@@ -1,7 +1,6 @@
 package dizhang.com.example.Control;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -23,21 +21,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Serializable;
 import java.lang.String;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import dizhang.com.example.Model.Habit;
-import dizhang.com.example.Model.HabitList;
-import dizhang.com.example.View.ElasticSearchController;
 import dizhang.com.example.View.HabitManagerActivity;
-import dizhang.com.example.View.HabitViewActivity;
 import dizhang.com.example.View.LoginActivity;
 import dizhang.com.example.tiramisu.R;
 
@@ -62,7 +58,7 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class HabitNewActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    private static final String FILENAME = "file.save";
+    private static final String HabitFILE = "Habit.save";
 
     ArrayList<String> dayOfWeek = new ArrayList<String>();
     Button startDate, addHabit;
@@ -126,8 +122,10 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
                     String sdate = date.toString();
                     System.out.println(sdate);
                     Habit newHabit = new Habit(title, des, sdate, dayOfWeek,username);
-                    ElasticSearchController.addHabitTask addHabitTask = new ElasticSearchController.addHabitTask();
+                    newHabit.setLast("xsxs");
+                    ElasticSearchHabit.addHabitTask addHabitTask = new ElasticSearchHabit.addHabitTask();
                     addHabitTask.execute(newHabit);
+
                     //newHabit.setLast("0");
                     newList.add(newHabit);
                     saveInFile();
@@ -267,7 +265,7 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
 
     private void loadFromFile(){
         try{
-            FileInputStream fis = openFileInput(FILENAME);
+            FileInputStream fis = openFileInput(HabitFILE);
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 
@@ -281,7 +279,7 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
     }
     private void saveInFile(){
         try{
-            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            FileOutputStream fos = openFileOutput(HabitFILE, 0);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             Gson gson =new Gson();
             gson.toJson(newList,writer);

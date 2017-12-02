@@ -1,7 +1,6 @@
 package dizhang.com.example.View;
 
 import android.content.Intent;
-import android.provider.BlockedNumberContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,10 +20,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
 
 import dizhang.com.example.Control.EditHabitActivity;
-import dizhang.com.example.Control.HabitNewActivity;
+import dizhang.com.example.Control.ElasticSearchController;
+import dizhang.com.example.Control.ElasticSearchHabit;
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.tiramisu.R;
 
@@ -50,11 +49,11 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class HabitViewActivity extends AppCompatActivity {
-    private static final String FILENAME = "file.save";
+    private static final String HabitFILE = "Habit.save";
 
     Button editHabit, deleteHabit;
     TextView titleView, descView,dateView,frequencyView;
-    ArrayList<Habit> newList = new ArrayList<Habit>();
+    //ArrayList<Habit> newList = new ArrayList<Habit>();
 
     ArrayList<Habit> userHabit = new ArrayList<Habit>();//will contain all the habit from current user
 
@@ -73,13 +72,6 @@ public class HabitViewActivity extends AppCompatActivity {
 
 
         int index = getIntent().getIntExtra("index",0);
-        ElasticSearchController.getHabitTask getHabitTask = new ElasticSearchController.getHabitTask();
-        getHabitTask.execute(username);
-        try{
-            userHabit = getHabitTask.get();
-        } catch (Exception e) {
-            Log.i("Error", "failed to get habit from the async object");
-        }
 
         String title = userHabit.get(index).getTitle();
         String des = userHabit.get(index).getDescription();
@@ -138,8 +130,9 @@ public class HabitViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int index = getIntent().getIntExtra("index",0);
                 Intent intent = new Intent(HabitViewActivity.this, HabitManagerActivity.class);
-                ElasticSearchController.delHabitTask delHabitTask = new ElasticSearchController.delHabitTask();
+                ElasticSearchHabit.delHabitTask delHabitTask = new ElasticSearchHabit.delHabitTask();
                 delHabitTask.execute(userHabit.get(index));
+                userHabit.remove(index);
                 saveInFile();
                 startActivity(intent);
             }
@@ -157,12 +150,12 @@ public class HabitViewActivity extends AppCompatActivity {
 // code from LonelyTwitter
     private void loadFromFile(){
         try{
-            FileInputStream fis = openFileInput(FILENAME);
+            FileInputStream fis = openFileInput(HabitFILE);
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 
             Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
-            newList = gson.fromJson(in,listType);
+            userHabit = gson.fromJson(in,listType);
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }catch (IOException e){
@@ -171,10 +164,10 @@ public class HabitViewActivity extends AppCompatActivity {
     }
     private void saveInFile(){
         try{
-            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            FileOutputStream fos = openFileOutput(HabitFILE, 0);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             Gson gson =new Gson();
-            gson.toJson(newList,writer);
+            gson.toJson(userHabit,writer);
             writer.flush();
 
         }catch (FileNotFoundException e){
