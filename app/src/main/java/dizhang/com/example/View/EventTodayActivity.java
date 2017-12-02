@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -150,7 +151,7 @@ public class EventTodayActivity extends AppCompatActivity {
                 }, 2);
                 return;
             }
-<<<<<<< HEAD
+
         } else {
             configureButton();
         }
@@ -162,13 +163,10 @@ public class EventTodayActivity extends AppCompatActivity {
                 configureButton();
             }
         });
-=======
-        }
         /*
         else{
             configureButton();
         }*/
->>>>>>> 6555acc97f7f731d6a56e2da2c7d186b116a1d3c
 
 
         picture.setOnClickListener(new View.OnClickListener() {
@@ -207,12 +205,11 @@ public class EventTodayActivity extends AppCompatActivity {
                 Event newEvent = new Event(Current_Habit.getTitle(), date, comm);
 
                 newEvent.setPicture(realPath);
-<<<<<<< HEAD
+
                 newEvent.setLocation(myLocation);
-                newList.add(newEvent);
-=======
+                //newList.add(newEvent);
+
                 CurrentUser.addEvent(newEvent);
->>>>>>> 6555acc97f7f731d6a56e2da2c7d186b116a1d3c
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 Date date = new Date();
@@ -224,7 +221,6 @@ public class EventTodayActivity extends AppCompatActivity {
         });
 
     }
-<<<<<<< HEAD
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -249,7 +245,7 @@ public class EventTodayActivity extends AppCompatActivity {
         }
         locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
     }
-=======
+
     /*
         @Override
         public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
