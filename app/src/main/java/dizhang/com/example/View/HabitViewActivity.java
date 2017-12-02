@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.provider.BlockedNumberContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -55,6 +56,7 @@ public class HabitViewActivity extends AppCompatActivity {
     TextView titleView, descView,dateView,frequencyView;
     ArrayList<Habit> newList = new ArrayList<Habit>();
 
+    ArrayList<Habit> userHabit = new ArrayList<Habit>();//will contain all the habit from current user
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,22 +69,44 @@ public class HabitViewActivity extends AppCompatActivity {
         frequencyView = (TextView) findViewById(R.id.frequencyView);
         loadFromFile();
 
-        int index = getIntent().getIntExtra("index",0);
+        String username = LoginActivity.uname;
 
+
+        int index = getIntent().getIntExtra("index",0);
+        ElasticSearchController.getHabitTask getHabitTask = new ElasticSearchController.getHabitTask();
+        getHabitTask.execute(username);
+        try{
+            userHabit = getHabitTask.get();
+        } catch (Exception e) {
+            Log.i("Error", "failed to get habit from the async object");
+        }
+
+        String title = userHabit.get(index).getTitle();
+        String des = userHabit.get(index).getDescription();
+        String startDate = userHabit.get(index).getDate();
+
+        ArrayList<String> frequency = userHabit.get(index).getFrequency();
+
+        /*
         String title = newList.get(index).getTitle();
         String des = newList.get(index).getDescription();
+        String date = newList.get(index).getDate();
+        String startDate = date.toString();
+
+
         ArrayList<String> frequency = newList.get(index).getFrequency();
         StringBuilder freq = new StringBuilder();
         for (String s : frequency){
             freq.append(s);
             freq.append(",");
         }
-        Date date = newList.get(index).getDate();
-        String startDate = date.toString();
+        frequencyView.setText(freq.toString());
+        */
+        frequencyView.setText(frequency.toString());
         titleView.setText(title);
         descView.setText(des);
         dateView.setText(startDate);
-        frequencyView.setText(freq.toString());
+
 
 
 
@@ -114,7 +138,8 @@ public class HabitViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int index = getIntent().getIntExtra("index",0);
                 Intent intent = new Intent(HabitViewActivity.this, HabitManagerActivity.class);
-                newList.remove(index);
+                ElasticSearchController.delHabitTask delHabitTask = new ElasticSearchController.delHabitTask();
+                delHabitTask.execute(userHabit.get(index));
                 saveInFile();
                 startActivity(intent);
             }
@@ -124,6 +149,8 @@ public class HabitViewActivity extends AppCompatActivity {
 
     public void onBackPressed(){
         Intent homeInt = new Intent(getApplicationContext(), HabitManagerActivity.class);
+        String username = getIntent().getStringExtra("username");
+        homeInt.putExtra("username",username);
         startActivity(homeInt);
     }
 

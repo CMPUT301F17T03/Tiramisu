@@ -1,8 +1,8 @@
 package dizhang.com.example.Model;
 
-import android.graphics.Picture;
-
 import java.util.ArrayList;
+
+import io.searchbox.annotations.JestId;
 
 /**
  * Class Name: User
@@ -17,26 +17,30 @@ import java.util.ArrayList;
  */
 
 public class User {
+    @JestId
+
     private String username; //unique ID
     private String nickname;
     private String gender;
     private String interests;
-    private Picture profilePic;
-    private HabitList habitlist;
-    private EventList eventlist;
-    private HistoryList history;
+    //private Picture profilePic;
+    private ArrayList<Habit> habits = new ArrayList<Habit>();
+    private ArrayList<Event> events = new ArrayList<Event>();
+    //private HistoryList history;
     private String password;
-    private String cpassword;
-    private UserList fans = new UserList();     //users who follows me
-    private UserList requests = new UserList(); //requests sent to me
-    private UserList following = new UserList(); //the users that I followed
+
+    //private UserList fans = new UserList();     //users who follows me
+    //private UserList requests = new UserList(); //requests sent to me
+    //private UserList following = new UserList(); //the users that I followed
     //private ArrayList searchInfo;
 
     public User(String username, String password){
       this.username = username;
       this.password = password;
     }
-    public User(){}
+    public User(){
+
+    }
 
     private ArrayList searchInfo;
 
@@ -95,104 +99,100 @@ public class User {
         this.interests = interests;
     }
 
+    public void addHabit(Habit habit) {
+        habits.add(habit);
+    }
+    public ArrayList<Habit> getHabitlist() {
+        return habits;
+    }
+
+    public void addEvent(Event event) {
+        events.add(event);
+    }
+    public ArrayList<Event> getEventlist() {
+        return events;
+    }
     /**
      * @return
-     */
+     *//*
     public Picture getProfilePic() {
         return profilePic;
     }
-
-    /**
-     * @param profilePic
-     */
     public void setProfilePic(Picture profilePic) {
         this.profilePic = profilePic;
     }
-
-    /**
-     * @return
-     */
-    public HabitList getHabitlist() {
-        return habitlist;
-    }
-
-    /**
-     * @param habitlist
-     */
-    public void setHabitlist(HabitList habitlist) {
-        this.habitlist = habitlist;
-    }
-
-    /**
-     * @return
-     */
-    public EventList getEventlist() {
-        return eventlist;
-    }
-
-    /**
-     * @param eventlist
-     */
-    public void setEventlist(EventList eventlist) {
-        this.eventlist = eventlist;
-    }
-
-    /**
-     * @return
-     */
-    public HistoryList getHistory() {
+        public HistoryList getHistory() {
         return history;
     }
 
-    /**
-     * @param history
-     */
     public void setHistory(HistoryList history) {
         this.history = history;
     }
 
-    /**
-     * @return
-     */
-    public UserList getFans() {
-        return fans;
-    }
+    /*
 
-    /**
-     * @param fans
-     */
+
     public void setFans(UserList fans) {
         this.fans = fans;
     }
 
-    /**
-     * @return
-     */
+    //public UserList getFans() {
+        return fans;
+    }
+
+
     public UserList getRequests() {
         return requests;
     }
 
-    /**
-     * @param requests
-     */
+
     public void setRequests(UserList requests) {
         this.requests = requests;
     }
 
-    /**
-     * @return
-     */
+
     public UserList getFollowing() {
         return following;
     }
 
-    /**
-     * @param following
-     */
+
+      @param following
+
     public void setFollowing(UserList following) {
         this.following = following;
     }
+*/
 
+
+
+
+    /**
+     * @param profilePic
+     */
+
+    /**
+     * @return
+     */
+
+    /**
+     * @param habitlist
+     */
+
+    /**
+     * @return
+     */
+
+    /**
+     * @param eventlist
+     */
+
+    /**
+     * @return
+     */
+
+    /**
+     * @param history
+     */
     /**
      * @return
      */
@@ -209,16 +209,6 @@ public class User {
     /**
      * @return
      */
-    public String getComfirmpassword() {
-        return cpassword;
-    }
-
-    /**
-     * @param cpassword
-     */
-    public void setComfirmpassword(String cpassword) {
-        this.cpassword = cpassword;
-    }
     /**
      * @return
      */

@@ -1,13 +1,11 @@
 package dizhang.com.example.View;
 
 import android.Manifest;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -46,11 +43,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import dizhang.com.example.Control.EditEventActivity;
-import dizhang.com.example.Control.EditHabitActivity;
-import dizhang.com.example.Control.HabitNewActivity;
 import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.Habit;
+import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -74,11 +69,12 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class EventTodayActivity extends AppCompatActivity {
-    private static final String FILENAME = "event.save";
-    private static final String HabitFILENAME = "file.save";
+
+    private static final String FILENAME = "User.save";
+    User CurrentUser = new User();
 
     public String realPath;
-    public Habit Current_Habit;
+    Habit Current_Habit = new Habit();
     Date date;
     Button addLocation, Complete, picture;
     EditText comment;
@@ -88,13 +84,12 @@ public class EventTodayActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener locationListener;
 
-    ArrayList<Event> newList = new ArrayList<Event>();
-    ArrayList<Habit> habitList = new ArrayList<Habit>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String name = getIntent().getStringExtra("name");
-
+        loadFromFile();
+        ArrayList<Habit> habitList = CurrentUser.getHabitlist();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_today);
         loadFromFile();
@@ -103,7 +98,7 @@ public class EventTodayActivity extends AppCompatActivity {
                 Current_Habit = habitList.get(i);
             }
         }
-        loadFromEventFile();
+
         picture = (Button) findViewById(R.id.picture);
         eventTitle = (TextView) findViewById(R.id.eventTitle);
         addLocation = (Button) findViewById(R.id.addLocation);
@@ -155,6 +150,7 @@ public class EventTodayActivity extends AppCompatActivity {
                 }, 2);
                 return;
             }
+<<<<<<< HEAD
         } else {
             configureButton();
         }
@@ -166,6 +162,13 @@ public class EventTodayActivity extends AppCompatActivity {
                 configureButton();
             }
         });
+=======
+        }
+        /*
+        else{
+            configureButton();
+        }*/
+>>>>>>> 6555acc97f7f731d6a56e2da2c7d186b116a1d3c
 
 
         picture.setOnClickListener(new View.OnClickListener() {
@@ -201,22 +204,27 @@ public class EventTodayActivity extends AppCompatActivity {
                 c.set(Calendar.MINUTE, 0);
                 c.set(Calendar.SECOND, 0);
                 date = c.getTime();
-                Event newEvent = new Event(Current_Habit, date, comm);
-                newEvent.setTitle(Current_Habit.getTitle());
+                Event newEvent = new Event(Current_Habit.getTitle(), date, comm);
+
                 newEvent.setPicture(realPath);
+<<<<<<< HEAD
                 newEvent.setLocation(myLocation);
                 newList.add(newEvent);
+=======
+                CurrentUser.addEvent(newEvent);
+>>>>>>> 6555acc97f7f731d6a56e2da2c7d186b116a1d3c
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 Date date = new Date();
                 String Today_date = dateFormat.format(date);
                 Current_Habit.setLast(Today_date);
                 saveInFile();
-                saveHabit();
+
             }
         });
 
     }
+<<<<<<< HEAD
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -241,8 +249,29 @@ public class EventTodayActivity extends AppCompatActivity {
         }
         locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
     }
+=======
+    /*
+        @Override
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            switch (requestCode) {
+                case 2:
+                    if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                        configureButton();
+                    return;
+            }
+        }
+>>>>>>> 6555acc97f7f731d6a56e2da2c7d186b116a1d3c
 
+        private void configureButton() {
+            addLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    locationManager.requestLocationUpdates("gps", 5000, 10, locationListener);
+                }
+            });
+        }
 
+    */
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
@@ -270,59 +299,32 @@ public class EventTodayActivity extends AppCompatActivity {
     }
     private void loadFromFile(){
         try{
-            FileInputStream fis = openFileInput(HabitFILENAME);
+
+            FileInputStream fis = openFileInput(FILENAME);
+            Log.d("myTag", "This is my message");
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 
-            Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
-            habitList = gson.fromJson(in,listType);
+            Type Usertype = new TypeToken<User>(){}.getType();
+            CurrentUser = gson.fromJson(in,Usertype);
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }catch (IOException e){
             e.printStackTrace();
         }
     }
-
     public String getRealPathFromURI(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
     }
-    private void loadFromEventFile(){
-        try{
-            FileInputStream fis = openFileInput(FILENAME);
-            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
-            Gson gson = new Gson();
-
-            Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
-            newList = gson.fromJson(in,listType);
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-    private void saveHabit(){
-        try{
-            FileOutputStream fos = openFileOutput(HabitFILENAME, 0);
-            OutputStreamWriter writer = new OutputStreamWriter(fos);
-            Gson gson =new Gson();
-            gson.toJson(habitList,writer);
-            writer.flush();
-
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
     private void saveInFile(){
         try{
             FileOutputStream fos = openFileOutput(FILENAME, 0);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             Gson gson =new Gson();
-            gson.toJson(newList,writer);
+            gson.toJson(CurrentUser,writer);
             writer.flush();
 
         }catch (FileNotFoundException e){

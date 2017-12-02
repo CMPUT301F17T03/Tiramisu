@@ -35,8 +35,10 @@ import java.util.GregorianCalendar;
 
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.HabitList;
+import dizhang.com.example.View.ElasticSearchController;
 import dizhang.com.example.View.HabitManagerActivity;
 import dizhang.com.example.View.HabitViewActivity;
+import dizhang.com.example.View.LoginActivity;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -68,7 +70,7 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
     int day, month, year;
     int dayFinal, monthFinal, yearFinal;
     Date date;
-    Boolean lError = false;
+    Boolean inputError = false;
     ArrayList<Habit> newList = new ArrayList<Habit>();
 
 
@@ -101,35 +103,17 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
         addHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String title = newTitle.getText().toString();
                 String des = newDes.getText().toString();
-                if(date == null){
-                    Toast.makeText(HabitNewActivity.this, "Please select a start day.", Toast.LENGTH_LONG).show();
-                    lError = true;
 
-                }
-                if (title.length() > 20) {
-                    Toast.makeText(HabitNewActivity.this, "Tittle has to be less than 20 characters", Toast.LENGTH_LONG).show();
+                //check if user input is correct, if not notify the error
 
-                    lError = true;
-                } else if (title.length() == 0) {
-                    Toast.makeText(HabitNewActivity.this, "Tittle cannot be blank", Toast.LENGTH_LONG).show();
-                    lError = true;
-                }
+                notifyError();
 
-                if (des.length() > 30) {
-                    Toast.makeText(HabitNewActivity.this, "Reason has to be less than 20 characters", Toast.LENGTH_LONG).show();
-                    lError = true;
-                } else if (des.length() == 0) {
-                    Toast.makeText(HabitNewActivity.this, "Reason cannot be blank", Toast.LENGTH_LONG).show();
-                    lError = true;
-                }
+                if (inputError != true) {
 
-                if (title.length() <= 20 && des.length() <= 30 && title.length() > 0 && des.length() > 0 & date!=null) {
-                    lError = false;
-                }
-                if (lError != true) {
-                    if(dayOfWeek.size()==0){
+                    if(dayOfWeek.size()==0){   //add all the day if user did not select any
                         dayOfWeek.add("Mon");
                         dayOfWeek.add("Tue");
                         dayOfWeek.add("Wed");
@@ -138,8 +122,13 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
                         dayOfWeek.add("Sat");
                         dayOfWeek.add("Sun");
                     }
-                    Habit newHabit = new Habit(title, des, date, dayOfWeek);
-                    newHabit.setLast("0");
+                    String username = LoginActivity.uname;
+                    String sdate = date.toString();
+                    System.out.println(sdate);
+                    Habit newHabit = new Habit(title, des, sdate, dayOfWeek,username);
+                    ElasticSearchController.addHabitTask addHabitTask = new ElasticSearchController.addHabitTask();
+                    addHabitTask.execute(newHabit);
+                    //newHabit.setLast("0");
                     newList.add(newHabit);
                     saveInFile();
                     Intent intent = new Intent(HabitNewActivity.this, HabitManagerActivity.class);
@@ -234,6 +223,38 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
         }
 
         Log.d("dayOfWeek", dayOfWeek.toString());
+
+    }
+
+    public void notifyError(){
+        String title = newTitle.getText().toString();
+        String des = newDes.getText().toString();
+
+        if(date == null){
+            Toast.makeText(HabitNewActivity.this, "Please select a start day.", Toast.LENGTH_LONG).show();
+            inputError = true;
+
+        }
+        if (title.length() > 20) {
+            Toast.makeText(HabitNewActivity.this, "Tittle has to be less than 20 characters", Toast.LENGTH_LONG).show();
+
+            inputError = true;
+        } else if (title.length() == 0) {
+            Toast.makeText(HabitNewActivity.this, "Tittle cannot be blank", Toast.LENGTH_LONG).show();
+            inputError = true;
+        }
+
+        if (des.length() > 30) {
+            Toast.makeText(HabitNewActivity.this, "Reason has to be less than 20 characters", Toast.LENGTH_LONG).show();
+            inputError = true;
+        } else if (des.length() == 0) {
+            Toast.makeText(HabitNewActivity.this, "Reason cannot be blank", Toast.LENGTH_LONG).show();
+            inputError = true;
+        }
+
+        if (title.length() <= 20 && des.length() <= 30 && title.length() > 0 && des.length() > 0 & date!=null) {
+            inputError = false;
+        }
 
     }
 

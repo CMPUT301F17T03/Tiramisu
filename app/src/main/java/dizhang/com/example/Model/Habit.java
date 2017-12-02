@@ -6,6 +6,8 @@ import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Class Name: Habit
  *
@@ -26,22 +28,26 @@ import java.util.Date;
 public class Habit {
     private String title;
     private String description;
-    private Date date;
+    private String date;
     private ArrayList<String> frequency;
     private EventList events = new EventList();
     private String LastDate;
-
+    private String username;
+    @JestId
+    private String Id;
     /**
     * @pamram title
     * @param description
     * @param date
     * @param frequency
      */
-    public Habit(String title, String description, Date date, ArrayList<String> frequency){
+    public Habit(){}
+    public Habit(String title, String description, String date, ArrayList<String> frequency, String username){
         this.title = title;
         this.description = description;
         this.date = date;
         this.frequency = frequency;
+        this.username=username;
     }
     /**
      *@return
@@ -50,16 +56,37 @@ public class Habit {
     public  String getTitle() {
         return title;
     }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
     /**
      *@param title
      */
 
+
+
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUserName(String username) {
+        this.username = username;
+    }
+
     /**
      *@return
      */
+
 
     public String getDescription() {
         return description;
@@ -75,14 +102,14 @@ public class Habit {
      *@return
      */
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
     /**
     *@param date
      */
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
     /**

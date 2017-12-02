@@ -28,8 +28,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import dizhang.com.example.Model.Habit;
+import dizhang.com.example.View.ElasticSearchController;
 import dizhang.com.example.View.HabitManagerActivity;
 import dizhang.com.example.View.HabitViewActivity;
+import dizhang.com.example.View.LoginActivity;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -67,6 +69,8 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
     Date date;
     Boolean lError = false;
     ArrayList<Habit> newList = new ArrayList<Habit>();
+    ArrayList<Habit> eList = new ArrayList<Habit>();
+
 
 
     @Override
@@ -74,9 +78,20 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_habit);
         loadFromFile();
+
         int index = getIntent().getIntExtra("index",0);
-        String title = newList.get(index).getTitle();
-        String des = newList.get(index).getDescription();
+
+        String username = LoginActivity.uname;
+        ElasticSearchController.getHabitTask getHabitTask = new ElasticSearchController.getHabitTask();
+        getHabitTask.execute(username);
+        try{
+            eList = getHabitTask.get();
+        } catch (Exception e) {
+            Log.i("Error", "failed to get habit from the async object");
+        }
+
+        String title = eList.get(index).getTitle();
+        String des = eList.get(index).getDescription();
 
         editTitle = (EditText) findViewById(R.id.editTitle);
         editDes = (EditText) findViewById(R.id.editDescription);
@@ -107,10 +122,12 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
             @Override
             public void onClick(View view) {
                 int index = getIntent().getIntExtra("index",0);
+
+
                 String title = editTitle.getText().toString();
                 String des  = editDes.getText().toString();
-                newList.get(index).setTitle(title);
-                newList.get(index).setDescription(des);
+                eList.get(index).setTitle(title);
+                eList.get(index).setDescription(des);
                 if(dayOfWeek.size() == 0){
                     dayOfWeek.add("Mon");
                     dayOfWeek.add("Tue");
@@ -120,6 +137,9 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
                     dayOfWeek.add("Sat");
                     dayOfWeek.add("Sun");
                 }
+                ElasticSearchController.updateHabitTask updateHabitTask = new ElasticSearchController.updateHabitTask();
+                updateHabitTask.execute(eList.get(index));
+
                 newList.get(index).setFrequency(dayOfWeek);
                 Intent intent = new Intent(EditHabitActivity.this, HabitManagerActivity.class);
                 saveInFile();

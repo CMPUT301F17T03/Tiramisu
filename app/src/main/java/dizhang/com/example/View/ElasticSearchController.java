@@ -1,31 +1,24 @@
 package dizhang.com.example.View;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
+import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
-import io.searchbox.core.Update;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
 
 /**
  * Class Name: ElasticSearchController
@@ -46,119 +39,92 @@ import io.searchbox.core.Update;
  */
 
 
-public class ElasticSearchController extends AppCompatActivity {
+public class ElasticSearchController {
+
+
 
     private static JestDroidClient client;
-    private static User User;
-    private static final String FILENAME = "User.save";
-    /*EditText Confirmpassword;*/
-   // private  ArrayList<User> newList =loadFromUserFile();
-    //private static final String APP_INDEX = "cmput301f17t03";
+    private static String indexString = "cmput301f17t03";
+    private static String typeString = "user";
 
+    public static class AddUserTask extends AsyncTask<User, Void, Void> {
 
-    public  ElasticSearchController(User User) {
-        this.User = User;
-
-    }
-
-    public static void verifySettings(){
-        if (client == null) {
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
-            DroidClientConfig config = builder.build();
-
-            JestClientFactory factory = new JestClientFactory();
-            factory.setDroidClientConfig(config);
-            client = (JestDroidClient) factory.getObject();
-
-        }
-    }
-    // Class to setInfo
-    /**
-     * Represents a SetUserInfo
-     * @version 1.0
-     * @see AsyncTask
-     * @since 1.0
-     */
-/*
-    public class SetUserInfo extends AsyncTask<String, Void, Void> {
-        private User User =  new  User();
-        private String username = User.getUsername();
         @Override
-        protected Void doInBackground(String... set_parameters) {
+        protected Void doInBackground(User... users) {
             verifySettings();
-            ArrayList<User> user = new ArrayList<User>();
 
-            PutMapping putMapping = new PutMapping.Builder(
-                    "cmput301f17t03",
-                    username,
-                    // The format should be:
-                    //"{ \"my_type\" : { \"properties\" : { \"message\" : {\"type\" : \"string\", \"store\" : \"yes\"} } } }"
-                    "{ \"my_type\" : { \"properties\" : { \"username\" : \""+username + "\",\"userhabit\" : \"" +set_parameters+"\"} } }"
-            ).build();
-            try {
-                client.execute(putMapping);
-            } catch (IOException e) {
-                e.printStackTrace();
+            for (User user : users) {
+                Index index = new Index.Builder(user).index(indexString).type(typeString).id(user.getUsername()).build();
+
+                try {
+                    // where is the client
+                    DocumentResult result = client.execute(index);
+                    System.out.println(result.getJsonString());
+                    if (result.isSucceeded()) {
+                        Log.d("In AsyncTask ID", result.getId());
+                        //user.setAid(result.getId());
+                    } else {
+                        Log.i("Error", "Elasticsearch was not able to add the user.");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.i("Error", "The application failed to build and send the user");
+                }
+
             }
             return null;
         }
     }
 
-    /**
-     * Represents a GerUseProfile
-     * @version 1.0
-     * @see AsyncTask
-     * @since 1.0
-     */
-    public  class Signup extends AsyncTask<String, User, User> {
-
-        Context ApplicationContext;
-        Activity mActivity;
-
-        public void BackgroundWorker (Activity activity)
-        {
-
-            mActivity = activity;
-        }
+    public static class IsExist extends AsyncTask<String, Void, User> {
         @Override
-        protected User doInBackground(String... search_parameters) {
+        protected User doInBackground(String... params){
             verifySettings();
 
+            User user = new User();
 
-
-
-            String username = User.getUsername();
-            String password = User.getPassword();
-            String[] test = {username,password};
-
-            String[] myStringArray = {"a","b","c"};
-            //test whether we can get data by search
-            //info seemed not show on webpage
-            Index index = new Index.Builder(User).index("cmputf17t03").type("username123").build();
-            Update update = new Update.Builder("dddmcksncs").index("cmputf17t03").type("username123").id("1").build();
+            Get get = new Get.Builder(indexString, params[0]).type(typeString).build();
+            Log.d("usertest", params[0]);
 
             try {
-                    // where is the client?
-                    DocumentResult result = client.execute(update);
+                JestResult result = client.execute(get);
+                user = result.getSourceAsObject(User.class);
+            } catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
 
-                }
 
-                catch (Exception e) {
-                    Log.i("Error", "The application failed to build and send the tweets");
-                }
-/*
+            return user;
+        }
+
+    }
+
+
+    public static class getHabitTask extends AsyncTask<String, Void, ArrayList<Habit>> {
+
+        @Override
+        protected ArrayList<Habit> doInBackground(String... search_parameters) {
+            verifySettings();
+
+            ArrayList<Habit> habit = new ArrayList<Habit>();
+
+            String query = "{\n" +
+                    " \"query\" :{\n" +
+                    " \"term\"  :{ \"username\": \"" + search_parameters[0] + "\"}}}";
+
+
             // TODO Build the query
             Search search = new Search.Builder(query)
                     .addIndex("cmput301f17t03")
-                    .addType(username)
+                    .addType("habit")
                     .build();
 
             try {
                 // TODO get the results of the query
                 SearchResult result = client.execute(search);
                 if (result.isSucceeded()) {
-                    List<User> foundUser = result.getSourceAsObjectList(User.class);
-                    //newList.addAll(foundUser);
+                    List<Habit> foundHabit = result.getSourceAsObjectList(Habit.class);
+                    habit.addAll(foundHabit);
                 }
                 else {
                     Log.i("Error","the search query failed to find any user that matched.");
@@ -168,66 +134,101 @@ public class ElasticSearchController extends AppCompatActivity {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
             }
 
-            //return newList;*/
-            return User;
+            return habit;
         }
     }
 
-    public  class LoadfromElastic extends AsyncTask<String, User, Void> {
-
-        Context ApplicationContext;
-        Activity mActivity;
-
-        public void BackgroundWorker (Activity activity)
-        {
-
-            mActivity = activity;
-        }
+    public static class addHabitTask extends AsyncTask<Habit,Void,Void>{
         @Override
-        protected Void doInBackground(String... search_parameters) {
+        protected Void doInBackground(Habit... habits) {
             verifySettings();
 
+            for (Habit habit : habits){
+                Index index = new Index.Builder(habit).index("cmput301f17t03").type("habit").build();
 
+                try{
+                    DocumentResult result = client.execute(index);
 
-            Get get = new Get.Builder("cmputf17t03", "1").type("username123").build();
-
-
-
-
-            try {
-                    // where is the client?
-                    JestResult result = client.execute(get);
-                System.out.println(result);
-
-                //Log.d("myTag", result);
+                    if(result.isSucceeded()){
+                        habit.setId(result.getId());
+                    }else {
+                        Log.i("Error", "failed to add habit");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.i("Error","The application failed to build and send the habit");
                 }
-                catch (Exception e) {
-                    Log.i("Error", "The application failed to build and send the tweets");
-                }
-
+            }
 
             return null;
+        }
+    }
+    public static class updateHabitTask extends AsyncTask<Habit,Void,Void>{
+        @Override
+        protected Void doInBackground(Habit... habits) {
+            verifySettings();
 
+            for (Habit habit : habits){
+                Index index = new Index.Builder(habit).index("cmput301f17t03").type("habit").id(habit.getId()).build();
+
+                try{
+                    DocumentResult result = client.execute(index);
+
+                    if(result.isSucceeded()){
+                        habit.setId(result.getId());
+                    }else {
+                        Log.i("Error", "failed to add habit");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.i("Error","The application failed to build and send the habit");
+                }
+            }
+
+            return null;
         }
     }
 
-    private void loadFromUserFile(){
-        try{
-            FileInputStream fis = ElasticSearchController.this.openFileInput(FILENAME);
-            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
-            Gson gson = new Gson();
+    public static class delHabitTask extends AsyncTask<Habit,Void,Void>{
+        @Override
+        protected Void doInBackground(Habit... habits) {
+            verifySettings();
 
-            Type listType = new TypeToken<ArrayList<User>>(){}.getType();
-            ArrayList<User> newList = gson.fromJson(in,listType);
+            for (Habit habit : habits){
+                Delete index = new Delete.Builder(habit.getId()).index("cmput301f17t03").type("habit").build();
 
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
+                try{
+                    DocumentResult result = client.execute(index);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.i("Error","The application failed to build and send the habit");
+                }
+            }
+
+            return null;
         }
-        //return newList;
+    }
+
+
+    public static void verifySettings() {
+        if (client == null) {
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
+            DroidClientConfig config = builder.build();
+
+            JestClientFactory factory = new JestClientFactory();
+            factory.setDroidClientConfig(config);
+            client = (JestDroidClient) factory.getObject();
+        }
     }
 
 }
 
+    // Class to setInfo
+    /**
+     * Represents a SetUserInfo
+     * @version 1.0
+     * @see AsyncTask
+     *
+*/
 

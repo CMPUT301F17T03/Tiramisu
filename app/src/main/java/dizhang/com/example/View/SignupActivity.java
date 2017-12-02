@@ -3,19 +3,26 @@ package dizhang.com.example.View;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
@@ -42,9 +49,12 @@ public class SignupActivity extends AppCompatActivity {
     EditText Username,Confirmpassword,Password;
 
     private static final String FILENAME = "User.save";
+    private static final String FILENAME2 = "event.save";
     /*EditText Confirmpassword;*/
     Button finishSignup;
     ArrayList<User> newList = new ArrayList<User>();
+    ArrayList<Event> eventlist = new ArrayList<Event>();
+
     //Boolean lError = false;
     //not working in this part, still finding methods to store data : (
     @Override
@@ -64,51 +74,37 @@ public class SignupActivity extends AppCompatActivity {
                 String username = Username.getText().toString();
                 String password = Password.getText().toString();
                 String cpassword = Confirmpassword.getText().toString();
+                if (!password.equals(cpassword)){
+                    Toast.makeText(getBaseContext(), "two password is different", Toast.LENGTH_LONG).show();
+                    Password.setText(null);
+                    Confirmpassword.setText(null);
+                    return;
+                }
                 User newUser = new User(username, password);
                 newList.add(newUser);
                 saveInFile();
-                ElasticSearchController Elastic = new ElasticSearchController(newUser);
+                loadFromFile();
+                //ElasticSearchController Elastic = new ElasticSearchController(newUser);
 
-                System.out.print("Hello World" +
-                        "this is in ");
-                Log.d("myTag", "This is my message");
 
-                Elastic.new Signup()
-                        .execute();
-                /*if (Username.getText().toString().length() < 3) {
-                    Toast.makeText(SignupActivity.this, "username has to be more than 3 characters ", Toast.LENGTH_LONG).show();
+                //Elastic.new Signup().execute();
 
-                    Username.setText(null);
-                } else if (Username.getText().toString().length() == 0) {
-                    Toast.makeText(SignupActivity.this, "please enter a username", Toast.LENGTH_LONG).show();
+
+                ElasticSearchController.AddUserTask addUserTask
+                        = new ElasticSearchController.AddUserTask();
+                addUserTask.execute(newUser);
+                ElasticSearchController.IsExist isExist = new ElasticSearchController.IsExist();
+                User getuser = new User();
+                try {
+
+                     getuser = isExist.execute(username).get();
+                    System.out.println(getuser.getUsername());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
-
-                if (Password.getText().toString().length() < 5) {
-                    Toast.makeText(SignupActivity.this, "password has to be more than 5 characters", Toast.LENGTH_LONG).show();
-                    Password.setText(null);
-                } else if (Password.getText().toString().length() == 0) {
-                    Toast.makeText(SignupActivity.this, "password cannot be blank", Toast.LENGTH_LONG).show();
-                }
-                else if (Confirmpassword.getText().length() == 0) {
-                    Toast.makeText(SignupActivity.this, "password cannot be blank", Toast.LENGTH_LONG).show();
-
-                }
-                if (Confirmpassword.getText().length() != Password.getText().length()) {
-                    Toast.makeText(SignupActivity.this, "please confirm the correct password", Toast.LENGTH_LONG).show();
-                    Password.setText(null);
-                    Confirmpassword.setText(null);
-
-                } /*check if password and confirm password are the same
-                   else if () {
-                    Toast.makeText(SignupActivity.this, "password cannot be blank", Toast.LENGTH_LONG).show();
-                    lError = false;
-                }
-
-                newList.get(index).setUsername(Username.getText().toString());
-                newList.get(index).setPassword(Password.getText().toString());
-                newList.get(index).setComfirmpassword(Confirmpassword.getText().toString());*/
                 Intent loginInt = new Intent(getApplicationContext(), LoginActivity.class);
-                //saveInFile();
                 startActivity(loginInt);
             }
         });
@@ -131,6 +127,22 @@ public class SignupActivity extends AppCompatActivity {
     public void onBackPressed(){
         Intent loginInt = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(loginInt);
+    }
+
+
+    private void loadFromFile(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME2);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
+            eventlist = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     /*@Override

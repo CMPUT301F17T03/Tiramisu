@@ -1,9 +1,6 @@
 package dizhang.com.example.Model;
 
-import android.graphics.Bitmap;
-import android.graphics.Picture;
 import android.location.Location;
-import android.net.Uri;
 
 import java.util.Date;
 
@@ -25,7 +22,7 @@ import java.util.Date;
  */
 
 public class Event {
-    private Habit habit;
+
     private String comment;
     private Date date;
     private String picture;
@@ -37,18 +34,14 @@ public class Event {
      * @param date
      */
 
-    public Event(Habit habit, Date date) {
-        this.habit = habit;
-        this.date = date;
-    }
 
     /**
-    * @param habit
+    * @param title
     * @param date
     * @param comment
     */
-    public Event(Habit habit, Date date, String comment) {
-        this.habit = habit;
+    public Event(String title, Date date, String comment) {
+        this.title = title;
         this.date = date;
         this.comment = comment;
     }
@@ -63,24 +56,6 @@ public class Event {
      * @param date
      * @param location
      */
-    public Event(Habit habit, Date date, Location location) {
-        this.habit = habit;
-        this.date = date;
-        this.location = location;
-    }
-    /**
-     *@param habit
-     * @param date
-     * @param comment
-     * @param location
-     */
-
-    public Event(Habit habit, Date date, String comment, Location location) {
-        this.habit = habit;
-        this.date = date;
-        this.comment = comment;
-        this.location = location;
-    }
     /**
      * @param habit
      * @param date
@@ -101,26 +76,6 @@ public class Event {
      * @param picture
      * @param location
      */
-    public Event(Habit habit, Date date, String comment, String picture, Location location) {
-        this.habit = habit;
-        this.date = date;
-        this.comment = comment;
-        this.picture = picture;
-        this.location = location;
-    }
-    /**
-     *@return
-     */
-    public Habit getHabit() {
-        return habit;
-    }
-    /**
-     *@param habit
-     */
-
-    public void setHabit(Habit habit) {
-        this.habit = habit;
-    }
     /**
      *@return
      */

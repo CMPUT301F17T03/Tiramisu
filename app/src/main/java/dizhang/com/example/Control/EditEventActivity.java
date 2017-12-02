@@ -91,8 +91,7 @@ public class EditEventActivity extends AppCompatActivity {
 
         loadFromFile();
         int index = getIntent().getIntExtra("index", 0);
-        Habit habit = newList.get(index).getHabit();
-        String title = habit.getTitle();
+        String title = newList.get(index).getTitle();
         String comment = newList.get(index).getComment();
 
         if (newList.get(index).getLocation() == null){
