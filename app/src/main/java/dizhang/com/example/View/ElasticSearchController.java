@@ -69,14 +69,14 @@ public class ElasticSearchController {
         }
     }
 
-    public static class IsExist extends AsyncTask<String, Void, Boolean> {
+    public static class IsExist extends AsyncTask<String, Void, User> {
         @Override
-        protected Boolean doInBackground(String... params){
+        protected User doInBackground(String... params){
             verifySettings();
 
             User user = new User();
 
-            Get get = new Get.Builder("cmput301f17t24", params[0]).type("user").build();
+            Get get = new Get.Builder(indexString, params[0]).type(typeString).build();
             Log.d("usertest", params[0]);
 
             try {
@@ -86,11 +86,8 @@ public class ElasticSearchController {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
             }
 
-            if (user == null) {
-                return false;
-            }
 
-            return true;
+            return user;
         }
     }
 

@@ -9,18 +9,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
@@ -47,13 +42,13 @@ import dizhang.com.example.tiramisu.R;
  * @since 1.0
  */
 public class LoginActivity extends AppCompatActivity {
-    private static final String FILENAME = "profile.save";
+    private static final String FILENAME = "User.save";
 
     public TextView signupButton;
     public RelativeLayout loginButton;
     EditText username;
     EditText password;
-    ArrayList<User> newList = new ArrayList<User>();
+    User CurrentUser = new User();
 
 
     @Override
@@ -75,35 +70,49 @@ public class LoginActivity extends AppCompatActivity {
              */
 
             public void onClick(View v) {
-
-                if ( username.getText().toString().equals("") || username.getText().toString().equals(null)) {
-                    Toast.makeText(getBaseContext(), "Please first enter Username", Toast.LENGTH_LONG).show();
-                } else if (password.getText().toString().equals("") || password.getText().toString().equals(null)) {
+                String UsernameString = username.getText().toString();
+                String PasswordString = password.getText().toString();
+                if ( UsernameString.equals("") || UsernameString.equals(null)) {
+                    Toast.makeText(getBaseContext(), "Username can't be empty", Toast.LENGTH_LONG).show();
+                } else if (PasswordString.equals("") || PasswordString.equals(null)) {
 
                     Toast.makeText(getBaseContext(), "Password can't be empty", Toast.LENGTH_LONG).show();
                 } else {
                     //need to create signup file so that we could call the username and password from there
-                    if (username.getText().toString().equals("lalalalal") && password.getText().toString().equals("lalalalal")) {
+                    ElasticSearchController.IsExist isExist = new ElasticSearchController.IsExist();
+                    User getuser = new User();
+                    try {
+                        getuser = isExist.execute(UsernameString).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    if(getuser != null){
+                        if (PasswordString.equals(getuser.getPassword()))  {
 
                         Toast.makeText(getApplicationContext(), "Logging in ... ", Toast.LENGTH_SHORT).show();
-
+                        CurrentUser=getuser;
+                        saveInFile();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
-                        Toast.makeText(getBaseContext(), "Successful", Toast.LENGTH_LONG).show();
-                    } else {
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "Password is incorrect", Toast.LENGTH_SHORT).show();
 
-                        Toast.makeText(getApplicationContext(), "Username and password should be correct", Toast.LENGTH_SHORT).show();
-                        User user = new User(username.getText().toString(),password.getText().toString());
-
-                        newList.clear();
-                        newList.add(user);
-                        saveInFile();
-                        username.setText(null);
-                        password.setText(null);
+                        }
                     }
+                    else {
+
+                        Toast.makeText(getApplicationContext(), "This user does not exist", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    username.setText(null);
+                    password.setText(null);
                     // start the activity anyway because signup is empty
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivity(intent);
+                    //Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    //startActivity(intent);
                 }
             }
         });
@@ -127,32 +136,12 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(startMain);
     }
 
-    protected void onStart() {
-        super.onStart();
-        loadFromFile();
-    }
-
-    private void loadFromFile() {
-        try {
-            FileInputStream fis = openFileInput(FILENAME);
-            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
-            Gson gson = new Gson();
-
-            Type listType = new TypeToken<ArrayList<User>>() {
-            }.getType();
-            newList = gson.fromJson(in, listType);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     private void saveInFile(){
         try{
             FileOutputStream fos = openFileOutput(FILENAME, 0);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             Gson gson =new Gson();
-            gson.toJson(newList,writer);
+            gson.toJson(CurrentUser,writer);
             writer.flush();
 
         }catch (FileNotFoundException e){

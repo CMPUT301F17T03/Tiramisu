@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,12 +32,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import dizhang.com.example.Control.HabitNewActivity;
 import dizhang.com.example.Model.Habit;
+import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
-
-
-import static java.sql.DriverManager.println;
 
 /**
  * Class Name: HomeActivity
@@ -66,14 +62,14 @@ import static java.sql.DriverManager.println;
  */
 public class HomeActivity extends AppCompatActivity {
 
-    private static final String FILENAME = "file.save";
+    private static final String FILENAME = "User.save";
 
 
 
     ListView habitList;
     ArrayList<String> listItem = new ArrayList<String>();
     ArrayAdapter<String> adapter;
-    ArrayList<Habit> newList = new ArrayList<Habit>();
+    User CurrentUser = new User();
 
 
 
@@ -196,6 +192,7 @@ public class HomeActivity extends AppCompatActivity {
         List<String> days = new ArrayList<>(Arrays.asList("Sat","Sun","Mon","Tue","Wed","Thu","Fri"));
         String Today = days.get(dayOfWeek);
         loadFromFile();
+        ArrayList<Habit> newList = CurrentUser.getHabitlist();
         listItem.clear();
         for (int i = 0 ; i < newList.size(); i++){
             if( newList.get(i).getFrequency().contains(Today)){
@@ -215,14 +212,14 @@ public class HomeActivity extends AppCompatActivity {
     }
     private void loadFromFile(){
         try{
-            Log.d("myTag", "Before");
+
             FileInputStream fis = openFileInput(FILENAME);
             Log.d("myTag", "This is my message");
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 
-            Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
-            newList = gson.fromJson(in,listType);
+            Type Usertype = new TypeToken<User>(){}.getType();
+            CurrentUser = gson.fromJson(in,Usertype);
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }catch (IOException e){

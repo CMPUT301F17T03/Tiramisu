@@ -24,11 +24,11 @@ public class User {
     private String gender;
     private String interests;
     //private Picture profilePic;
-    //private HabitList habitlist;
-    //private EventList eventlist;
+    private ArrayList<Habit> habits = new ArrayList<Habit>();
+    private ArrayList<Event> events = new ArrayList<Event>();
     //private HistoryList history;
     private String password;
-    private String cpassword;
+
     //private UserList fans = new UserList();     //users who follows me
     //private UserList requests = new UserList(); //requests sent to me
     //private UserList following = new UserList(); //the users that I followed
@@ -99,6 +99,19 @@ public class User {
         this.interests = interests;
     }
 
+    public void addHabit(Habit habit) {
+        habits.add(habit);
+    }
+    public ArrayList<Habit> getHabitlist() {
+        return habits;
+    }
+
+    public void addEvent(Event event) {
+        events.add(event);
+    }
+    public ArrayList<Event> getEventlist() {
+        return events;
+    }
     /**
      * @return
      *//*
@@ -107,18 +120,6 @@ public class User {
     }
     public void setProfilePic(Picture profilePic) {
         this.profilePic = profilePic;
-    }
-        public HabitList getHabitlist() {
-        return habitlist;
-    }
-    public void setHabitlist(HabitList habitlist) {
-        this.habitlist = habitlist;
-    }
-        public EventList getEventlist() {
-        return eventlist;
-    }
-    public void setEventlist(EventList eventlist) {
-        this.eventlist = eventlist;
     }
         public HistoryList getHistory() {
         return history;
@@ -208,16 +209,6 @@ public class User {
     /**
      * @return
      */
-    public String getComfirmpassword() {
-        return cpassword;
-    }
-
-    /**
-     * @param cpassword
-     */
-    public void setComfirmpassword(String cpassword) {
-        this.cpassword = cpassword;
-    }
     /**
      * @return
      */

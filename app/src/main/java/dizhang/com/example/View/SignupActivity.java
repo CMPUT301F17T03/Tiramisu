@@ -3,7 +3,6 @@ package dizhang.com.example.View;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +20,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.User;
@@ -74,13 +74,18 @@ public class SignupActivity extends AppCompatActivity {
                 String username = Username.getText().toString();
                 String password = Password.getText().toString();
                 String cpassword = Confirmpassword.getText().toString();
+                if (!password.equals(cpassword)){
+                    Toast.makeText(getBaseContext(), "two password is different", Toast.LENGTH_LONG).show();
+                    Password.setText(null);
+                    Confirmpassword.setText(null);
+                    return;
+                }
                 User newUser = new User(username, password);
                 newList.add(newUser);
                 saveInFile();
                 loadFromFile();
                 //ElasticSearchController Elastic = new ElasticSearchController(newUser);
 
-                Log.d("myTag", "This is my message");
 
                 //Elastic.new Signup().execute();
 
@@ -88,45 +93,18 @@ public class SignupActivity extends AppCompatActivity {
                 ElasticSearchController.AddUserTask addUserTask
                         = new ElasticSearchController.AddUserTask();
                 addUserTask.execute(newUser);
-                existedUser(username);
-                //Log.d("myTag", tuser.getPassword());
+                ElasticSearchController.IsExist isExist = new ElasticSearchController.IsExist();
+                User getuser = new User();
+                try {
 
-                //System.out.println(tuser.getUsername());
-                //Elastic.new LoadfromElastic().execute();
-                /*if (Username.getText().toString().length() < 3) {
-                    Toast.makeText(SignupActivity.this, "username has to be more than 3 characters ", Toast.LENGTH_LONG).show();
-
-                    Username.setText(null);
-                } else if (Username.getText().toString().length() == 0) {
-                    Toast.makeText(SignupActivity.this, "please enter a username", Toast.LENGTH_LONG).show();
+                     getuser = isExist.execute(username).get();
+                    System.out.println(getuser.getUsername());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
-
-                if (Password.getText().toString().length() < 5) {
-                    Toast.makeText(SignupActivity.this, "password has to be more than 5 characters", Toast.LENGTH_LONG).show();
-                    Password.setText(null);
-                } else if (Password.getText().toString().length() == 0) {
-                    Toast.makeText(SignupActivity.this, "password cannot be blank", Toast.LENGTH_LONG).show();
-                }
-                else if (Confirmpassword.getText().length() == 0) {
-                    Toast.makeText(SignupActivity.this, "password cannot be blank", Toast.LENGTH_LONG).show();
-
-                }
-                if (Confirmpassword.getText().length() != Password.getText().length()) {
-                    Toast.makeText(SignupActivity.this, "please confirm the correct password", Toast.LENGTH_LONG).show();
-                    Password.setText(null);
-                    Confirmpassword.setText(null);
-
-                } /*check if password and confirm password are the same
-                   else if () {
-                    Toast.makeText(SignupActivity.this, "password cannot be blank", Toast.LENGTH_LONG).show();
-                    lError = false;
-                }
-
-                newList.get(index).setUsername(Username.getText().toString());
-                newList.get(index).setPassword(Password.getText().toString());
-                newList.get(index).setComfirmpassword(Confirmpassword.getText().toString());*/
                 Intent loginInt = new Intent(getApplicationContext(), LoginActivity.class);
-                //saveInFile();
                 startActivity(loginInt);
             }
         });
@@ -167,23 +145,6 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
-    private boolean existedUser (String name) {
-        ElasticSearchController.IsExist isExist = new ElasticSearchController.IsExist();
-        isExist.execute(name);
-
-        try {
-            if (isExist.get()) {
-                Toast.makeText(getApplicationContext(), name + "is indeed exist lol .", Toast.LENGTH_SHORT).show();
-
-                return true;
-            } else {
-                Toast.makeText(getApplicationContext(), name + " does not exist.", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        } catch (Exception e) {
-            return false;
-        }
-    }
     /*@Override
     protected void onStart() {
         super.onStart();
