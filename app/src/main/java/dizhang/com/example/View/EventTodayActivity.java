@@ -205,7 +205,7 @@ public class EventTodayActivity extends AppCompatActivity {
                 Event newEvent = new Event(Current_Habit.getTitle(), date, comm);
 
                 newEvent.setPicture(realPath);
-
+                Log.d("dataType", myLocation.toString());
                 newEvent.setLocation(myLocation);
                 //newList.add(newEvent);
 
