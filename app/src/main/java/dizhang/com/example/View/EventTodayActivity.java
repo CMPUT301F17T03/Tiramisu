@@ -1,6 +1,7 @@
 package dizhang.com.example.View;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -79,19 +80,17 @@ public class EventTodayActivity extends AppCompatActivity {
     //User CurrentUser = new User();
     ArrayList<Habit> habitList = new ArrayList<Habit>();
     ArrayList<Event> EventList = new ArrayList<Event>();
+    ArrayList<String> newLocation = new ArrayList<String>();
     public String realPath;
     Habit Current_Habit = new Habit();
+    double lon, lat;
     Date date;
     Button addLocation, Complete, picture;
     EditText comment;
     TextView eventTitle, locationToday;
     ImageView Image;
-<<<<<<< HEAD
-    Location myLocation;
-=======
     String myLocation;
     private static int index = -1;
->>>>>>> f303ae70889e75a602c1778247dc143470c76a01
     private LocationManager locationManager;
     private LocationListener locationListener;
 
@@ -126,10 +125,10 @@ public class EventTodayActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
                 //locationToday.clearComposingText();
-                myLocation = location;
-                int lat = (int) Math.ceil(location.getLatitude());
-                int lon = (int) Math.ceil(location.getLongitude());
-                locationToday.setText("(" + lat + "  ,  " + lon + ")");
+                //newLocation.clear();
+                lon = Math.round(location.getLongitude() * 100.0 / 100.0);
+                lat = Math.round(location.getLatitude() * 100.0 / 100.0);
+                locationToday.setText("(Longitude: " + lon + ", Latitude: " + lat + " )");
                 Log.d("Onlocation", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
             }
@@ -142,7 +141,7 @@ public class EventTodayActivity extends AppCompatActivity {
 
             @Override
             public void onProviderEnabled(String s) {
-                Log.d("Case", "Case2222222222222222222222222222223");
+                Log.d("Case", "Case222222222222222222222222222222");
 
             }
 
@@ -162,22 +161,15 @@ public class EventTodayActivity extends AppCompatActivity {
                 }, 2);
                 return;
             }
-
-        } else {
-            configureButton();
         }
 
-
         addLocation.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("MissingPermission")
             @Override
             public void onClick(View view) {
-                configureButton();
+                locationManager.requestLocationUpdates("gps", 5000, 10, locationListener);
             }
         });
-        /*
-        else{
-            configureButton();
-        }*/
 
 
         picture.setOnClickListener(new View.OnClickListener() {
@@ -215,17 +207,20 @@ public class EventTodayActivity extends AppCompatActivity {
                 date = c.getTime();
                 Event newEvent = new Event(Current_Habit.getTitle(), date, comm);
 
-                newEvent.setPicture(realPath);
-<<<<<<< HEAD
-                Log.d("dataType", myLocation.toString());
-                newEvent.setLocation(myLocation);
-                //newList.add(newEvent);
+                //Lon and lat converted into String here:
+                String latString = Double.toString(lat);
+                String lonString = Double.toString(lon);
+                Log.d("dataTypeCheck", latString);
 
-                CurrentUser.addEvent(newEvent);
-=======
+                newLocation.add(lonString);
+                newLocation.add(latString);
+
+                newEvent.setPicture(realPath);
                 newEvent.setUsername(LoginActivity.uname);
+
+                newEvent.setLocation(newLocation);
+
                 EventList.add(newEvent);
->>>>>>> f303ae70889e75a602c1778247dc143470c76a01
 
                 ElasticSearchEvent.addEventTask addEventTask = new ElasticSearchEvent.addEventTask();
                 addEventTask.execute(newEvent);
@@ -245,52 +240,18 @@ public class EventTodayActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 2:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    configureButton();
-                return;
-        }
-    }
-
-    private void configureButton() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
-    }
-
-    /*
         @Override
         public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
             switch (requestCode) {
                 case 2:
                     if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                        configureButton();
+                        //configureButton();
                     return;
             }
         }
->>>>>>> 6555acc97f7f731d6a56e2da2c7d186b116a1d3c
 
-        private void configureButton() {
-            addLocation.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    locationManager.requestLocationUpdates("gps", 5000, 10, locationListener);
-                }
-            });
-        }
 
-    */
+
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);

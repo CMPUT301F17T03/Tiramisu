@@ -99,7 +99,7 @@ public class EditEventActivity extends AppCompatActivity {
         }
         else{
             Log.d("else", "elseInViewheyyyyyyyyyyyyyyyy");
-            myLocation = newList.get(index).getLocation();
+            //myLocation = newList.get(index).getLocation();
             //int lat = (int) Math.ceil(loc.getLatitude());
             //int lon = (int) Math.ceil(loc.getLongitude());
 
@@ -195,7 +195,7 @@ public class EditEventActivity extends AppCompatActivity {
                 Bitmap bitmap = drawable.getBitmap();
                 //newList.get(index).setPicture( bitmap);
                 newList.get(index).setComment(comment);
-                newList.get(index).setLocation(myLocation);
+                //newList.get(index).setLocation(myLocation);
                 Log.d("location", myLocation.toString());
                 saveInFile();
             }

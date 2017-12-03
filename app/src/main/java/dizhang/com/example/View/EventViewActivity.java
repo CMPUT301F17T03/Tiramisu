@@ -65,6 +65,8 @@ public class EventViewActivity extends AppCompatActivity {
     private String path;
     Button Edit;
     ImageView Image;
+    ArrayList<String> curLocation;
+    String lat, lon;
     TextView eventTitleView,locationView,eventDateView,commentView;
     ArrayList<Event> newList = new ArrayList<Event>();
     public Event CurrntEvent;
@@ -104,12 +106,13 @@ public class EventViewActivity extends AppCompatActivity {
         }
         else{
             Log.d("else", "elseInViewheyyyyyyyyyyyyyyyy");
-            Location loc = newList.get(index).getLocation();
-            int lat = (int) Math.ceil(loc.getLatitude());
-            int lon = (int) Math.ceil(loc.getLongitude());
+            curLocation = newList.get(index).getLocation();
+            lon = curLocation.get(0);
+            lat = curLocation.get(1);
+
 
             Log.d("read", "read okay!!!!!!!!! but setText no...");
-            locationView.setText("(" + lat + "  ,  " + lon + ")");
+            locationView.setText("Location: (Longitude: " + lon + ", Latitude: " + lat + " )");
         }
 
         //Location location = newList.get(index).getLocation();

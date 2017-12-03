@@ -2,6 +2,7 @@ package dizhang.com.example.Model;
 
 import android.location.Location;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import io.searchbox.annotations.JestId;
@@ -28,7 +29,7 @@ public class Event {
     private String comment;
     private Date date;
     private String picture;
-    private Location location;
+    private ArrayList<String> location;
     private String title;
     private String username;
     @JestId
@@ -151,13 +152,13 @@ public class Event {
      *@return
      */
 
-    public Location getLocation() {
+    public ArrayList<String> getLocation() {
         return location;
     }
     /**
      *@param location
      */
-    public void setLocation(Location location) {
+    public void setLocation(ArrayList<String> location) {
         this.location = location;
     }
 
