@@ -192,6 +192,7 @@ public class EventViewActivity extends AppCompatActivity {
         }catch (IOException e){
             e.printStackTrace();
         }
+        Log.d("LoadFile","finished loadingFile");
     }
 
 

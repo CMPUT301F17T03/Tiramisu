@@ -198,7 +198,6 @@ public class EventTodayActivity extends AppCompatActivity {
                 }
 
                 Intent intent = new Intent(EventTodayActivity.this, EventManagerActivity.class);
-
                 startActivity(intent);
                 Calendar c = new GregorianCalendar();
                 c.set(Calendar.HOUR_OF_DAY, 0); //anything 0 - 23

@@ -48,7 +48,7 @@ import dizhang.com.example.tiramisu.R;
  */
 public class HistoryActivity extends AppCompatActivity {
     ArrayList<Event> newList = new ArrayList<Event>();
-    private static final String FILENAME = "event.save";
+    private static final String FILENAME = "Event.save";
     Button historyMap,searchComment,searchName;
     ListView mainListView ;
     EditText input;
