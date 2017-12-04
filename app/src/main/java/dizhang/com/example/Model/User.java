@@ -16,12 +16,6 @@ import io.searchbox.annotations.JestId;
  * at University of Alberta
  */
 
-/**
- * Represents a User
- * @version 1.0
- * @since 1.0
- */
-
 public class User {
     @JestId
 
@@ -34,17 +28,15 @@ public class User {
     private ArrayList<Event> events = new ArrayList<Event>();
     //private HistoryList history;
     private String password;
-
+    private ArrayList<String> follower = new ArrayList<>();
+    private ArrayList<String> followee = new ArrayList<>();
+    private ArrayList<String> request = new ArrayList<>();
+    private String Id;
     //private UserList fans = new UserList();     //users who follows me
     //private UserList requests = new UserList(); //requests sent to me
     //private UserList following = new UserList(); //the users that I followed
     //private ArrayList searchInfo;
 
-    /**
-     *
-     * @param username
-     * @param password
-     */
     public User(String username, String password){
       this.username = username;
       this.password = password;
@@ -110,40 +102,62 @@ public class User {
         this.interests = interests;
     }
 
-    /**
-     *
-     * @param habit
-     */
-
     public void addHabit(Habit habit) {
         habits.add(habit);
     }
-
-    /**
-     *
-     * @return
-     */
     public ArrayList<Habit> getHabitlist() {
         return habits;
     }
 
-    /**
-     *
-     * @param event
-     */
     public void addEvent(Event event) {
         events.add(event);
     }
-
-    /**
-     *
-     * @return
-     */
     public ArrayList<Event> getEventlist() {
         return events;
     }
 
+    public ArrayList<String> getFollower() {
+        return follower;
+    }
 
+    public void setFollower(ArrayList<String> follower) {
+        this.follower = follower;
+    }
+
+    public void addFollwer(String username){
+        follower.add(username);
+    }
+
+    public void addRequest(String username){
+        request.add(username);
+    }
+
+    public void addFollowee(String username){
+        followee.add(username);
+    }
+    public ArrayList<String> getFollowee() {
+        return followee;
+    }
+
+    public void setFollowee(ArrayList<String> followee) {
+        this.followee = followee;
+    }
+
+    public ArrayList<String> getRequest() {
+        return request;
+    }
+
+    public void setRequest(ArrayList<String> request) {
+        this.request = request;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
     /**
      * @return
      *//*
@@ -196,6 +210,35 @@ public class User {
 */
 
 
+
+
+    /**
+     * @param profilePic
+     */
+
+    /**
+     * @return
+     */
+
+    /**
+     * @param habitlist
+     */
+
+    /**
+     * @return
+     */
+
+    /**
+     * @param eventlist
+     */
+
+    /**
+     * @return
+     */
+
+    /**
+     * @param history
+     */
     /**
      * @return
      */
@@ -209,6 +252,9 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    /**
+     * @return
+     */
     /**
      * @return
      */

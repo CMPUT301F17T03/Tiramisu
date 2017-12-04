@@ -128,8 +128,9 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
                         dayOfWeek.add("Sun");
                     }
                     String username = LoginActivity.uname;
-                    String sdate = date.toString();
-                    System.out.println(sdate);
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEEE,dd,MMM,yyyy");
+                    String sdate =  sdf.format(date);
+
                     Habit newHabit = new Habit(title, des, sdate, dayOfWeek,username);
                     newHabit.setLast("xsxs");
                     ElasticSearchHabit.addHabitTask addHabitTask = new ElasticSearchHabit.addHabitTask();
