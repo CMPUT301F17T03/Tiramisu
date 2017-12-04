@@ -51,7 +51,8 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String FILENAME = "User.save";
     Button editProfile;
     TextView usernameViewProf, genderViewProf, interestViewProf,nicknameViewProf;
-    ArrayList<User> newList = new ArrayList<User>();
+    //ArrayList<User> newList = new ArrayList<User>();
+    User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
         nicknameViewProf = (TextView) findViewById(R.id.nicknameViewProf);
 
 
-        User user = newList.get(0);
+        //User user = newList.get(0);
         if (user.getGender() == null) {
         }
         else{
@@ -122,9 +123,9 @@ public class ProfileActivity extends AppCompatActivity {
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 
-            Type listType = new TypeToken<ArrayList<User>>() {
+            Type listType = new TypeToken<User>() {
             }.getType();
-            newList = gson.fromJson(in, listType);
+            user = gson.fromJson(in, listType);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -136,7 +137,7 @@ public class ProfileActivity extends AppCompatActivity {
             FileOutputStream fos = openFileOutput(FILENAME, 0);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             Gson gson =new Gson();
-            gson.toJson(newList,writer);
+            gson.toJson(user,writer);
             writer.flush();
 
         }catch (FileNotFoundException e){

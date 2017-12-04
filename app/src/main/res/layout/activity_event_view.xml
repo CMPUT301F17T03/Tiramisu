@@ -37,7 +37,7 @@
         <TextView
             android:id="@+id/locationView"
             android:layout_width="match_parent"
-            android:layout_height="38dp"
+            android:layout_height="53dp"
             android:text="Location:"
             android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />

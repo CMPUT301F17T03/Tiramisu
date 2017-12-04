@@ -53,7 +53,7 @@ import dizhang.com.example.tiramisu.R;
 
 //still need something to finish
 public class EditProfileActivity extends AppCompatActivity {
-    private static final String FILENAME = "profile.save";
+    private static final String FILENAME = "User.save";
     //private User user;
     EditText nickName, interest;
     TextView id;
@@ -61,7 +61,7 @@ public class EditProfileActivity extends AppCompatActivity {
     RadioButton rbGender;
     Button saveProf;
     RadioGroup rgprofile;
-    ArrayList<User> newList = new ArrayList<User>();
+    User user = new User();
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -69,7 +69,7 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         loadFromFile();
-        User user = newList.get(0);
+        //User user = newList.get(0);
         //String nickname = user.getNickname();
         //String interests = newList.get(index).getInterests();
         //final String gender = newList.get(index).getGender();
@@ -111,9 +111,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 int index = getIntent().getIntExtra("index",0);
                 String nickname = nickName.getText().toString();
                 String interests = interest.getText().toString();
-                newList.get(index).setNickname(nickname);
-                newList.get(index).setInterests(interests);
-                newList.get(index).setGender(gender);
+                user.setNickname(nickname);
+                user.setInterests(interests);
+                user.setGender(gender);
                 saveInFile();
                 Intent profileInt = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(profileInt);
@@ -155,8 +155,8 @@ public class EditProfileActivity extends AppCompatActivity {
             BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
             Gson gson = new Gson();
 
-            Type listType = new TypeToken<ArrayList<User>>(){}.getType();
-            newList = gson.fromJson(in,listType);
+            Type listType = new TypeToken<User>(){}.getType();
+            user = gson.fromJson(in,listType);
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }catch (IOException e){
@@ -168,7 +168,7 @@ public class EditProfileActivity extends AppCompatActivity {
             FileOutputStream fos = openFileOutput(FILENAME, 0);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             Gson gson =new Gson();
-            gson.toJson(newList,writer);
+            gson.toJson(user,writer);
             writer.flush();
 
         }catch (FileNotFoundException e){
