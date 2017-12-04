@@ -80,11 +80,11 @@ public class EventTodayActivity extends AppCompatActivity {
 
     private static final String EventFile = "Event.save";
     private static final String HabitFILE = "Habit.save";
-
+    ArrayList<Habit> habitList = new ArrayList<Habit>();
     private static final String FILENAME = "User.save";
     User user = new User();
     //User CurrentUser = new User();
-    ArrayList<Habit> habitList = new ArrayList<Habit>();
+
     ArrayList<Event> EventList = new ArrayList<Event>();
     ArrayList<String> newLocation = new ArrayList<String>();
     public String realPath,ImageString;
@@ -231,6 +231,18 @@ public class EventTodayActivity extends AppCompatActivity {
                 Date date = new Date();
                 String Today_date = dateFormat.format(date);
                 habitList.get(index).setLast(Today_date);
+
+                int total = habitList.get(index).getTotal();
+                System.out.println(total);
+                int Finish =0;
+                for (int i = 0 ; i < EventList.size(); i++) {
+                    if( EventList.get(i).getTitle().equals(habitList.get(index).getTitle())){
+                        Finish += 1;
+                    }
+                }
+                double result = Finish/total;
+                result = result * 100;
+                habitList.get(index).setRate(result);
                 if (ConnectionCheck.isNetworkAvailable(getApplicationContext())){
                 ElasticSearchEvent.addEventTask addEventTask = new ElasticSearchEvent.addEventTask();
                 addEventTask.execute(newEvent);

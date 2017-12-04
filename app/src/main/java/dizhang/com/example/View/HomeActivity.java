@@ -42,6 +42,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import dizhang.com.example.Control.ElasticSearchController;
 import dizhang.com.example.Control.ElasticSearchEvent;
@@ -114,7 +115,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //offlinecheck();
         habitList = (ListView) findViewById(R.id.todayListview);
 
         habitList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -128,6 +128,13 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+        try {
+            offlinecheck();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //super.onCreate(savedInstanceState);
 
@@ -262,17 +269,22 @@ public class HomeActivity extends AppCompatActivity {
         for (int i = 0 ; i < eList.size(); i++){
             if( eList.get(i).getFrequency().contains(Today)){
                 String LastDate =eList.get(i).getLast();
-                System.out.println(LastDate);
-                System.out.println(Today_date);
+                //System.out.println(LastDate);
+                //System.out.println(Today_date);
                 title = eList.get(i).getTitle();
-                Boolean bt = LastDate.equals(Today_date);
-                System.out.println("compare result is "+ bt.toString());
+                if (!eList.get(i).getLastShow().equals(Today_date)){
+                    eList.get(i).setLastShow(Today_date);
+                    eList.get(i).setTotal(eList.get(i).getTotal()+1) ;
+                }
+
+                //System.out.println("compare result is "+ bt.toString());
                 if (!LastDate.equals(Today_date)) {
-                    System.out.println("this is in");
+                    //System.out.println("this is in");
                     listItem.add(title);
                 }
 
             }
+            saveInFile();
 
 
         }
@@ -281,37 +293,29 @@ public class HomeActivity extends AppCompatActivity {
         habitList.setAdapter(adapter);
 
     }
-    private void loadFromFile(){
-        try{
+    private void offlinecheck() throws ExecutionException, InterruptedException {
+        loadFromUser();
+        System.out.println(user.getNetwork());
 
-            FileInputStream fis = openFileInput(HabitFILE);
-            Log.d("myTag", "This is my message");
-            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
-            Gson gson = new Gson();
-
-            Type Habittype = new TypeToken<ArrayList<Habit>>(){}.getType();
-            eList = gson.fromJson(in,Habittype);
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-    private void offlinecheck(){
-        if (ConnectionCheck.isNetworkAvailable(getApplicationContext()) & user.getNetwork().equals("N")){
+        if (ConnectionCheck.isNetworkAvailable(getApplicationContext()) ){
             loadFromDelete();
             loadFromDelEvent();
             loadFromEvent();
-            loadFromUser();
+            loadFromFile();
+            System.out.println("In offline handle");
             if(!DelHabitList.isEmpty()){
                 for (int i = 0 ; i < DelHabitList.size(); i++){
+                    if (eList.get(i).getMark().equals("D")) {
+                        ElasticSearchHabit.delHabitTask delHabitTask = new ElasticSearchHabit.delHabitTask();
+                        delHabitTask.execute(DelHabitList.get(i));
 
-                    ElasticSearchHabit.delHabitTask delHabitTask = new ElasticSearchHabit.delHabitTask();
-                    delHabitTask.execute(DelHabitList.get(i));
-
+                    }
                 }
             }
+            /*
+            System.out.println("In offline handle1");
             DelHabitList = new ArrayList<Habit>();
+
             if(!DelEventList.isEmpty()){
 
                 for (int i = 0 ; i < DelEventList.size(); i++){
@@ -321,54 +325,61 @@ public class HomeActivity extends AppCompatActivity {
 
                 }
             }
+            System.out.println("In offline handle2");
             DelEventList = new ArrayList<Event>();
 
             for (int i = 0 ; i < EventList.size(); i++){
-                if (EventList.get(i).getMark().equals("U")){
+                if(EventList.get(i).getMark() !=null) {
+                    if (EventList.get(i).getMark().equals("U")) {
 
-                    ElasticSearchEvent.updateEventTask updateEventTask = new ElasticSearchEvent.updateEventTask();
-                    updateEventTask.execute(EventList.get(i));
-                    EventList.get(i).setMark("F");
+                        ElasticSearchEvent.updateEventTask updateEventTask = new ElasticSearchEvent.updateEventTask();
+                        updateEventTask.execute(EventList.get(i));
+                        EventList.get(i).setMark("F");
+                    }
+
+                    if (EventList.get(i).getMark().equals("A")) {
+
+                        ElasticSearchEvent.addEventTask addEventTask = new ElasticSearchEvent.addEventTask();
+                        addEventTask.execute(EventList.get(i));
+                        EventList.get(i).setMark("F");
+                    }
                 }
-
-                if (EventList.get(i).getMark().equals("A")){
-
-                    ElasticSearchEvent.addEventTask addEventTask = new ElasticSearchEvent.addEventTask();
-                    addEventTask.execute(EventList.get(i));
-                    EventList.get(i).setMark("F");
-                }
-
             }
 
-            for (int i = 0 ; i < eList.size(); i++){
-                if (eList.get(i).getMark().equals("U")){
 
-                    ElasticSearchHabit.updateHabitTask updateHabitTask = new ElasticSearchHabit.updateHabitTask();
-                    updateHabitTask.execute(eList.get(i));
-                    eList.get(i).setMark("F");
-                }
-                if (eList.get(i).getMark().equals("A")){
 
-                    ElasticSearchHabit.addHabitTask addHabitTask = new ElasticSearchHabit.addHabitTask();
-                    addHabitTask.execute(eList.get(i));
-                    eList.get(i).setMark("F");
-                }
+            System.out.println("Habit size"+eList.size());
+            */
 
-            }
             if (user.getMark().equals("U")){
 
                 ElasticSearchController.updateUser updateUser = new ElasticSearchController.updateUser();
                 updateUser.execute(user);
-                user.setMark("F");
+
+
+
             }
-            user.setNetwork("Y");
+            for (int i = 0 ; i < eList.size(); i++){
+                System.out.print("This is TITLe"+eList.get(i).getTitle()+"This is mark"+eList.get(i).getMark());
+                if (eList.get(i).getMark() !=null) {
+                    if (eList.get(i).getMark().equals("U")) {
+
+                        ElasticSearchHabit.updateHabitTask updateHabitTask = new ElasticSearchHabit.updateHabitTask();
+                        updateHabitTask.execute(eList.get(i));
+                    }
+                    if (eList.get(i).getMark().equals("A")) {
+
+                        ElasticSearchHabit.addHabitTask addHabitTask = new ElasticSearchHabit.addHabitTask();
+                        addHabitTask.execute(eList.get(i));
+
+                    }
+                }
+            }
+
+
             saveInDelete();
-            saveInDelEvent();
             saveUser();
-        }
-        if (!ConnectionCheck.isNetworkAvailable(getApplicationContext())){
-            user.setNetwork("N");
-            saveUser();
+            saveInFile();
         }
 
 
@@ -479,4 +490,35 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    private void loadFromFile(){
+        try{
+
+            FileInputStream fis = openFileInput(HabitFILE);
+            Log.d("myTag", "This is my message");
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type Habittype = new TypeToken<ArrayList<Habit>>(){}.getType();
+            eList = gson.fromJson(in,Habittype);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveInFile(){
+        try{
+            FileOutputStream fos = openFileOutput(HabitFILE, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(eList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }

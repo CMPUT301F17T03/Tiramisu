@@ -69,7 +69,7 @@ public class EventViewActivity extends AppCompatActivity {
     ImageView Image;
     ArrayList<String> curLocation;
     String lat, lon;
-    TextView eventTitleView,locationView,eventDateView,commentView;
+    TextView eventTitleView,locationView,eventDateView,commentView,Frequency;
     ArrayList<Event> newList = new ArrayList<Event>();
     public Event CurrntEvent;
     private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -83,6 +83,7 @@ public class EventViewActivity extends AppCompatActivity {
         locationView = (TextView) findViewById(R.id.locationView);
         eventDateView  = (TextView) findViewById(R.id.eventDateView);
         commentView = (TextView) findViewById(R.id.commentView);
+        Frequency = (TextView) findViewById(R.id.frequencyView);
         Image = (ImageView) findViewById(R.id.imageView);
 
 

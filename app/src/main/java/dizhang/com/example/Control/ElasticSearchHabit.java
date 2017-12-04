@@ -107,6 +107,7 @@ public class ElasticSearchHabit {
 
                     if(result.isSucceeded()){
                         habit.setId(result.getId());
+                        habit.setMark("F");
                     }else {
                         Log.i("Error", "failed to add habit");
                     }
@@ -132,6 +133,7 @@ public class ElasticSearchHabit {
 
                     if(result.isSucceeded()){
                         habit.setId(result.getId());
+                        habit.setMark("F");
                     }else {
                         Log.i("Error", "failed to add habit");
                     }
@@ -153,7 +155,7 @@ public class ElasticSearchHabit {
 
             for (Habit habit : habits){
                 Delete index = new Delete.Builder(habit.getId()).index("cmput301f17t03").type("habit").build();
-
+                habit.setMark("F");
                 try{
                     DocumentResult result = client.execute(index);
 

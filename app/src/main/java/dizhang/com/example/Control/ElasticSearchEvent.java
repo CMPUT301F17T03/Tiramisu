@@ -106,6 +106,7 @@ public class ElasticSearchEvent {
 
                     if(result.isSucceeded()){
                         event.setId(result.getId());
+                        event.setMark("F");
                     }else {
                         Log.i("Error", "failed to add Event");
                     }
@@ -131,6 +132,7 @@ public class ElasticSearchEvent {
 
                     if(result.isSucceeded()){
                         event.setId(result.getId());
+                        event.setMark("F");
                     }else {
                         Log.i("Error", "failed to add habit");
                     }
@@ -155,6 +157,12 @@ public class ElasticSearchEvent {
                 try{
                     DocumentResult result = client.execute(index);
 
+                    if(result.isSucceeded()){
+                        event.setId(result.getId());
+                        event.setMark("F");
+                    }else {
+                        Log.i("Error", "failed to del event");
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
                     Log.i("Error","The application failed to build and send the habit");
@@ -168,7 +176,7 @@ public class ElasticSearchEvent {
 //http://cmput301.softwareprocess.es:8080
     public static void verifySettings() {
         if (client == null) {
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("https://5b3c205796b755b5db6f9b28b41fa441.us-east-1.aws.found.io:9243/");
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();

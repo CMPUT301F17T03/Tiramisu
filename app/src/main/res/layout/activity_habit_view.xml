@@ -69,7 +69,7 @@
             android:id="@+id/textView12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Frequency:"
+            android:text="Finish rate:"
             android:textColor="@color/cardview_light_background"
             android:textSize="25sp" />
 
