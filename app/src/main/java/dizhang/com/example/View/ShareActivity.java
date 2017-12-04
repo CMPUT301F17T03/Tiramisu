@@ -5,23 +5,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOError;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import dizhang.com.example.Control.ElasticSearchController;
+import dizhang.com.example.Control.ElasticSearchHabit;
+import dizhang.com.example.Control.HabitNewActivity;
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
@@ -47,16 +42,20 @@ import dizhang.com.example.tiramisu.R;
  */
 public class ShareActivity extends AppCompatActivity {
 
-    private static final String FollowedFILE = "Followed.save";
-
-    Button viewRequestButton;
-    Button sendRequestButton;
+    public Button viewRequestButton;
+    public Button sendRequestButton;
     private EditText bodyText;
+    private ArrayList<User> userList = new ArrayList<User>();
+    User requestUser = new User();
+    User currentUser = new User();
+    ListView follwoingList;
     ArrayList<String> listItem = new ArrayList<String>();
+    ArrayList<String> viewList = new ArrayList<String>();
+    ArrayList<Habit> userHabit = new ArrayList<>();
     ArrayAdapter<String> adapter;
-    ArrayList<Habit> followedList = new ArrayList<Habit>();
-    ListView FollowedHabit;
-    //ArrayList<User> userList = new ArrayList<>();
+
+    //private ArrayAdapter<User> adapter;
+    //private ListView searchHabit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +63,17 @@ public class ShareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_share);
 
         bodyText = (EditText) findViewById(R.id.searchUser);
-        FollowedHabit = (ListView) findViewById(R.id.habitFollowedList);
+        follwoingList = (ListView) findViewById(R.id.habitFollowedList);
         viewRequestButton = (Button) findViewById(R.id.requestList);
         sendRequestButton = (Button) findViewById(R.id.sendRequest);
+
+
+
+        follwoingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            }
+        });
 
         viewRequestButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
@@ -80,19 +87,39 @@ public class ShareActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
                 String text = bodyText.getText().toString();
-                //Intent intent = new Intent(ShareActivity.this, HabitViewActivity.class);
+                if (text.isEmpty()){
+                    Toast.makeText(ShareActivity.this, "Enter an username to send request to.", Toast.LENGTH_LONG).show();
+                }else{
+                    ElasticSearchController.getUser getUser = new ElasticSearchController.getUser();
+                    getUser.execute(text);
+                    try{
+                        requestUser = getUser.get();
+                    }catch (Exception e){
+                        Log.i("Error","error getting user");
+                    }
+                    String username = LoginActivity.uname;
+                    if(requestUser.getFollower().contains(username)){
+                        Toast.makeText(ShareActivity.this, "Already following this user!", Toast.LENGTH_LONG).show();
 
-                //Call ElasticSearch here
-                //ElasticSearchController.GetUserProfile userProfile = new ElasticSearchController.GetUserProfile();
-                //userProfile.execute(text);
-                try {
-                    //userList.addAll(userProfile.get());
-                } catch (Exception e) {
-                    Log.i("Eroor", "Failed to get the user from the async object");
+                    }else{
+                        if(!requestUser.getRequest().contains(username)){
+                            requestUser.addRequest(username);
+                            Toast.makeText(ShareActivity.this, "Request sent!", Toast.LENGTH_LONG).show();
+
+                            ElasticSearchController.updateUser updateUserTask = new ElasticSearchController.updateUser();
+                            updateUserTask.execute(requestUser);
+                        }else{
+                            Toast.makeText(ShareActivity.this, "Request already sent!", Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+
+
+
+                };
+
                 }
 
-
-            }
         });
 
     }
@@ -102,44 +129,39 @@ public class ShareActivity extends AppCompatActivity {
         startActivity(homeInt);
     }
 
+    @Override
     protected void onStart() {
         super.onStart();
-
-        loadFromFile();
-        listItem.clear();
-        for (int i = 0; i < followedList.size(); i++){
-            String title = followedList.get(i).getTitle();
-            listItem.add(title);
-        }
-
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItem);
-        FollowedHabit.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
-    protected void onResume() {
-        super.onResume();
-        adapter.notifyDataSetChanged();
-    }
-
-    protected void onRestart(){
-        super.onRestart();
-        adapter.notifyDataSetChanged();
-    }
-
-    private void loadFromFile(){
+        String username = LoginActivity.uname;
+        ElasticSearchController.getUser getUser = new ElasticSearchController.getUser();
+        getUser.execute(username);
         try{
-            FileInputStream fis = openFileInput(FollowedFILE);
-            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
-            Gson gson = new Gson();
-
-            Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
-            followedList = gson.fromJson(in, listType);
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-        } catch (IOException e){
-            e.printStackTrace();
+            currentUser = getUser.get();
+        }catch (Exception e){
+            Log.i("Error","error getting user");
         }
-    }
+        listItem.clear();
+        viewList.clear();
+        //get all the name that current user is following and search each username to get all the habit
+        listItem = currentUser.getFollowee();
 
+        for (int i = 0 ; i < listItem.size(); i++) {
+            ElasticSearchHabit.getHabitTask getHabitTask = new ElasticSearchHabit.getHabitTask();
+            getHabitTask.execute(listItem.get(i));
+            try{
+                userHabit = getHabitTask.get();
+            } catch (Exception e) {
+                Log.i("Error", "failed to get habit from the async object");
+            }
+            for(int x = 0 ; x<userHabit.size();x++){
+                viewList.add("User: "+listItem.get(i)+"            "
+                        +"Habit: "+userHabit.get(x).getTitle());
+            }
+
+        }
+
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,viewList);
+        follwoingList.setAdapter(adapter);
+    }
 }
