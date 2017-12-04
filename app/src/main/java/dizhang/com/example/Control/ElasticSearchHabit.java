@@ -107,8 +107,10 @@ public class ElasticSearchHabit {
 
                     if(result.isSucceeded()){
                         habit.setId(result.getId());
+                        habit.setMark("F");
                     }else {
                         Log.i("Error", "failed to add habit");
+                        habit.setMark("A");
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -132,8 +134,10 @@ public class ElasticSearchHabit {
 
                     if(result.isSucceeded()){
                         habit.setId(result.getId());
+                        habit.setMark("F");
                     }else {
                         Log.i("Error", "failed to add habit");
+                        habit.setMark("A");
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -154,8 +158,17 @@ public class ElasticSearchHabit {
             for (Habit habit : habits){
                 Delete index = new Delete.Builder(habit.getId()).index("cmput301f17t03").type("habit").build();
 
+
                 try{
                     DocumentResult result = client.execute(index);
+
+                    if(result.isSucceeded()){
+                        habit.setId(result.getId());
+                        habit.setMark("F");
+                    }else {
+                        Log.i("Error", "failed to add habit");
+                        habit.setMark("D");
+                    }
 
                 }catch (Exception e){
                     e.printStackTrace();

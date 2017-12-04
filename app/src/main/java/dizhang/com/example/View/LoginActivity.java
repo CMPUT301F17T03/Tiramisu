@@ -93,6 +93,8 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "Password can't be empty", Toast.LENGTH_LONG).show();
                 } else {
                     //need to create signup file so that we could call the username and password from there
+                    Toast.makeText(getApplicationContext(), "Logging in ... ", Toast.LENGTH_LONG).show();
+
                     ElasticSearchController.getUser isExist = new ElasticSearchController.getUser();
                     User getuser = new User();
                     try {
@@ -105,7 +107,6 @@ public class LoginActivity extends AppCompatActivity {
                     if(getuser != null){
                         if (PasswordString.equals(getuser.getPassword()))  {
 
-                        Toast.makeText(getApplicationContext(), "Logging in ... ", Toast.LENGTH_SHORT).show();
                         CurrentUser=getuser;
 
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -116,6 +117,8 @@ public class LoginActivity extends AppCompatActivity {
                             //Toast.makeText(LoginActivity.this, nickname , Toast.LENGTH_LONG).show();
                         }
                         CurrentUser.setNetwork("Y");
+                        CurrentUser.setMark("F");
+                        CurrentUser.setEventNetwork("Y");
 
                             ElasticSearchHabit.getHabitTask getHabitTask = new ElasticSearchHabit.getHabitTask();
                             getHabitTask.execute(uname);
@@ -158,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                         }
                         else{
-                            Toast.makeText(getApplicationContext(), "Elasticsearch server is in maintenance", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Elasticsearch server is in maintenance or password incorrect", Toast.LENGTH_SHORT).show();
 
                         }
                     }

@@ -145,6 +145,9 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
 
                     Habit newHabit = new Habit(title, des, sdate, dayOfWeek,username);
                     newHabit.setLast("xsxs");
+                    newHabit.setLastShow("N/A");
+                    newHabit.setTotal(0);
+
                     if (ConnectionCheck.isNetworkAvailable(getApplicationContext())) {
                         ElasticSearchHabit.addHabitTask addHabitTask = new ElasticSearchHabit.addHabitTask();
                         addHabitTask.execute(newHabit);

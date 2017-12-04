@@ -102,9 +102,9 @@ public class ElasticSearchController {
 
     }
 
-    public static class updateUser extends AsyncTask<User,Void,Void>{
+    public static class updateUser extends AsyncTask<User,Void,Boolean>{
         @Override
-        protected Void doInBackground(User... users) {
+        protected Boolean doInBackground(User... users) {
             verifySettings();
 
             for (User user : users){
@@ -114,17 +114,20 @@ public class ElasticSearchController {
                     DocumentResult result = client.execute(index);
 
                     if(result.isSucceeded()){
+                        user.setMark("F");
                         Log.i("Success", "update user successfully");
                     }else {
                         Log.i("Error", "failed to update user");
+                        user.setMark("U");
                     }
                 }catch (Exception e){
                     e.printStackTrace();
-                    Log.i("Error","The application failed to build and send the habit");
+                    Log.i("Error","The application failed to update user");
+                    return false;
                 }
             }
 
-            return null;
+            return true;
         }
     }
 
@@ -132,12 +135,16 @@ public class ElasticSearchController {
 //http://cmput301.softwareprocess.es:8080
     public static void verifySettings() {
         if (client == null) {
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("https://5b3c205796b755b5db6f9b28b41fa441.us-east-1.aws.found.io:9243/");
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
             DroidClientConfig config = builder.build();
+            //config.setConnectionTimeout(60 * 1000);
 
             JestClientFactory factory = new JestClientFactory();
             factory.setDroidClientConfig(config);
+
+
             client = (JestDroidClient) factory.getObject();
+
         }
     }
 

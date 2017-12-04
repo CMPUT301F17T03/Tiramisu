@@ -53,13 +53,13 @@ import dizhang.com.example.tiramisu.R;
 public class HabitViewActivity extends AppCompatActivity {
     private static final String HabitFILE = "Habit.save";
     private static final String DelHabit = "DelHabit.save";
-
+    private static final String EventFile = "Event.save";
     private static final String FILENAME = "User.save";
     User user = new User();
     Button editHabit, deleteHabit;
     TextView titleView, descView,dateView,frequencyView;
     //ArrayList<Habit> newList = new ArrayList<Habit>();
-
+    //ArrayList<Event> EventList = new ArrayList<Event>();
     ArrayList<Habit> userHabit = new ArrayList<Habit>();//will contain all the habit from current user
     ArrayList<Habit> DelList = new ArrayList<Habit>();
     @Override
@@ -81,7 +81,7 @@ public class HabitViewActivity extends AppCompatActivity {
         String title = userHabit.get(index).getTitle();
         String des = userHabit.get(index).getDescription();
         String startDate = userHabit.get(index).getDate();
-
+        double rate = userHabit.get(index).getRate();
         ArrayList<String> frequency = userHabit.get(index).getFrequency();
 
         /*
@@ -99,11 +99,12 @@ public class HabitViewActivity extends AppCompatActivity {
         }
         frequencyView.setText(freq.toString());
         */
+
         frequencyView.setText(frequency.toString());
         titleView.setText(title);
         descView.setText(des);
         dateView.setText(startDate);
-
+        frequencyView.setText(String.valueOf(rate)+"% of this habit is finished");
 
 
 
@@ -142,6 +143,7 @@ public class HabitViewActivity extends AppCompatActivity {
                 }
                 else{
                     loadFromDelete();
+                    userHabit.get(index).setMark("D");
                     DelList.add(userHabit.get(index));
                     saveInDelete();
                     loadFromUser();
@@ -252,4 +254,5 @@ public class HabitViewActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 }

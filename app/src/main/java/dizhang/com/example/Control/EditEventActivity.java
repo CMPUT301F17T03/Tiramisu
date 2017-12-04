@@ -84,6 +84,8 @@ public class EditEventActivity extends AppCompatActivity {
     private static final String FILENAME = "Event.save";
     private static final String DelEvent = "DelEvent.save";
 
+    private static final String HabitFILE = "Habit.save";
+    ArrayList<Habit> habitList = new ArrayList<Habit>();
     private static final String UserFile = "User.save";
     User user = new User();
 
@@ -268,6 +270,7 @@ public class EditEventActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int index = getIntent().getIntExtra("index",0);
                 Intent intent = new Intent(EditEventActivity.this, EventManagerActivity.class);
+
                 if (ConnectionCheck.isNetworkAvailable(getApplicationContext())) {
 
                     ElasticSearchEvent.delEventTask delEventTask = new ElasticSearchEvent.delEventTask();
@@ -275,6 +278,7 @@ public class EditEventActivity extends AppCompatActivity {
                 }
                 else{
                     loadFromDelete();
+                    newList.get(index).setMark("D");
                     DelList.add(newList.get(index));
                     saveInDelete();
 
@@ -283,8 +287,26 @@ public class EditEventActivity extends AppCompatActivity {
                     saveUser();
                 }
                 newList.remove(index);
+                loadFromHabit();
+                try{
+                int total = habitList.get(index).getTotal();
+
+                    double rate = habitList.get(index).getRate();
+                    double result = rate*total-1/total;
+                    result = result * 100;
+                    habitList.get(index).setRate(result);
+                }
+                catch (Exception e){
+                    System.out.println("already deleted habit.");
+
+                }
+
+                ElasticSearchHabit.updateHabitTask updateHabitTask = new ElasticSearchHabit.updateHabitTask();
+                updateHabitTask.execute(habitList.get(index));
                 saveInFile();
+                SaveHabit();
                 startActivity(intent);
+
             }
         });
     }
@@ -430,4 +452,37 @@ public class EditEventActivity extends AppCompatActivity {
         }
     }
 
+    private void loadFromHabit(){
+        try{
+
+            FileInputStream fis = openFileInput(HabitFILE);
+            Log.d("myTag", "This is my message");
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type Usertype = new TypeToken<ArrayList<Habit>>(){}.getType();
+
+
+            habitList = gson.fromJson(in,Usertype);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void SaveHabit(){
+        try{
+            FileOutputStream fos = openFileOutput(HabitFILE, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(habitList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }

@@ -34,6 +34,9 @@ public class Habit {
     private String LastDate;
     private String username;
     private String mark;
+    private int total;
+    private double rate;
+    private String LastShow;
     @JestId
     private String Id;
 
@@ -117,6 +120,28 @@ public class Habit {
         return mark;
     }
 
+    public void setLastShow(String LastShow) {
+        this.LastShow = LastShow;
+    }
+    public String getLastShow() {
+        return LastShow;
+    }
+
+    public void setTotal   (int total) {
+        this.total = total;
+    }
+    public int getTotal() {
+        return total;
+    }
+
+
+
+    public void setRate   (double rate) {
+        this.rate = rate;
+    }
+    public double getRate() {
+        return rate;
+    }
 
     public String getDescription() {
         return description;

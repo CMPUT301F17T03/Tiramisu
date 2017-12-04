@@ -30,6 +30,7 @@ public class User {
     private String password;
     private String mark;
     private String network;
+    private String Eventnetwork;
 
     private ArrayList<String> follower = new ArrayList<>();
     private ArrayList<String> followee = new ArrayList<>();
@@ -131,6 +132,14 @@ public class User {
 
     public void setNetwork(String network){
         this.network =network;
+    }
+
+
+
+    public String getEventNetwork(){return Eventnetwork;}
+
+    public void setEventNetwork(String Eventnetwork){
+        this.Eventnetwork =Eventnetwork;
     }
 
     public ArrayList<String> getFollower() {

@@ -24,6 +24,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import dizhang.com.example.Control.EditProfileActivity;
+import dizhang.com.example.Control.ElasticSearchController;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
