@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -62,7 +63,7 @@ import dizhang.com.example.tiramisu.R;
 public class EventViewActivity extends AppCompatActivity {
     private static final String FILENAME = "Event.save";
     public Uri picture_Uri;
-    private String path;
+    private String ImageString;
     Button Edit;
     ImageView Image;
     ArrayList<String> curLocation;
@@ -87,17 +88,10 @@ public class EventViewActivity extends AppCompatActivity {
 
         Edit = (Button) findViewById(R.id.EditEvent);
         loadFromFile();
-
-
-        path = newList.get(index).getPicture();
-        Permission();
-        Toast.makeText(EventViewActivity.this, path, Toast.LENGTH_LONG).show();
-        System.out.println(path);
-        if ( !path.equals( "empty")) {
-            showPicture();
-
-
-        }
+        ImageString = newList.get(index).getPicture();
+        byte[] decodedString = Base64.decode(ImageString, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        Image.setImageBitmap(decodedByte);
 
         String title = newList.get(index).getTitle();
         String des = newList.get(index).getComment();
@@ -138,18 +132,6 @@ public class EventViewActivity extends AppCompatActivity {
 
 
 
-    }
-    private void showPicture(){
-        File imgFile = new  File(path);
-
-        if(imgFile.exists()){
-
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
-
-
-            Image.setImageBitmap(myBitmap);
-        }
     }
     private void Permission(){
 // Here, thisActivity is the current activity

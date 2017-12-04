@@ -19,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -86,6 +88,7 @@ public class EditEventActivity extends AppCompatActivity {
     private LocationListener locationListener;
     ArrayList<String> newLocation = new ArrayList<String>();
     ArrayList<Event> newList = new ArrayList<Event>();
+    String ImageString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +102,7 @@ public class EditEventActivity extends AppCompatActivity {
         Log.d("comment", newList.get(index).getComment());
         String title = newList.get(index).getTitle();
         String comment = newList.get(index).getComment();
-
+        ImageString = newList.get(index).getPicture();
         if (newList.get(index).getLocation() == null){
 
         }
@@ -124,6 +127,12 @@ public class EditEventActivity extends AppCompatActivity {
         Image  = (ImageView)findViewById(R.id.evenImageE);
         editTitle.setText(title);
         editCom.setText(comment);
+
+        byte[] decodedString = Base64.decode(ImageString, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        Image.setImageBitmap(decodedByte);
+
+
         //Image.setImageBitmap(newList.get(index).getPicture());
 
 
@@ -200,16 +209,7 @@ public class EditEventActivity extends AppCompatActivity {
                 }
 
 
-                Intent intent = new Intent(EditEventActivity.this, EventManagerActivity.class);
-                saveInFile();
-                startActivity(intent);
-
-
-
-
-                BitmapDrawable drawable = (BitmapDrawable) Image.getDrawable();
-                Bitmap bitmap = drawable.getBitmap();
-                //newList.get(index).setPicture( bitmap);
+                newList.get(index).setPicture(ImageString);
 
                 newList.get(index).setComment(comment);
                 newList.get(index).setLocation(newLocation);
@@ -219,6 +219,11 @@ public class EditEventActivity extends AppCompatActivity {
                 ElasticSearchEvent.updateEventTask updateEventTask = new ElasticSearchEvent.updateEventTask();
                 updateEventTask.execute(newList.get(index));
                 saveInFile();
+
+                Intent intent = new Intent(EditEventActivity.this, EventManagerActivity.class);
+
+                startActivity(intent);
+
             }
         });
         Image.setOnClickListener(new View.OnClickListener() {
@@ -281,6 +286,10 @@ public class EditEventActivity extends AppCompatActivity {
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
 
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] byteImage = baos.toByteArray();
+                ImageString = Base64.encodeToString(byteImage, Base64.DEFAULT);
                 Image.setImageBitmap(selectedImage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
