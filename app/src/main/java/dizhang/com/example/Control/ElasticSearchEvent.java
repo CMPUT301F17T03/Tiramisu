@@ -109,6 +109,7 @@ public class ElasticSearchEvent {
                         event.setMark("F");
                     }else {
                         Log.i("Error", "failed to add Event");
+                        event.setMark("A");
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -135,6 +136,7 @@ public class ElasticSearchEvent {
                         event.setMark("F");
                     }else {
                         Log.i("Error", "failed to add habit");
+                        event.setMark("U");
                     }
                 }catch (Exception e){
                     e.printStackTrace();

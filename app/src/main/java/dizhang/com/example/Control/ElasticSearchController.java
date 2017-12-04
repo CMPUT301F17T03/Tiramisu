@@ -118,6 +118,7 @@ public class ElasticSearchController {
                         Log.i("Success", "update user successfully");
                     }else {
                         Log.i("Error", "failed to update user");
+                        user.setMark("U");
                     }
                 }catch (Exception e){
                     e.printStackTrace();

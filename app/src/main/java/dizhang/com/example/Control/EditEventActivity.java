@@ -288,19 +288,21 @@ public class EditEventActivity extends AppCompatActivity {
                 }
                 newList.remove(index);
                 loadFromHabit();
-
+                try{
                 int total = habitList.get(index).getTotal();
-                int Finish =0;
-                for (int i = 0 ; i < newList.size(); i++) {
-                    if( newList.get(i).getTitle().equals(habitList.get(index).getTitle())){
-                        Finish += 1;
-                    }
+
+                    double rate = habitList.get(index).getRate();
+                    double result = rate*total-1/total;
+                    result = result * 100;
+                    habitList.get(index).setRate(result);
                 }
-                double result = Finish/total;
-                result = result * 100;
-                habitList.get(index).setRate(result);
+                catch (Exception e){
+                    System.out.println("already deleted habit.");
 
+                }
 
+                ElasticSearchHabit.updateHabitTask updateHabitTask = new ElasticSearchHabit.updateHabitTask();
+                updateHabitTask.execute(habitList.get(index));
                 saveInFile();
                 SaveHabit();
                 startActivity(intent);
