@@ -152,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                         }
                         else{
-                            Toast.makeText(getApplicationContext(), "Password is incorrect", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Elasticsearch server is in maintenance", Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -162,8 +162,8 @@ public class LoginActivity extends AppCompatActivity {
 
                     }
 
-                    username.setText(null);
-                    password.setText(null);
+                    //username.setText(null);
+                    //password.setText(null);
                     // start the activity anyway because signup is empty
                     //Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     //startActivity(intent);

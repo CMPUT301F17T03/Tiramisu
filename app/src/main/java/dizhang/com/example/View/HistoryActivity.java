@@ -11,8 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.common.collect.MapMaker;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.slf4j.Marker;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import dizhang.com.example.Model.Event;
+import dizhang.com.example.Model.MMP;
 import dizhang.com.example.tiramisu.R;
 
 //import dizhang.com.example.Control.ElasticSearchController;
@@ -56,6 +60,12 @@ public class HistoryActivity extends AppCompatActivity {
     ListView mainListView ;
     EditText input;
     ArrayList<String> listItem = new ArrayList<String>();
+
+
+    //ArrayList<String> locPass = new ArrayList<String>();
+
+    ArrayList<MMP> pass2Map = new ArrayList<MMP>();
+
     ArrayAdapter<String> adapter;
     ArrayList<Integer> SelectIndex = new ArrayList<Integer>();
 
@@ -67,13 +77,19 @@ public class HistoryActivity extends AppCompatActivity {
         mainListView= (ListView) findViewById(R.id.historyList);
         historyMap = (Button) findViewById(R.id.historyMap);
         input = (EditText) findViewById(R.id.searchHistory);
+
+
+
         historyMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent mapInt = new Intent(getApplicationContext(), MapActivity.class);
+                mapInt.putExtra("pass2Map", pass2Map);
                 startActivity(mapInt);
             }
         });
+
+
         searchComment = (Button) findViewById(R.id.searchComment);
         searchName = (Button) findViewById(R.id.searchType);
 
@@ -85,12 +101,20 @@ public class HistoryActivity extends AppCompatActivity {
                 String Name= input.getText().toString();
                 ArrayList<Integer> Select = new ArrayList<Integer>();
                 listItem.clear();
+                pass2Map.clear();
                 for (int i = 0 ; i < newList.size(); i++){
                     String Eventcomment = newList.get(i).getTitle();
+                    MMP mmp = new MMP();
+                    //ArrayList<String> loc = newList.get(i).getLocation();
                     if( Eventcomment.contains(Name)) {
                         String title = newList.get(i).getTitle();
                         listItem.add(title);
                         Select.add(i);
+                        if (newList.get(i).getLocation() != null){
+                            mmp.setLocation(newList.get(i).getLocation());
+                            mmp.setTitle(title);
+                            pass2Map.add(mmp);
+                        }
                     }
 
                 }
@@ -110,12 +134,19 @@ public class HistoryActivity extends AppCompatActivity {
                 ArrayList<Integer> Select = new ArrayList<Integer>();
 
                 listItem.clear();
+                pass2Map.clear();
                 for (int i = 0 ; i < newList.size(); i++){
                     String Eventcomment = newList.get(i).getComment();
+                    MMP mmp = new MMP();
                     if( Eventcomment.contains(comment)) {
                         String title = newList.get(i).getTitle();
                         listItem.add(title);
                         Select.add(i);
+                        if (newList.get(i).getLocation() != null){
+                            mmp.setLocation(newList.get(i).getLocation());
+                            mmp.setTitle(title);
+                            pass2Map.add(mmp);
+                        }
                     }
 
                 }
@@ -156,12 +187,17 @@ public class HistoryActivity extends AppCompatActivity {
         //TODO get user from elasticsearch and get habit from user
         //This part will add the habit only happend today
         loadFromEventFile();
+        pass2Map.clear();
         listItem.clear();
         ArrayList<Integer> Select = new ArrayList<Integer>();
 
         for (int i = 0 ; i < newList.size(); i++){
             String title = newList.get(i).getTitle();
+            MMP mmp = new MMP();
             listItem.add(title);
+            mmp.setTitle(title);
+            mmp.setLocation(newList.get(i).getLocation());
+            pass2Map.add(mmp);
             Select.add(i);
 
         }

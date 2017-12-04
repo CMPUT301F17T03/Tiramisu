@@ -1,26 +1,19 @@
 package dizhang.com.example.View;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import dizhang.com.example.Control.ElasticSearchController;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
@@ -46,13 +39,12 @@ import dizhang.com.example.tiramisu.R;
 
 public class RequestActivity extends AppCompatActivity {
 
-    private static final String RequestFILE = "Request.save";
-
     ListView listView;
-    ArrayList<String> listItem = new ArrayList<String>();
+    ArrayList<String> requstList = new ArrayList<>();
     ArrayAdapter<String> adapter;
-    ArrayList<User> requestList = new ArrayList<User>();
 
+    User currentUser = new User();
+    User reqUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +56,8 @@ public class RequestActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                final int index = i;
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(RequestActivity.this);
 
@@ -85,8 +79,30 @@ public class RequestActivity extends AppCompatActivity {
                 builder.setPositiveButton("ACCEPT", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        if (!currentUser.getFollower().contains(currentUser.getRequest().get(index))){
+                            currentUser.addFollwer(currentUser.getRequest().get(index));
+                        }
+                        String followingUser = currentUser.getRequest().get(index);
 
-                        //this part still need be modified
+                        currentUser.getRequest().remove(index);
+
+                        ElasticSearchController.getUser getUser = new ElasticSearchController.getUser();
+                        getUser.execute(followingUser);
+                        try{
+                            reqUser = getUser.get();
+                        }catch (Exception e){
+                            Log.i("Error","error getting user");
+                        }
+
+                        String username = LoginActivity.uname;
+
+                        reqUser.addFollowee(username);
+
+                        ElasticSearchController.updateUser updateUserTask=new ElasticSearchController.updateUser();
+                        updateUserTask.execute(currentUser);
+                        ElasticSearchController.updateUser updateFollowee=new ElasticSearchController.updateUser();
+                        updateFollowee.execute(reqUser);
+
                         finish();
                     }
                 });
@@ -99,51 +115,23 @@ public class RequestActivity extends AppCompatActivity {
 
     }
 
-    public void onBackPressed(){
-        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-        startActivity(intent);
-    }
-
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
+        String username = LoginActivity.uname;
 
-        loadFromFile();
-        listItem.clear();
-        for (int i = 0; i < requestList.size(); i++){
-            String title = requestList.get(i).getUsername();
-            listItem.add(title);
-        }
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItem);
-        listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
+        ElasticSearchController.getUser getUser = new ElasticSearchController.getUser();
+        getUser.execute(username);
 
-    @Override
-    protected void onResume(){
-        super.onResume();
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected void onRestart(){
-        super.onRestart();
-        adapter.notifyDataSetChanged();
-    }
-
-    private void loadFromFile(){
         try{
-            FileInputStream file = openFileInput(RequestFILE);
-            BufferedReader in = new BufferedReader(new InputStreamReader((file)));
-            Gson gson = new Gson();
-
-            Type listType = new TypeToken<ArrayList<User>>(){}.getType();
-            requestList = gson.fromJson(in, listType);
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
+             currentUser = getUser.get();
+        }catch (Exception e){
+            Log.i("Error","error getting user");
         }
+
+        requstList = currentUser.getRequest();
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,requstList);
+        listView.setAdapter(adapter);
     }
 }

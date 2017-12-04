@@ -132,8 +132,8 @@ public class EventTodayActivity extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 //locationToday.clearComposingText();
                 //newLocation.clear();
-                lon = Math.round(location.getLongitude() * 100.0 / 100.0);
-                lat = Math.round(location.getLatitude() * 100.0 / 100.0);
+                lon = location.getLongitude();
+                lat = location.getLatitude();
                 locationToday.setText("(Longitude: " + lon + ", Latitude: " + lat + " )");
                 Log.d("Onlocation", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
