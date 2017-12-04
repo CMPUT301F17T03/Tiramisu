@@ -116,9 +116,22 @@ public class LoginActivity extends AppCompatActivity {
                             getHabitTask.execute(uname);
 
                             try{
+                                ArrayList<String> Last = new ArrayList<String>();
+                                Last.add(" ");
                                 userHabit = getHabitTask.get();
-                                System.out.println(userHabit.get(0).getTitle());
-                                System.out.println(userHabit.get(1).getTitle());
+                                for (int i = 0 ; i < userHabit.size(); i++){
+                                    if (Last.contains(userHabit.get(i).getTitle())){
+                                        if (userHabit.get(i).getLast().equals("xsxs")){
+                                            userHabit.remove(i);
+                                        }
+                                        else{
+                                            Integer in=Last.indexOf(userHabit.get(i).getTitle());
+                                            userHabit.remove(in-1);
+                                        }
+                                    }
+                                    Last.add( userHabit.get(i).getTitle());
+
+                                }
                             } catch (Exception e) {
                                 Log.i("Error", "failed to get habit from the async object");
                             }
