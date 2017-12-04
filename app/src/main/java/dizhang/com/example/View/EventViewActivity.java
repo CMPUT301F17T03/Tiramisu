@@ -91,11 +91,11 @@ public class EventViewActivity extends AppCompatActivity {
         loadFromFile();
         ImageString = newList.get(index).getPicture();
         System.out.println(ImageString);
-//        if (ImageString!=null) {
-//            byte[] decodedString = Base64.decode(ImageString, Base64.DEFAULT);
-//            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-//            Image.setImageBitmap(decodedByte);
-//        }
+        if (ImageString!=null) {
+            byte[] decodedString = Base64.decode(ImageString, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            Image.setImageBitmap(decodedByte);
+        }
         String title = newList.get(index).getTitle();
         String des = newList.get(index).getComment();
         if (newList.get(index).getLocation() == null){
@@ -132,38 +132,9 @@ public class EventViewActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
-    private void Permission(){
-// Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(EventViewActivity.this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(EventViewActivity.this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(EventViewActivity.this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1
-                        );
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }
-    }
     private void loadFromFile(){
         try{
             FileInputStream fis = openFileInput(FILENAME);

@@ -2,6 +2,7 @@ package dizhang.com.example.Control;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
@@ -13,6 +14,7 @@ import java.util.List;
 import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
+import dizhang.com.example.View.LoginActivity;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
@@ -127,10 +129,10 @@ public class ElasticSearchController {
     }
 
 
-
+//http://cmput301.softwareprocess.es:8080
     public static void verifySettings() {
         if (client == null) {
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("https://5b3c205796b755b5db6f9b28b41fa441.us-east-1.aws.found.io:9243/");
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();

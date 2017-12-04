@@ -113,6 +113,7 @@ public class HistoryActivity extends AppCompatActivity {
                         if (newList.get(i).getLocation() != null){
                             mmp.setLocation(newList.get(i).getLocation());
                             mmp.setTitle(title);
+                            mmp.setUsername("Myself");
                             pass2Map.add(mmp);
                         }
                     }

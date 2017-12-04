@@ -145,6 +145,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    @Override
+    public void onBackPressed() {
+        mGoogleMap.clear();
+        super.onBackPressed();
+    }
+
     /**
      *
      * @param lat

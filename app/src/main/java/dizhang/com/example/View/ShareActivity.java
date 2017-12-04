@@ -12,12 +12,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import dizhang.com.example.Control.ElasticSearchController;
+import dizhang.com.example.Control.ElasticSearchEvent;
 import dizhang.com.example.Control.ElasticSearchHabit;
-import dizhang.com.example.Control.HabitNewActivity;
+import dizhang.com.example.Model.Event;
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.Habit;
+import dizhang.com.example.Model.MMP;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
@@ -43,19 +47,21 @@ import dizhang.com.example.tiramisu.R;
 public class ShareActivity extends AppCompatActivity {
 
     public Button viewRequestButton;
-    public Button sendRequestButton;
+    public Button sendRequestButton, recent2Map;
     private EditText bodyText;
-    private ArrayList<User> userList = new ArrayList<User>();
+    //private ArrayList<User> userList = new ArrayList<User>();
     User requestUser = new User();
     User currentUser = new User();
     ListView follwoingList;
     ArrayList<String> listItem = new ArrayList<String>();
     ArrayList<String> viewList = new ArrayList<String>();
-    ArrayList<Habit> userHabit = new ArrayList<>();
+    ArrayList<Habit> userHabit = new ArrayList<Habit>();
+    ArrayList<Event> userEvent = new ArrayList<Event>();
+    ArrayList<MMP> pass2Map = new ArrayList<MMP>();
     ArrayAdapter<String> adapter;
 
     //private ArrayAdapter<User> adapter;
-    //private ListView searchHabit;
+    //private ListView searchEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,16 @@ public class ShareActivity extends AppCompatActivity {
         follwoingList = (ListView) findViewById(R.id.habitFollowedList);
         viewRequestButton = (Button) findViewById(R.id.requestList);
         sendRequestButton = (Button) findViewById(R.id.sendRequest);
+        recent2Map = (Button) findViewById(R.id.recent2Map);
+
+        recent2Map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mapInt = new Intent(getApplicationContext(), MapActivity.class);
+                mapInt.putExtra("pass2Map", pass2Map);
+                startActivity(mapInt);
+            }
+        });
 
 
 
@@ -97,20 +113,26 @@ public class ShareActivity extends AppCompatActivity {
                     }catch (Exception e){
                         Log.i("Error","error getting user");
                     }
-                    String username = LoginActivity.uname;
-                    if(requestUser.getFollower().contains(username)){
-                        Toast.makeText(ShareActivity.this, "Already following this user!", Toast.LENGTH_LONG).show();
+                    //if statement trying to handling non-existed user:
+                    if (requestUser ==null){
+                        Toast.makeText(ShareActivity.this, "User does not exist!", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        String username = LoginActivity.uname;
+                        if (requestUser.getFollower().contains(username)) {
+                            Toast.makeText(ShareActivity.this, "Already following this user!", Toast.LENGTH_LONG).show();
 
-                    }else{
-                        if(!requestUser.getRequest().contains(username)){
-                            requestUser.addRequest(username);
-                            Toast.makeText(ShareActivity.this, "Request sent!", Toast.LENGTH_LONG).show();
+                        } else {
+                            if (!requestUser.getRequest().contains(username)) {
+                                requestUser.addRequest(username);
+                                Toast.makeText(ShareActivity.this, "Request sent!", Toast.LENGTH_LONG).show();
 
-                            ElasticSearchController.updateUser updateUserTask = new ElasticSearchController.updateUser();
-                            updateUserTask.execute(requestUser);
-                        }else{
-                            Toast.makeText(ShareActivity.this, "Request already sent!", Toast.LENGTH_LONG).show();
+                                ElasticSearchController.updateUser updateUserTask = new ElasticSearchController.updateUser();
+                                updateUserTask.execute(requestUser);
+                            } else {
+                                Toast.makeText(ShareActivity.this, "Request already sent!", Toast.LENGTH_LONG).show();
 
+                            }
                         }
                     }
 
@@ -142,7 +164,8 @@ public class ShareActivity extends AppCompatActivity {
         }
         listItem.clear();
         viewList.clear();
-        //get all the name that current user is following and search each username to get all the habit
+        pass2Map.clear();
+        //get all the name that current user is following and search each username to get all the Event
         listItem = currentUser.getFollowee();
 
         for (int i = 0 ; i < listItem.size(); i++) {
@@ -157,6 +180,28 @@ public class ShareActivity extends AppCompatActivity {
                 viewList.add("User: "+listItem.get(i)+"            "
                         +"Habit: "+userHabit.get(x).getTitle());
             }
+
+        }
+
+        for (int i = 0 ; i < listItem.size(); i++) {
+            ElasticSearchEvent.getEventTask getEventTask = new ElasticSearchEvent.getEventTask();
+            getEventTask.execute(listItem.get(i));
+            try{
+                userEvent = getEventTask.get();
+            } catch (Exception e) {
+                Log.i("Error", "failed to get Event from the async object");
+            }
+
+            if (userEvent.get(userEvent.size()-1).getLocation()!=null){
+                MMP mmp = new MMP();
+                mmp.setTitle(userEvent.get(userEvent.size()-1).getTitle());
+                mmp.setLocation(userEvent.get(userEvent.size()-1).getLocation());
+                mmp.setUsername(userEvent.get(userEvent.size()-1).getUsername());
+                pass2Map.add(mmp);
+                Log.d("pass2Map",pass2Map.get(0).getTitle());
+                Log.d("pass2Map",pass2Map.get(0).getUsername());
+                Log.d("pass2Map",pass2Map.get(0).getLocation().toString());
+                }
 
         }
 

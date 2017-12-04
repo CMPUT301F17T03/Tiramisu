@@ -24,7 +24,7 @@
         <ListView
             android:id="@+id/habitFollowedList"
             android:layout_width="match_parent"
-            android:layout_height="317dp"></ListView>
+            android:layout_height="282dp"></ListView>
 
         <EditText
             android:id="@+id/searchUser"
@@ -51,6 +51,18 @@
             android:layout_height="wrap_content"
             android:background="@android:color/holo_orange_light"
             android:text="requests list"
+            android:textColor="@color/cardview_light_background" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
+
+        <Button
+            android:id="@+id/recent2Map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_orange_light"
+            android:text="view recent events in map"
             android:textColor="@color/cardview_light_background" />
     </LinearLayout>
 

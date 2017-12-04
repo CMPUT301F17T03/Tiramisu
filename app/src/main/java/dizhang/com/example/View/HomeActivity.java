@@ -99,7 +99,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        offlinecheck();
+        //offlinecheck();
         habitList = (ListView) findViewById(R.id.todayListview);
 
         habitList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
