@@ -185,7 +185,9 @@ public class EditEventActivity extends AppCompatActivity {
                 return;
             }
         }
-
+        /**
+         * user change the location with the change button
+         */
         changeLocation.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("MissingPermission")
             @Override
@@ -196,7 +198,9 @@ public class EditEventActivity extends AppCompatActivity {
             }
         });
 
-
+        /**
+         * user save the event with the save button
+         */
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -226,6 +230,9 @@ public class EditEventActivity extends AppCompatActivity {
 
             }
         });
+        /*
+            *user pick an image
+         */
         Image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -233,7 +240,9 @@ public class EditEventActivity extends AppCompatActivity {
                 startActivityForResult(photoPickerIntent, 1);
             }
         });
-
+        /**
+         * user delete the envent
+         */
         Delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -276,6 +285,7 @@ public class EditEventActivity extends AppCompatActivity {
         }
     }
     @Override
+
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
 

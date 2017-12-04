@@ -10,6 +10,7 @@ import com.searchly.jestdroid.JestDroidClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
 import io.searchbox.client.JestResult;
@@ -36,8 +37,8 @@ import io.searchbox.core.SearchResult;
  *
  * @version 1.0
  * @since 1.0
+ * @see AsyncTask
  */
-
 
 public class ElasticSearchController {
 
@@ -76,7 +77,7 @@ public class ElasticSearchController {
         }
     }
 
-    public static class IsExist extends AsyncTask<String, Void, User> {
+    public static class getUser extends AsyncTask<String, Void, User> {
         @Override
         protected User doInBackground(String... params){
             verifySettings();
@@ -99,6 +100,32 @@ public class ElasticSearchController {
 
     }
 
+    public static class updateUser extends AsyncTask<User,Void,Void>{
+        @Override
+        protected Void doInBackground(User... users) {
+            verifySettings();
+
+            for (User user : users){
+                Index index = new Index.Builder(user).index(indexString).type(typeString).id(user.getUsername()).build();
+
+                try{
+                    DocumentResult result = client.execute(index);
+
+                    if(result.isSucceeded()){
+                        Log.i("Success", "update user successfully");
+                    }else {
+                        Log.i("Error", "failed to update user");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.i("Error","The application failed to build and send the habit");
+                }
+            }
+
+            return null;
+        }
+    }
+
 
 
     public static void verifySettings() {
@@ -114,11 +141,5 @@ public class ElasticSearchController {
 
 }
 
-    // Class to setInfo
-    /**
-     * Represents a SetUserInfo
-     * @version 1.0
-     * @see AsyncTask
-     *
-*/
+
 

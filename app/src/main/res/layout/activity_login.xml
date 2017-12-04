@@ -29,7 +29,8 @@
         android:drawableStart="@drawable/ic_action_user"
         android:ems="10"
         android:hint="Username"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textColor="@color/cardview_light_background" />
 
     <EditText
         android:id="@+id/passwordLayout"
@@ -41,7 +42,8 @@
         android:drawableStart="@drawable/ic_action_name"
         android:ems="10"
         android:hint="password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textColor="@color/cardview_light_background" />
 
     <TextView
         android:id="@+id/signupLayout"

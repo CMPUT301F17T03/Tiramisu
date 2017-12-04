@@ -37,10 +37,12 @@ import io.searchbox.core.SearchResult;
  * at University of Alberta
  */
 /**
- * Represents a ElasticSearchController
+ * Represents a ElasticSearchHabit
  *
  * @version 1.0
  * @since 1.0
+ * @see AbstractStringBuilder
+ * @see AsyncTask
  */
 
 
@@ -142,6 +144,7 @@ public class ElasticSearchHabit {
             return null;
         }
     }
+
 
     public static class delHabitTask extends AsyncTask<Habit,Void,Void>{
         @Override

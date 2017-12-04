@@ -59,6 +59,7 @@ import dizhang.com.example.tiramisu.R;
  * @see ShareActivity
  * @see MapActivity
  * @see LoginActivity
+ * @see EventTodayActivity
  * @since 1.0
  */
 public class HomeActivity extends AppCompatActivity {
@@ -118,31 +119,31 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case(R.id.myProfile):
-                        Intent profileInt = new Intent(getApplicationContext(), ProfileActivity.class);
+                        Intent profileInt = new Intent(getApplicationContext(), ProfileActivity.class);  // go to see user's profile
                         startActivity(profileInt);
                         break;
                     case(R.id.manageHabit):
-                        Intent habitInt = new Intent(getApplicationContext(), HabitManagerActivity.class);
+                        Intent habitInt = new Intent(getApplicationContext(), HabitManagerActivity.class);  // go to see and edit user's habit
                         startActivity(habitInt);
                         break;
                     case(R.id.manageEvent):
-                        Intent eventInt = new Intent(getApplicationContext(), EventManagerActivity.class);
+                        Intent eventInt = new Intent(getApplicationContext(), EventManagerActivity.class);   // go to see and edit user's event
                         startActivity(eventInt);
                         break;
                     case(R.id.eventHistory):
-                        Intent historyInt = new Intent(getApplicationContext(), HistoryActivity.class);
+                        Intent historyInt = new Intent(getApplicationContext(), HistoryActivity.class);     // go to see and edit the history of an event
                         startActivity(historyInt);
                         break;
                     case(R.id.shareCenter):
-                        Intent shareInt = new Intent(getApplicationContext(), ShareActivity.class);
+                        Intent shareInt = new Intent(getApplicationContext(), ShareActivity.class); // go to see and manage the habits followed list
                         startActivity(shareInt);
                         break;
                     case(R.id.map):
-                        Intent mapInt = new Intent(getApplicationContext(), MapActivity.class);
+                        Intent mapInt = new Intent(getApplicationContext(), MapActivity.class);  // see the map of location
                         startActivity(mapInt);
                         break;
                     case(R.id.logout):
-                        Intent loginInt = new Intent(getApplicationContext(), LoginActivity.class);
+                        Intent loginInt = new Intent(getApplicationContext(), LoginActivity.class);   //  logout
                         startActivity(loginInt);
                         break;
                 }

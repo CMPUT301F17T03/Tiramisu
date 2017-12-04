@@ -59,6 +59,7 @@ public class SignupActivity extends AppCompatActivity {
     //Boolean lError = false;
     //not working in this part, still finding methods to store data : (
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
@@ -94,7 +95,7 @@ public class SignupActivity extends AppCompatActivity {
                 ElasticSearchController.AddUserTask addUserTask
                         = new ElasticSearchController.AddUserTask();
                 addUserTask.execute(newUser);
-                ElasticSearchController.IsExist isExist = new ElasticSearchController.IsExist();
+                ElasticSearchController.getUser isExist = new ElasticSearchController.getUser();
                 User getuser = new User();
                 try {
 
@@ -110,6 +111,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void saveInFile(){
         try{
