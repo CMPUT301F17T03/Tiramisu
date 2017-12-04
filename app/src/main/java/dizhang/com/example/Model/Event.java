@@ -2,6 +2,7 @@ package dizhang.com.example.Model;
 
 import android.location.Location;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 

@@ -54,6 +54,9 @@ public class HistoryActivity extends AppCompatActivity {
     ListView mainListView ;
     EditText input;
     ArrayList<String> listItem = new ArrayList<String>();
+
+    ArrayList<String> pass2Map = new ArrayList<String>();
+
     ArrayAdapter<String> adapter;
     ArrayList<Integer> SelectIndex = new ArrayList<Integer>();
 
@@ -83,6 +86,7 @@ public class HistoryActivity extends AppCompatActivity {
                 String Name= input.getText().toString();
                 ArrayList<Integer> Select = new ArrayList<Integer>();
                 listItem.clear();
+                pass2Map.clear();
                 for (int i = 0 ; i < newList.size(); i++){
                     String Eventcomment = newList.get(i).getTitle();
                     if( Eventcomment.contains(Name)) {
@@ -90,6 +94,7 @@ public class HistoryActivity extends AppCompatActivity {
                         listItem.add(title);
                         Select.add(i);
                     }
+                    ArrayList<String> loc = new ArrayList<String>();
 
                 }
                 Collections.reverse(listItem);
