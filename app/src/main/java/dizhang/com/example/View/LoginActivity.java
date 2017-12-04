@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "Password can't be empty", Toast.LENGTH_LONG).show();
                 } else {
                     //need to create signup file so that we could call the username and password from there
-                    ElasticSearchController.IsExist isExist = new ElasticSearchController.IsExist();
+                    ElasticSearchController.getUser isExist = new ElasticSearchController.getUser();
                     User getuser = new User();
                     try {
                         getuser = isExist.execute(UsernameString).get();

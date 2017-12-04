@@ -118,6 +118,10 @@ public class EditProfileActivity extends AppCompatActivity {
                 user.setInterests(interests);
                 user.setGender(gender);
                 saveInFile();
+
+
+                ElasticSearchController.updateUser updateUser = new ElasticSearchController.updateUser();
+                updateUser.execute(user);
                 Intent profileInt = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(profileInt);
             }
