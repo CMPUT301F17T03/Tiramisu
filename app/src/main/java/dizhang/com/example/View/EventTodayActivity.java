@@ -87,7 +87,7 @@ public class EventTodayActivity extends AppCompatActivity {
     Habit Current_Habit = new Habit();
     double lon, lat;
     Date date;
-    Button addLocation, Complete, picture;
+    Button addLocation, Complete;
     EditText comment;
     TextView eventTitle, locationToday;
     ImageView Image;
@@ -112,7 +112,7 @@ public class EventTodayActivity extends AppCompatActivity {
             }
         }
 
-        picture = (Button) findViewById(R.id.picture);
+        //picture = (Button) findViewById(R.id.picture);
         eventTitle = (TextView) findViewById(R.id.eventTitle);
         addLocation = (Button) findViewById(R.id.addLocation);
         comment = (EditText) findViewById(R.id.comment);
@@ -120,7 +120,7 @@ public class EventTodayActivity extends AppCompatActivity {
         Image = (ImageView) findViewById(R.id.Image);
         locationToday = (TextView) findViewById(R.id.locationToday);
         eventTitle.setText(name);
-        realPath = "empty";
+        //ImageString = "empty";
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -174,7 +174,7 @@ public class EventTodayActivity extends AppCompatActivity {
         });
 
 
-        picture.setOnClickListener(new View.OnClickListener() {
+        Image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
