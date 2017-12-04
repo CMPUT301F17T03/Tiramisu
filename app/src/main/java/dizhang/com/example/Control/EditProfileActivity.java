@@ -27,6 +27,8 @@ import java.util.ArrayList;
 
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
+import dizhang.com.example.View.ConnectionCheck;
+import dizhang.com.example.View.LoginActivity;
 import dizhang.com.example.View.ProfileActivity;
 import dizhang.com.example.tiramisu.R;
 
@@ -117,11 +119,18 @@ public class EditProfileActivity extends AppCompatActivity {
                 user.setNickname(nickname);
                 user.setInterests(interests);
                 user.setGender(gender);
+
+
+                if (ConnectionCheck.isNetworkAvailable(getApplicationContext())) {
+
+                    ElasticSearchController.updateUser updateUser = new ElasticSearchController.updateUser();
+                    updateUser.execute(user);
+                }
+                else{
+                    user.setMark("U");
+                    user.setNetwork("N");
+                }
                 saveInFile();
-
-
-                ElasticSearchController.updateUser updateUser = new ElasticSearchController.updateUser();
-                updateUser.execute(user);
                 Intent profileInt = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(profileInt);
             }

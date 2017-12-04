@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,7 +28,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.Habit;
+import dizhang.com.example.Model.User;
+import dizhang.com.example.View.ConnectionCheck;
 import dizhang.com.example.View.HabitManagerActivity;
 import dizhang.com.example.View.LoginActivity;
 import dizhang.com.example.tiramisu.R;
@@ -57,6 +61,8 @@ import dizhang.com.example.tiramisu.R;
 
 public class EditHabitActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private static final String HabitFILE = "Habit.save";
+    private static final String FILENAME = "User.save";
+    User user = new User();
 
     ArrayList<String> dayOfWeek = new ArrayList<String>();
     Button changeDate, editDone;
@@ -66,6 +72,7 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
     Date date;
     Boolean lError = false;
     ArrayList<Habit> newList = new ArrayList<Habit>();
+    ArrayList<Habit> DelList = new ArrayList<Habit>();
     //ArrayList<Habit> eList = new ArrayList<Habit>();
 
 
@@ -120,6 +127,15 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
 
 
                 String title = editTitle.getText().toString();
+
+                for (int i = 0 ; i < newList.size(); i++){
+                    if (newList.get(i).getTitle().equals(title)){
+                        Toast.makeText(EditHabitActivity.this, "Cannot have two habits with save name", Toast.LENGTH_LONG).show();
+
+                        return;
+                    }
+
+                }
                 String des  = editDes.getText().toString();
                 newList.get(index).setTitle(title);
                 newList.get(index).setDescription(des);
@@ -133,9 +149,16 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
                     dayOfWeek.add("Sun");
                 }
                 newList.get(index).setFrequency(dayOfWeek);
-                ElasticSearchHabit.updateHabitTask updateHabitTask = new ElasticSearchHabit.updateHabitTask();
-                updateHabitTask.execute(newList.get(index));
-
+                if (ConnectionCheck.isNetworkAvailable(getApplicationContext())) {
+                    ElasticSearchHabit.updateHabitTask updateHabitTask = new ElasticSearchHabit.updateHabitTask();
+                    updateHabitTask.execute(newList.get(index));
+                }
+                else{
+                    newList.get(index).setMark("U");
+                    loadFromUser();
+                    user.setNetwork("N");
+                    saveUser();
+                }
 
                 Intent intent = new Intent(EditHabitActivity.this, HabitManagerActivity.class);
                 saveInFile();
@@ -244,6 +267,36 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             Gson gson =new Gson();
             gson.toJson(newList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFromUser(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new com.google.common.reflect.TypeToken<User>(){}.getType();
+            user = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveUser(){
+        try{
+            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(user,writer);
             writer.flush();
 
         }catch (FileNotFoundException e){

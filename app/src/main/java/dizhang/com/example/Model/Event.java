@@ -34,6 +34,7 @@ public class Event {
     private ArrayList<String> location;
     private String title;
     private String username;
+    private String mark;
     @JestId
     private String Id;
 
@@ -114,6 +115,15 @@ public class Event {
     public String getId() {
         return Id;
     }
+
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
+
+    public String getMark() {
+        return mark;
+    }
+
 
     /**
      *

@@ -7,8 +7,8 @@ import android.net.NetworkInfo;
  * source code: https://stackoverflow.com/questions/30343011/how-to-check-if-an-android-device-is-online
  */
 
-public class connection_check {
-    private boolean isNetworkAvailable(Context context) {
+public class ConnectionCheck {
+    public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager manager =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();

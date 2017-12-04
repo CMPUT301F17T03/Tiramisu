@@ -33,6 +33,7 @@ public class Habit {
     private EventList events = new EventList();
     private String LastDate;
     private String username;
+    private String mark;
     @JestId
     private String Id;
 
@@ -109,6 +110,12 @@ public class Habit {
     /**
      *@return
      */
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
+    public String getMark() {
+        return mark;
+    }
 
 
     public String getDescription() {

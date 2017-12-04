@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         uname=CurrentUser.getUsername();
-
+                        CurrentUser.setNetwork("Y");
 
                             ElasticSearchHabit.getHabitTask getHabitTask = new ElasticSearchHabit.getHabitTask();
                             getHabitTask.execute(uname);

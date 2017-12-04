@@ -34,6 +34,8 @@ public class User {
     private ArrayList<Event> events = new ArrayList<Event>();
     //private HistoryList history;
     private String password;
+    private String mark;
+    private String network;
 
     //private UserList fans = new UserList();     //users who follows me
     //private UserList requests = new UserList(); //requests sent to me
@@ -141,6 +143,20 @@ public class User {
      */
     public ArrayList<Event> getEventlist() {
         return events;
+    }
+
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
+
+    public String getMark() {
+        return mark;
+    }
+
+    public String getNetwork(){return network;}
+
+    public void setNetwork(String network){
+        this.network =network;
     }
 
 

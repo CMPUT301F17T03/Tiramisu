@@ -21,8 +21,10 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,6 +35,9 @@ import java.util.Date;
 import java.util.Locale;
 
 import dizhang.com.example.Control.ElasticSearchController;
+import dizhang.com.example.Control.ElasticSearchEvent;
+import dizhang.com.example.Control.ElasticSearchHabit;
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
@@ -65,6 +70,15 @@ import dizhang.com.example.tiramisu.R;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String HabitFILE = "Habit.save";
+    private static final String EventFile = "Event.save";
+    private static final String FILENAME = "User.save";
+    User user = new User();
+    private static final String DelEvent = "DelEvent.save";
+    private static final String DelHabit = "DelHabit.save";
+
+    ArrayList<Habit> DelHabitList = new ArrayList<Habit>();
+    ArrayList<Event> DelEventList = new ArrayList<Event>();
+    ArrayList<Event> EventList = new ArrayList<Event>();
     //User CurrentUser = new User();
 
 
@@ -85,7 +99,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
+        offlinecheck();
         habitList = (ListView) findViewById(R.id.todayListview);
 
         habitList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -224,6 +238,186 @@ public class HomeActivity extends AppCompatActivity {
 
             Type Habittype = new TypeToken<ArrayList<Habit>>(){}.getType();
             eList = gson.fromJson(in,Habittype);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    private void offlinecheck(){
+        if (ConnectionCheck.isNetworkAvailable(getApplicationContext()) & user.getNetwork().equals("N")){
+            loadFromDelete();
+            loadFromDelEvent();
+            loadFromEvent();
+            loadFromUser();
+            if(!DelHabitList.isEmpty()){
+                for (int i = 0 ; i < DelHabitList.size(); i++){
+
+                    ElasticSearchHabit.delHabitTask delHabitTask = new ElasticSearchHabit.delHabitTask();
+                    delHabitTask.execute(DelHabitList.get(i));
+
+                }
+            }
+            DelHabitList = new ArrayList<Habit>();
+            if(!DelEventList.isEmpty()){
+
+                for (int i = 0 ; i < DelEventList.size(); i++){
+
+                    ElasticSearchEvent.delEventTask delEventTask = new ElasticSearchEvent.delEventTask();
+                    delEventTask.execute(DelEventList.get(i));
+
+                }
+            }
+            DelEventList = new ArrayList<Event>();
+
+            for (int i = 0 ; i < EventList.size(); i++){
+                if (EventList.get(i).getMark().equals("U")){
+
+                    ElasticSearchEvent.updateEventTask updateEventTask = new ElasticSearchEvent.updateEventTask();
+                    updateEventTask.execute(EventList.get(i));
+                    EventList.get(i).setMark("F");
+                }
+
+                if (EventList.get(i).getMark().equals("A")){
+
+                    ElasticSearchEvent.addEventTask addEventTask = new ElasticSearchEvent.addEventTask();
+                    addEventTask.execute(EventList.get(i));
+                    EventList.get(i).setMark("F");
+                }
+
+            }
+
+            for (int i = 0 ; i < eList.size(); i++){
+                if (eList.get(i).getMark().equals("U")){
+
+                    ElasticSearchHabit.updateHabitTask updateHabitTask = new ElasticSearchHabit.updateHabitTask();
+                    updateHabitTask.execute(eList.get(i));
+                    eList.get(i).setMark("F");
+                }
+                if (eList.get(i).getMark().equals("A")){
+
+                    ElasticSearchHabit.addHabitTask addHabitTask = new ElasticSearchHabit.addHabitTask();
+                    addHabitTask.execute(eList.get(i));
+                    eList.get(i).setMark("F");
+                }
+
+            }
+            if (user.getMark().equals("U")){
+
+                ElasticSearchController.updateUser updateUser = new ElasticSearchController.updateUser();
+                updateUser.execute(user);
+                user.setMark("F");
+            }
+            user.setNetwork("Y");
+            saveInDelete();
+            saveInDelEvent();
+            saveUser();
+        }
+        if (!ConnectionCheck.isNetworkAvailable(getApplicationContext())){
+            user.setNetwork("N");
+            saveUser();
+        }
+
+
+    }
+
+    private void loadFromDelete(){
+        try{
+            FileInputStream fis = openFileInput(DelHabit);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
+            DelHabitList = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveInDelete(){
+        try{
+            FileOutputStream fos = openFileOutput(DelHabit, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(DelHabitList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFromDelEvent(){
+        try{
+            FileInputStream fis = openFileInput(DelEvent);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
+            DelEventList = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFromUser(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new com.google.common.reflect.TypeToken<User>(){}.getType();
+            user = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveUser(){
+        try{
+            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(user,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    private void loadFromEvent(){
+        try{
+            FileInputStream fis = openFileInput(EventFile);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
+            EventList = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveInDelEvent(){
+        try{
+            FileOutputStream fos = openFileOutput(DelEvent, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(DelEventList,writer);
+            writer.flush();
+
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }catch (IOException e){

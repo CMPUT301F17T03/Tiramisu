@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.ChangedPackages;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -34,6 +36,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -47,10 +50,13 @@ import java.util.Date;
 
 import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.Habit;
+import dizhang.com.example.Model.User;
+import dizhang.com.example.View.ConnectionCheck;
 import dizhang.com.example.View.EventManagerActivity;
 import dizhang.com.example.View.EventTodayActivity;
 import dizhang.com.example.View.HabitManagerActivity;
 import dizhang.com.example.View.HabitViewActivity;
+import dizhang.com.example.View.LoginActivity;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -76,7 +82,10 @@ import dizhang.com.example.tiramisu.R;
 
 public class EditEventActivity extends AppCompatActivity {
     private static final String FILENAME = "Event.save";
+    private static final String DelEvent = "DelEvent.save";
 
+    private static final String UserFile = "User.save";
+    User user = new User();
 
     Button Delete, Save, changeLocation;
     EditText editCom;
@@ -88,6 +97,9 @@ public class EditEventActivity extends AppCompatActivity {
     private LocationListener locationListener;
     ArrayList<String> newLocation = new ArrayList<String>();
     ArrayList<Event> newList = new ArrayList<Event>();
+
+    ArrayList<Event> DelList = new ArrayList<Event>();
+
     String ImageString;
 
     @Override
@@ -220,9 +232,16 @@ public class EditEventActivity extends AppCompatActivity {
                 newList.get(index).setLocation(newLocation);
                 //Log.d("location", myLocation.toString());
 
-
-                ElasticSearchEvent.updateEventTask updateEventTask = new ElasticSearchEvent.updateEventTask();
-                updateEventTask.execute(newList.get(index));
+                if (ConnectionCheck.isNetworkAvailable(getApplicationContext())) {
+                    ElasticSearchEvent.updateEventTask updateEventTask = new ElasticSearchEvent.updateEventTask();
+                    updateEventTask.execute(newList.get(index));
+                }
+                else{
+                    newList.get(index).setMark("U");
+                    loadFromUser();
+                    user.setNetwork("N");
+                    saveUser();
+                }
                 saveInFile();
 
                 Intent intent = new Intent(EditEventActivity.this, EventManagerActivity.class);
@@ -249,10 +268,20 @@ public class EditEventActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int index = getIntent().getIntExtra("index",0);
                 Intent intent = new Intent(EditEventActivity.this, EventManagerActivity.class);
+                if (ConnectionCheck.isNetworkAvailable(getApplicationContext())) {
 
-                ElasticSearchEvent.delEventTask    delEventTask = new ElasticSearchEvent.delEventTask();
-                delEventTask.execute(newList.get(index));
+                    ElasticSearchEvent.delEventTask delEventTask = new ElasticSearchEvent.delEventTask();
+                    delEventTask.execute(newList.get(index));
+                }
+                else{
+                    loadFromDelete();
+                    DelList.add(newList.get(index));
+                    saveInDelete();
 
+                    loadFromUser();
+                    user.setNetwork("N");
+                    saveUser();
+                }
                 newList.remove(index);
                 saveInFile();
                 startActivity(intent);
@@ -296,7 +325,15 @@ public class EditEventActivity extends AppCompatActivity {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                String realPath = getRealPathFromURI(imageUri);
+                File file = new File(realPath);
+                long fileSizeInBytes = file.length();
 
+                if(fileSizeInBytes > 65536){
+                    Toast.makeText(EditEventActivity.this, "the image is too large", Toast.LENGTH_LONG).show();
+
+                    return;
+                }
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] byteImage = baos.toByteArray();
@@ -312,6 +349,12 @@ public class EditEventActivity extends AppCompatActivity {
         }
     }
 
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }
     private void saveInFile(){
         try{
             FileOutputStream fos = openFileOutput(FILENAME, 0);
@@ -326,4 +369,65 @@ public class EditEventActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    private void loadFromDelete(){
+        try{
+            FileInputStream fis = openFileInput(DelEvent);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
+            DelList = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveInDelete(){
+        try{
+            FileOutputStream fos = openFileOutput(DelEvent, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(DelList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFromUser(){
+        try{
+            FileInputStream fis = openFileInput(UserFile);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new com.google.common.reflect.TypeToken<User>(){}.getType();
+            user = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveUser(){
+        try{
+            FileOutputStream fos = openFileOutput(UserFile, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(user,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 }

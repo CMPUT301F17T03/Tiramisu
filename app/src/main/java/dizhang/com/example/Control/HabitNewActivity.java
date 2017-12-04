@@ -33,6 +33,8 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import dizhang.com.example.Model.Habit;
+import dizhang.com.example.Model.User;
+import dizhang.com.example.View.ConnectionCheck;
 import dizhang.com.example.View.HabitManagerActivity;
 import dizhang.com.example.View.LoginActivity;
 import dizhang.com.example.tiramisu.R;
@@ -61,6 +63,8 @@ import dizhang.com.example.tiramisu.R;
 public class HabitNewActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private static final String HabitFILE = "Habit.save";
 
+    private static final String FILENAME = "User.save";
+    User user = new User();
     ArrayList<String> dayOfWeek = new ArrayList<String>();
     Button startDate, addHabit;
     EditText newTitle, newDes;
@@ -110,6 +114,14 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
             public void onClick(View view) {
 
                 String title = newTitle.getText().toString();
+                for (int i = 0 ; i < newList.size(); i++){
+                    if (newList.get(i).getTitle().equals(title)){
+                        Toast.makeText(HabitNewActivity.this, "Cannot have two habits with save name", Toast.LENGTH_LONG).show();
+
+                        inputError = true;
+                    }
+
+                }
                 String des = newDes.getText().toString();
 
                 //check if user input is correct, if not notify the error
@@ -132,8 +144,16 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
                     System.out.println(sdate);
                     Habit newHabit = new Habit(title, des, sdate, dayOfWeek,username);
                     newHabit.setLast("xsxs");
-                    ElasticSearchHabit.addHabitTask addHabitTask = new ElasticSearchHabit.addHabitTask();
-                    addHabitTask.execute(newHabit);
+                    if (ConnectionCheck.isNetworkAvailable(getApplicationContext())) {
+                        ElasticSearchHabit.addHabitTask addHabitTask = new ElasticSearchHabit.addHabitTask();
+                        addHabitTask.execute(newHabit);
+                    }
+                    else{
+                        newHabit.setMark("A");
+                        loadFromUser();
+                        user.setNetwork("N");
+                        saveUser();
+                    }
 
                     //newHabit.setLast("0");
                     newList.add(newHabit);
@@ -292,6 +312,36 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             Gson gson =new Gson();
             gson.toJson(newList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFromUser(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new com.google.common.reflect.TypeToken<User>(){}.getType();
+            user = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveUser(){
+        try{
+            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(user,writer);
             writer.flush();
 
         }catch (FileNotFoundException e){

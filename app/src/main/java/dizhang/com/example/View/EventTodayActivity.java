@@ -32,6 +32,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -79,6 +80,9 @@ public class EventTodayActivity extends AppCompatActivity {
 
     private static final String EventFile = "Event.save";
     private static final String HabitFILE = "Habit.save";
+
+    private static final String FILENAME = "User.save";
+    User user = new User();
     //User CurrentUser = new User();
     ArrayList<Habit> habitList = new ArrayList<Habit>();
     ArrayList<Event> EventList = new ArrayList<Event>();
@@ -223,16 +227,23 @@ public class EventTodayActivity extends AppCompatActivity {
 
                 EventList.add(newEvent);
 
-                ElasticSearchEvent.addEventTask addEventTask = new ElasticSearchEvent.addEventTask();
-                addEventTask.execute(newEvent);
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 Date date = new Date();
                 String Today_date = dateFormat.format(date);
                 habitList.get(index).setLast(Today_date);
-
+                if (ConnectionCheck.isNetworkAvailable(getApplicationContext())){
+                ElasticSearchEvent.addEventTask addEventTask = new ElasticSearchEvent.addEventTask();
+                addEventTask.execute(newEvent);
                 ElasticSearchHabit.updateHabitTask updateHabitTask = new ElasticSearchHabit.updateHabitTask();
                 updateHabitTask.execute(habitList.get(index));
-
+                }
+                else{
+                    habitList.get(index).setMark("U");
+                    newEvent.setMark("A");
+                    loadFromUser();
+                    user.setNetwork("N");
+                    saveUser();
+                }
                 saveInFile();
                 SaveHabit();
 
@@ -270,9 +281,16 @@ public class EventTodayActivity extends AppCompatActivity {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
                 byte[] byteImage = baos.toByteArray();
+
+                File file = new File(realPath);
+                long fileSizeInBytes = file.length();
+
+                if(fileSizeInBytes > 65536){
+                    Toast.makeText(EventTodayActivity.this, "the image is too large", Toast.LENGTH_LONG).show();
+
+                    return;
+                }
                 ImageString = Base64.encodeToString(byteImage, Base64.DEFAULT);
-
-
                 Toast.makeText(EventTodayActivity.this, realPath, Toast.LENGTH_LONG).show();
 
                 Image.setImageBitmap(selectedImage);
@@ -311,6 +329,8 @@ public class EventTodayActivity extends AppCompatActivity {
             Gson gson = new Gson();
 
             Type Usertype = new TypeToken<ArrayList<Habit>>(){}.getType();
+
+
             habitList = gson.fromJson(in,Usertype);
         }catch (FileNotFoundException e){
             e.printStackTrace();
@@ -346,6 +366,36 @@ public class EventTodayActivity extends AppCompatActivity {
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             Gson gson =new Gson();
             gson.toJson(EventList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFromUser(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new com.google.common.reflect.TypeToken<User>(){}.getType();
+            user = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveUser(){
+        try{
+            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(user,writer);
             writer.flush();
 
         }catch (FileNotFoundException e){

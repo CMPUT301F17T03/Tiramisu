@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import dizhang.com.example.Control.EditHabitActivity;
 import dizhang.com.example.Control.ElasticSearchController;
 import dizhang.com.example.Control.ElasticSearchHabit;
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.Habit;
+import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -50,13 +52,16 @@ import dizhang.com.example.tiramisu.R;
 
 public class HabitViewActivity extends AppCompatActivity {
     private static final String HabitFILE = "Habit.save";
+    private static final String DelHabit = "DelHabit.save";
 
+    private static final String FILENAME = "User.save";
+    User user = new User();
     Button editHabit, deleteHabit;
     TextView titleView, descView,dateView,frequencyView;
     //ArrayList<Habit> newList = new ArrayList<Habit>();
 
     ArrayList<Habit> userHabit = new ArrayList<Habit>();//will contain all the habit from current user
-
+    ArrayList<Habit> DelList = new ArrayList<Habit>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,8 +135,19 @@ public class HabitViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int index = getIntent().getIntExtra("index",0);
                 Intent intent = new Intent(HabitViewActivity.this, HabitManagerActivity.class);
-                ElasticSearchHabit.delHabitTask delHabitTask = new ElasticSearchHabit.delHabitTask();
-                delHabitTask.execute(userHabit.get(index));
+                if (ConnectionCheck.isNetworkAvailable(getApplicationContext())) {
+
+                    ElasticSearchHabit.delHabitTask delHabitTask = new ElasticSearchHabit.delHabitTask();
+                    delHabitTask.execute(userHabit.get(index));
+                }
+                else{
+                    loadFromDelete();
+                    DelList.add(userHabit.get(index));
+                    saveInDelete();
+                    loadFromUser();
+                    user.setNetwork("N");
+                    saveUser();
+                }
                 userHabit.remove(index);
                 saveInFile();
                 startActivity(intent);
@@ -177,4 +193,63 @@ public class HabitViewActivity extends AppCompatActivity {
         }
     }
 
+    private void loadFromDelete(){
+        try{
+            FileInputStream fis = openFileInput(DelHabit);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
+            DelList = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveInDelete(){
+        try{
+            FileOutputStream fos = openFileOutput(DelHabit, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(DelList,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFromUser(){
+        try{
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new com.google.common.reflect.TypeToken<User>(){}.getType();
+            user = gson.fromJson(in,listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveUser(){
+        try{
+            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson =new Gson();
+            gson.toJson(user,writer);
+            writer.flush();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }
