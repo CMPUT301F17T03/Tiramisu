@@ -106,7 +106,7 @@ public class ElasticSearchEvent {
                     if(result.isSucceeded()){
                         event.setId(result.getId());
                     }else {
-                        Log.i("Error", "failed to add habit");
+                        Log.i("Error", "failed to add Event");
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -143,7 +143,7 @@ public class ElasticSearchEvent {
         }
     }
 
-    public static class delHabitTask extends AsyncTask<Event,Void,Void>{
+    public static class delEventTask extends AsyncTask<Event,Void,Void>{
         @Override
         protected Void doInBackground(Event... events) {
             verifySettings();

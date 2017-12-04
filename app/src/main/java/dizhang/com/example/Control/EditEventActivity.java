@@ -214,6 +214,10 @@ public class EditEventActivity extends AppCompatActivity {
                 newList.get(index).setComment(comment);
                 newList.get(index).setLocation(newLocation);
                 //Log.d("location", myLocation.toString());
+
+
+                ElasticSearchEvent.updateEventTask updateEventTask = new ElasticSearchEvent.updateEventTask();
+                updateEventTask.execute(newList.get(index));
                 saveInFile();
             }
         });
@@ -230,6 +234,10 @@ public class EditEventActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int index = getIntent().getIntExtra("index",0);
                 Intent intent = new Intent(EditEventActivity.this, EventManagerActivity.class);
+
+                ElasticSearchEvent.delEventTask    delEventTask = new ElasticSearchEvent.delEventTask();
+                delEventTask.execute(newList.get(index));
+
                 newList.remove(index);
                 saveInFile();
                 startActivity(intent);
