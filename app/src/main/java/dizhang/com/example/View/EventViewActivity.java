@@ -91,11 +91,11 @@ public class EventViewActivity extends AppCompatActivity {
         loadFromFile();
         ImageString = newList.get(index).getPicture();
         System.out.println(ImageString);
-        if (ImageString!=null) {
-            byte[] decodedString = Base64.decode(ImageString, Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            Image.setImageBitmap(decodedByte);
-        }
+//        if (ImageString!=null) {
+//            byte[] decodedString = Base64.decode(ImageString, Base64.DEFAULT);
+//            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//            Image.setImageBitmap(decodedByte);
+//        }
         String title = newList.get(index).getTitle();
         String des = newList.get(index).getComment();
         if (newList.get(index).getLocation() == null){
