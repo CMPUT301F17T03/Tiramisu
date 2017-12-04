@@ -1,9 +1,18 @@
 package dizhang.com.example.View;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -92,6 +101,12 @@ public class HomeActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mtoggle;
 
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    double lon, lat;
+
+
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -164,6 +179,44 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                //locationToday.clearComposingText();
+                //newLocation.clear();
+                lon = location.getLongitude();
+                lat = location.getLatitude();
+                //locationToday.setText("(Longitude: " + lon + ", Latitude: " + lat + " )");
+                Log.d("Onlocation", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+                Log.d("Case", "Case222222222222222222222222222222");
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+                Log.d("Case", "Case222222222222222222222222222222");
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+
+            }
+        };
+
+        locationManager.requestLocationUpdates("gps", 5000, 10, locationListener);
+
+
     }
 
     @Override

@@ -206,7 +206,7 @@ public class ShareActivity extends AppCompatActivity {
         }
 
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,viewList);
+        adapter = new ArrayAdapter<String>(this, R.layout.list_item,viewList);
         follwoingList.setAdapter(adapter);
     }
 }

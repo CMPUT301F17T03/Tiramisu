@@ -131,7 +131,7 @@ public class RequestActivity extends AppCompatActivity {
         }
 
         requstList = currentUser.getRequest();
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,requstList);
+        adapter = new ArrayAdapter<String>(this,R.layout.list_item,requstList);
         listView.setAdapter(adapter);
     }
 }

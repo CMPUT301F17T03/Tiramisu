@@ -2,6 +2,7 @@ package dizhang.com.example.View;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.MMP;
 import dizhang.com.example.tiramisu.R;
 
@@ -60,7 +62,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Log.d("googleService","NOT Available :(");
         }
 
+        try{
         pass2Map = (ArrayList<MMP>) getIntent().getSerializableExtra("pass2Map");
+        }
+        catch (Exception e){
+            //nothing
+        }
 //        for (int i = 0 ; i < pass2Map.size(); i++){
 //            Log.d("pass2Map",pass2Map.get(i).getTitle());
 //        }
@@ -104,36 +111,40 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Log.d("Ready","OnMapReady!");
         mGoogleMap = googleMap;
         mGoogleMap.setMyLocationEnabled(true);
+        //Location myLocation = mGoogleMap.getMyLocation();
+        //LatLng myLatlng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
         //ArrayList<MMP> pass2Map = (ArrayList<MMP>) getIntent().getSerializableExtra("pass2Map");
+        if (pass2Map!=null) {
 
-        for (int i = 0 ; i < pass2Map.size(); i++) {
-            //Log.d("pass2Map", pass2Map.get(i).getTitle());
-            ArrayList<String> loc = pass2Map.get(i).getLocation();
-            try{
-                double lon = Double.parseDouble(loc.get(0));
-                double lat = Double.parseDouble(loc.get(1));
-                MarkerOptions options = new MarkerOptions()
-                        .title(pass2Map.get(i).getTitle())
-                        .position(new LatLng(lat, lon))
-                        .snippet(pass2Map.get(i).getUsername());
-                mGoogleMap.addMarker(options);
-            }
-            catch (NumberFormatException ex){
-                Log.d("MapLatlng", "CANNOT CONVERT string -> double");
+            for (int i = 0; i < pass2Map.size(); i++) {
+                //Log.d("pass2Map", pass2Map.get(i).getTitle());
+                ArrayList<String> loc = pass2Map.get(i).getLocation();
+                try {
+                    double lon = Double.parseDouble(loc.get(0));
+                    double lat = Double.parseDouble(loc.get(1));
+                    MarkerOptions options = new MarkerOptions()
+                            .title(pass2Map.get(i).getTitle())
+                            .position(new LatLng(lat, lon))
+                            .snippet(pass2Map.get(i).getUsername());
+                    mGoogleMap.addMarker(options);
+                    if (i == pass2Map.size() - 1) {
+                        goToLocationZoom(new LatLng(lat,lon), 8);
+                    }
+                } catch (NumberFormatException ex) {
+                    Log.d("MapLatlng", "CANNOT CONVERT string -> double");
+                }
             }
         }
 
-        //goToLocationZoom(54, -114.0, 8);
+        //goToLocationZoom(myLatlng, 8);
     }
 
     /**
-     *
-     * @param lat
-     * @param lon
+     * @param ll
      * @param zoom
      */
-    private void goToLocationZoom(double lat, double lon, float zoom) {
-        LatLng ll = new LatLng(lat, lon);
+    private void goToLocationZoom(LatLng ll, float zoom) {
+        //LatLng ll = new LatLng(lat, lon);
         CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, zoom);
         mGoogleMap.moveCamera(update);
 
