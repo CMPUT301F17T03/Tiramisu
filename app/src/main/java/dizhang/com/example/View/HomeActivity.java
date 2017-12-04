@@ -190,18 +190,17 @@ public class HomeActivity extends AppCompatActivity {
 
         String username = LoginActivity.uname;
         listItem.clear();
-
+        String title = "";
         for (int i = 0 ; i < eList.size(); i++){
             if( eList.get(i).getFrequency().contains(Today)){
-                System.out.println(eList.get(i).getLast());
+                String LastDate =eList.get(i).getLast();
+                System.out.println(LastDate);
                 System.out.println(Today_date);
-                if ( eList.get(i).getLast().equals( Today_date)) {
-
-                    continue;
-                }
-                else{
-
-                    String title = eList.get(i).getTitle();
+                title = eList.get(i).getTitle();
+                Boolean bt = LastDate.equals(Today_date);
+                System.out.println("compare result is "+ bt.toString());
+                if (!LastDate.equals(Today_date)) {
+                    System.out.println("this is in");
                     listItem.add(title);
                 }
 

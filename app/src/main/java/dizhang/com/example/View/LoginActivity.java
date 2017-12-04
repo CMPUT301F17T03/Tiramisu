@@ -117,6 +117,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             try{
                                 userHabit = getHabitTask.get();
+                                System.out.println(userHabit.get(0).getTitle());
+                                System.out.println(userHabit.get(1).getTitle());
                             } catch (Exception e) {
                                 Log.i("Error", "failed to get habit from the async object");
                             }

@@ -128,10 +128,11 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
                     dayOfWeek.add("Sat");
                     dayOfWeek.add("Sun");
                 }
+                newList.get(index).setFrequency(dayOfWeek);
                 ElasticSearchHabit.updateHabitTask updateHabitTask = new ElasticSearchHabit.updateHabitTask();
                 updateHabitTask.execute(newList.get(index));
 
-                newList.get(index).setFrequency(dayOfWeek);
+
                 Intent intent = new Intent(EditHabitActivity.this, HabitManagerActivity.class);
                 saveInFile();
                 startActivity(intent);
