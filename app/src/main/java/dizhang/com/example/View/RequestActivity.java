@@ -1,13 +1,27 @@
 package dizhang.com.example.View;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
+import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
 /**
@@ -32,7 +46,13 @@ import dizhang.com.example.tiramisu.R;
 
 public class RequestActivity extends AppCompatActivity {
 
+    private static final String RequestFILE = "Request.save";
+
     ListView listView;
+    ArrayList<String> listItem = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
+    ArrayList<User> requestList = new ArrayList<User>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,5 +97,53 @@ public class RequestActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void onBackPressed(){
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        loadFromFile();
+        listItem.clear();
+        for (int i = 0; i < requestList.size(); i++){
+            String title = requestList.get(i).getUsername();
+            listItem.add(title);
+        }
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItem);
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        adapter.notifyDataSetChanged();
+    }
+
+    private void loadFromFile(){
+        try{
+            FileInputStream file = openFileInput(RequestFILE);
+            BufferedReader in = new BufferedReader(new InputStreamReader((file)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<User>>(){}.getType();
+            requestList = gson.fromJson(in, listType);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
