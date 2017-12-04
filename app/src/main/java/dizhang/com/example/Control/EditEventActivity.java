@@ -127,11 +127,12 @@ public class EditEventActivity extends AppCompatActivity {
         Image  = (ImageView)findViewById(R.id.evenImageE);
         editTitle.setText(title);
         editCom.setText(comment);
+        if (ImageString!=null) {
 
-        byte[] decodedString = Base64.decode(ImageString, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        Image.setImageBitmap(decodedByte);
-
+            byte[] decodedString = Base64.decode(ImageString, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            Image.setImageBitmap(decodedByte);
+        }
 
         //Image.setImageBitmap(newList.get(index).getPicture());
 
