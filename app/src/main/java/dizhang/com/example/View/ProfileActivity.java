@@ -48,7 +48,7 @@ import dizhang.com.example.tiramisu.R;
  */
 
 public class ProfileActivity extends AppCompatActivity {
-    private static final String FILENAME = "profile.save";
+    private static final String FILENAME = "User.save";
     Button editProfile;
     TextView usernameViewProf, genderViewProf, interestViewProf,nicknameViewProf;
     ArrayList<User> newList = new ArrayList<User>();
