@@ -110,6 +110,11 @@ public class LoginActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         uname=CurrentUser.getUsername();
+                        if (CurrentUser.getNickname()!=null){
+                            String nickname = CurrentUser.getNickname();
+                            intent.putExtra("Nickname",CurrentUser.getNickname());
+                            //Toast.makeText(LoginActivity.this, nickname , Toast.LENGTH_LONG).show();
+                        }
                         CurrentUser.setNetwork("Y");
 
                             ElasticSearchHabit.getHabitTask getHabitTask = new ElasticSearchHabit.getHabitTask();
@@ -144,6 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                             } catch (Exception e) {
                                 Log.i("Error", "failed to get habit from the async object");
                             }
+
                             saveUser();
                             saveHabit();
                             saveEvent();

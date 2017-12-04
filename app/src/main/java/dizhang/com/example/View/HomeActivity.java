@@ -101,10 +101,6 @@ public class HomeActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mtoggle;
 
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    double lon, lat;
-
 
     @SuppressLint("MissingPermission")
     @Override
@@ -128,6 +124,17 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+
+        try{
+            Intent intent = getIntent();
+            String welcome = "Welcome back, " + intent.getExtras().getString("Nickname");
+            if(intent.getExtras().getString("Nickname") != null) {
+                Toast.makeText(HomeActivity.this, welcome, Toast.LENGTH_LONG).show();
+            }
+        }
+        catch (Exception e){
+
+        }
 
         //super.onCreate(savedInstanceState);
 
@@ -181,40 +188,6 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                //locationToday.clearComposingText();
-                //newLocation.clear();
-                lon = location.getLongitude();
-                lat = location.getLatitude();
-                //locationToday.setText("(Longitude: " + lon + ", Latitude: " + lat + " )");
-                Log.d("Onlocation", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-                Log.d("Case", "Case222222222222222222222222222222");
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-                Log.d("Case", "Case222222222222222222222222222222");
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-
-            }
-        };
-
-        locationManager.requestLocationUpdates("gps", 5000, 10, locationListener);
 
 
     }

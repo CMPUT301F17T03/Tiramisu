@@ -16,7 +16,7 @@
         android:title = "Sharing Center"/>
 
     <item android:id="@+id/map"
-        android:title = "Map"/>
+        android:title = "Near By Events (5km)"/>
 
     <item android:id="@+id/logout"
         android:title = "Logout"/>
