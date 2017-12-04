@@ -18,6 +18,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +31,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -81,7 +83,7 @@ public class EventTodayActivity extends AppCompatActivity {
     ArrayList<Habit> habitList = new ArrayList<Habit>();
     ArrayList<Event> EventList = new ArrayList<Event>();
     ArrayList<String> newLocation = new ArrayList<String>();
-    public String realPath;
+    public String realPath,ImageString;
     Habit Current_Habit = new Habit();
     double lon, lat;
     Date date;
@@ -214,7 +216,7 @@ public class EventTodayActivity extends AppCompatActivity {
                 newLocation.add(lonString);
                 newLocation.add(latString);
 
-                newEvent.setPicture(realPath);
+                newEvent.setPicture(ImageString);
                 newEvent.setUsername(LoginActivity.uname);
 
                 newEvent.setLocation(newLocation);
@@ -264,6 +266,13 @@ public class EventTodayActivity extends AppCompatActivity {
                 realPath=getRealPathFromURI(imageUri);
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                byte[] byteImage = baos.toByteArray();
+                ImageString = Base64.encodeToString(byteImage, Base64.DEFAULT);
+
+
                 Toast.makeText(EventTodayActivity.this, realPath, Toast.LENGTH_LONG).show();
 
                 Image.setImageBitmap(selectedImage);

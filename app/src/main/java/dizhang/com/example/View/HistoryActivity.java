@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import dizhang.com.example.Model.Event;
 import dizhang.com.example.tiramisu.R;
@@ -91,7 +92,7 @@ public class HistoryActivity extends AppCompatActivity {
                     }
 
                 }
-
+                Collections.reverse(listItem);
                 adapter.notifyDataSetChanged();
                 SelectIndex = Select;
                 mainListView.setAdapter(adapter);
@@ -116,7 +117,7 @@ public class HistoryActivity extends AppCompatActivity {
                     }
 
                 }
-
+                Collections.reverse(listItem);
                 adapter.notifyDataSetChanged();
                 SelectIndex = Select;
                 mainListView.setAdapter(adapter);
@@ -128,7 +129,6 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(HistoryActivity.this, EventViewActivity.class);
-
                 intent.putExtra("index",SelectIndex.get(i));
                 startActivity(intent);
 
@@ -163,6 +163,7 @@ public class HistoryActivity extends AppCompatActivity {
             Select.add(i);
 
         }
+        Collections.reverse(listItem);
 
         adapter = new ArrayAdapter<String>(this, R.layout.list_item,listItem);
         mainListView.setAdapter(adapter);

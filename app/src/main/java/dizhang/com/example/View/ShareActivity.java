@@ -5,11 +5,24 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOError;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import dizhang.com.example.Model.Habit;
 import dizhang.com.example.Model.User;
 import dizhang.com.example.tiramisu.R;
 
@@ -34,12 +47,16 @@ import dizhang.com.example.tiramisu.R;
  */
 public class ShareActivity extends AppCompatActivity {
 
-    public Button viewRequestButton;
-    public Button sendRequestButton;
+    private static final String FollowedFILE = "Followed.save";
+
+    Button viewRequestButton;
+    Button sendRequestButton;
     private EditText bodyText;
-    private ArrayList<User> userList = new ArrayList<User>();
-    //private ArrayAdapter<User> adapter;
-    //private ListView searchHabit;
+    ArrayList<String> listItem = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
+    ArrayList<Habit> followedList = new ArrayList<Habit>();
+    ListView FollowedHabit;
+    //ArrayList<User> userList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +64,7 @@ public class ShareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_share);
 
         bodyText = (EditText) findViewById(R.id.searchUser);
+        FollowedHabit = (ListView) findViewById(R.id.habitFollowedList);
         viewRequestButton = (Button) findViewById(R.id.requestList);
         sendRequestButton = (Button) findViewById(R.id.sendRequest);
 
@@ -84,5 +102,44 @@ public class ShareActivity extends AppCompatActivity {
         startActivity(homeInt);
     }
 
+    protected void onStart() {
+        super.onStart();
+
+        loadFromFile();
+        listItem.clear();
+        for (int i = 0; i < followedList.size(); i++){
+            String title = followedList.get(i).getTitle();
+            listItem.add(title);
+        }
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItem);
+        FollowedHabit.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
+    protected void onRestart(){
+        super.onRestart();
+        adapter.notifyDataSetChanged();
+    }
+
+    private void loadFromFile(){
+        try{
+            FileInputStream fis = openFileInput(FollowedFILE);
+            BufferedReader in = new BufferedReader(new InputStreamReader((fis)));
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
+            followedList = gson.fromJson(in, listType);
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
 }
