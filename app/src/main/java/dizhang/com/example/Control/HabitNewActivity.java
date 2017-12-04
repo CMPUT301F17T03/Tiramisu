@@ -54,6 +54,7 @@ import dizhang.com.example.tiramisu.R;
  * @version 1.0
  * @see AppCompatActivity
  * @see DatePickerDialog.OnDateSetListener
+ * @see HabitNewActivity
  * @since 1.0
  */
 
@@ -71,6 +72,9 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
 
 
     @Override
+    /**
+     * create a new habit
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit_new);
@@ -80,7 +84,9 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
         newDes = (EditText) findViewById(R.id.newDes);
         addHabit = (Button) findViewById(R.id.hdone);
 
-
+        /**
+         * pick a start date
+         */
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,6 +102,9 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
             }
         });
 
+        /**
+         * add the habit by typing tile and description
+         */
         addHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,7 +171,7 @@ public class HabitNewActivity extends AppCompatActivity implements DatePickerDia
 
     /**
      * source demonstration of coding: https://www.youtube.com/watch?v=NGRV2qY9ZiU
-     *
+     * choose the frequency of habit
      * @param view
      */
     public void selectItem(View view) {

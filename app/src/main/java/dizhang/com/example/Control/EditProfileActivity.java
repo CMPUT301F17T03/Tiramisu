@@ -52,6 +52,7 @@ import dizhang.com.example.tiramisu.R;
  */
 
 //still need something to finish
+
 public class EditProfileActivity extends AppCompatActivity {
     private static final String FILENAME = "profile.save";
     //private User user;
@@ -104,7 +105,9 @@ public class EditProfileActivity extends AppCompatActivity {
         saveProf = (Button) findViewById(R.id.saveProfile);
 
         rgprofile = (RadioGroup) findViewById(R.id.rgprofile);
-
+        /**
+         * user save the profile with the save button
+         */
         saveProf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

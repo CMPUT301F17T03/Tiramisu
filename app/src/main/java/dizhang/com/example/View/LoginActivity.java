@@ -158,7 +158,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
+        /*
+            *if the user do not have an account, click signup button to register
+         */
         signupButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);

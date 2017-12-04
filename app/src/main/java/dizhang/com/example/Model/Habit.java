@@ -35,13 +35,17 @@ public class Habit {
     private String username;
     @JestId
     private String Id;
-    /**
-    * @pamram title
-    * @param description
-    * @param date
-    * @param frequency
-     */
+
     public Habit(){}
+
+    /**
+     *
+     * @param title
+     * @param description
+     * @param date
+     * @param frequency
+     * @param username
+     */
     public Habit(String title, String description, String date, ArrayList<String> frequency, String username){
         this.title = title;
         this.description = description;
@@ -57,9 +61,19 @@ public class Habit {
         return title;
     }
 
+    /**
+     *
+     * @return
+     */
+
     public String getId() {
         return Id;
     }
+
+    /**
+     *
+     * @param id
+     */
 
     public void setId(String id) {
         Id = id;
@@ -75,10 +89,19 @@ public class Habit {
         this.title = title;
     }
 
+    /**
+     *
+     * @return
+     */
+
     public String getUsername() {
         return username;
     }
 
+    /**
+     *
+     * @param username
+     */
     public void setUserName(String username) {
         this.username = username;
     }
@@ -132,9 +155,19 @@ public class Habit {
         return LastDate;
     }
 
+    /**
+     *
+     * @param date
+     */
+
     public void setLast(String date){
         this.LastDate = date;
     }
+
+    /**
+     *
+     * @return
+     */
     public EventList getEvents() {
         return events;
     }

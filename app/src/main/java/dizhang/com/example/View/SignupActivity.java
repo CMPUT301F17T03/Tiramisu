@@ -59,6 +59,7 @@ public class SignupActivity extends AppCompatActivity {
     //Boolean lError = false;
     //not working in this part, still finding methods to store data : (
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
@@ -110,6 +111,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void saveInFile(){
         try{

@@ -24,6 +24,8 @@ import io.searchbox.annotations.JestId;
  * @since 1.0
  */
 
+
+
 public class Event {
 
     private String comment;
@@ -35,10 +37,6 @@ public class Event {
     @JestId
     private String Id;
 
-    /**
-     *@param habit
-     * @param date
-     */
 
 
     /**
@@ -51,37 +49,6 @@ public class Event {
         this.date = date;
         this.comment = comment;
     }
-    /**
-    * @param habit
-     * @param date
-     * @param picture
-     */
-
-    /**
-    *@param habit
-     * @param date
-     * @param location
-     */
-    /**
-     * @param habit
-     * @param date
-     * @param comment
-     * @param picture
-     */
-    /**
-     *@param habit
-     * @param date
-     * @param picture
-     *@param location
-     */
-
-    /**
-     *@param habit
-     * @param date
-     * @param comment
-     * @param picture
-     * @param location
-     */
     /**
      *@return
      */
@@ -101,18 +68,30 @@ public class Event {
      *@return
      */
 
-    /**
-     *@param
-     */
     public Date getDate() {
         return date;
     }
+
+    /**
+     *
+     * @param date
+     */
 
     public void setDate(Date date) {
         this.date = date;
     }
 
+    /**
+     *
+     * @param title
+     */
+
     public void setTitle(String title){ this.title = title;}
+
+    /**
+     *
+     * @return
+     */
 
     public String getTitle() {
         return title;
@@ -128,22 +107,44 @@ public class Event {
     }
 
 
-
+    /**
+     *
+     * @return
+     */
     public String getId() {
         return Id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(String id) {
         Id = id;
     }
+
+    /**
+     *
+     * @return
+     */
 
     public String getUsername() {
         return username;
     }
 
+    /**
+     *
+     * @param username
+     */
+
     public void setUsername(String username) {
         this.username = username;
     }
+
+    /**
+     *
+     * @param picture
+     */
 
     public void setPicture(String picture) {
         this.picture = picture;

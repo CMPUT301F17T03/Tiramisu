@@ -36,8 +36,8 @@ import io.searchbox.core.SearchResult;
  *
  * @version 1.0
  * @since 1.0
+ * @see AsyncTask
  */
-
 
 public class ElasticSearchController {
 
@@ -114,11 +114,5 @@ public class ElasticSearchController {
 
 }
 
-    // Class to setInfo
-    /**
-     * Represents a SetUserInfo
-     * @version 1.0
-     * @see AsyncTask
-     *
-*/
+
 

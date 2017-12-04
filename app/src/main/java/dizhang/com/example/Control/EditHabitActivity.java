@@ -50,7 +50,6 @@ import dizhang.com.example.tiramisu.R;
  * @version 1.0
  * @see AppCompatActivity
  * @see DatePickerDialog.OnDateSetListener
- * @see EditHabitActivity
  * @see HabitManagerActivity
  * @since 1.0
  */
@@ -72,6 +71,7 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
 
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_habit);
@@ -90,7 +90,9 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
         editDone = (Button) findViewById(R.id.edone);
         editTitle.setText(title);
         editDes.setText(des);
-
+        /**
+         * user change the date of a habit
+         */
         changeDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,7 +110,9 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
             }
         });
 
-
+        /**
+         * user finish editing the habit
+         */
         editDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,7 +162,8 @@ public class EditHabitActivity extends AppCompatActivity implements DatePickerDi
     }
 
     /**
-     *@param view
+     *
+     * @param view
      */
 
     public void selectItem(View view) {

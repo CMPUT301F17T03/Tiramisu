@@ -38,10 +38,11 @@ import io.searchbox.core.SearchResult;
  * at University of Alberta
  */
 /**
- * Represents a ElasticSearchController
+ * Represents a ElasticSearchEvent
  *
  * @version 1.0
  * @since 1.0
+ * @see AsyncTask
  */
 
 

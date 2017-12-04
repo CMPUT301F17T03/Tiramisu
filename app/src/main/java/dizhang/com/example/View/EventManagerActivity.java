@@ -64,7 +64,9 @@ public class EventManagerActivity extends AppCompatActivity {
 
         eventList = (ListView) findViewById(R.id.eventList);
 
-
+        /**
+         * a list of event
+         */
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

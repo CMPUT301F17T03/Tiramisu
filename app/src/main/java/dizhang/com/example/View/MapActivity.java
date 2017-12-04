@@ -54,6 +54,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+
     private void iniMap() {
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragment);
         mapFragment.getMapAsync(this);
@@ -90,12 +91,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
          goToLocationZoom(53.542664, -113.508041, 15);
     }
 
+    /**
+     *
+     * @param lat
+     * @param lon
+     * @param zoom
+     */
     private void goToLocationZoom(double lat, double lon, float zoom) {
         LatLng ll = new LatLng(lat, lon);
         CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, zoom);
         mGoogleMap.moveCamera(update);
 
     }
+
+    /**
+     *
+     * @param lat
+     * @param lon
+     */
 
     private void goToLocation(double lat, double lon) {
         LatLng ll = new LatLng(lat, lon);

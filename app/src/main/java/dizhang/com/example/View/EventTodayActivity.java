@@ -66,7 +66,7 @@ import dizhang.com.example.tiramisu.R;
  */
 
 /**
- * Represents a MapActivity
+ * Represents a EventTodayActivity
  * @version 1.0
  * @see AppCompatActivity
  * @see EventManagerActivity

@@ -44,6 +44,8 @@ import dizhang.com.example.tiramisu.R;
  * @version 1.0
  * @see AppCompatActivity
  * @see MapActivity
+ * @see HomeActivity
+ * @see EventViewActivity
  * @since 1.0
  */
 public class HistoryActivity extends AppCompatActivity {

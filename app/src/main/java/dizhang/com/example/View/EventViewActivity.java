@@ -56,6 +56,7 @@ import dizhang.com.example.tiramisu.R;
  * Represents a EventViewActivity
  * @version 1.0
  * @see AppCompatActivity
+ * @see EditEventActivity
  * @since 1.0
  */
 
