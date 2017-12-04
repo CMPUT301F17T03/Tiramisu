@@ -1,5 +1,6 @@
 package dizhang.com.example.View;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import dizhang.com.example.tiramisu.R;
 
@@ -84,11 +87,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return false;
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d("Ready","OnMapReady!");
-         mGoogleMap = googleMap;
-         goToLocationZoom(53.542664, -113.508041, 15);
+        mGoogleMap = googleMap;
+        mGoogleMap.setMyLocationEnabled(true);
+        goToLocationZoom(53.542664, -113.508041, 15);
+        MarkerOptions options = new MarkerOptions()
+                .title("Username")
+                .position(new LatLng(53.542664, -113.508041))
+                .snippet("some habit");
+        mGoogleMap.addMarker(options);
+
     }
 
     /**
@@ -101,6 +112,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng ll = new LatLng(lat, lon);
         CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, zoom);
         mGoogleMap.moveCamera(update);
+
+//        MarkerOptions options = new MarkerOptions()
+//                .title("Username")
+//                .position(new LatLng(lat, lon))
+//                .snippet("some habit");
+//        mGoogleMap.addMarker(options);
 
     }
 
