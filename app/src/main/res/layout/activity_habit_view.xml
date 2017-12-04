@@ -32,8 +32,8 @@
             android:id="@+id/habitTitleView"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:textSize="20sp"
-            />
+            android:textColor="@color/cardview_light_background"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textView10"
@@ -47,8 +47,8 @@
             android:id="@+id/habitDesView"
             android:layout_width="match_parent"
             android:layout_height="69dp"
-            android:textSize="20sp"
-            />
+            android:textColor="@color/cardview_light_background"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textView11"
@@ -62,7 +62,8 @@
             android:id="@+id/habitDateView"
             android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:textSize="18sp"/>
+            android:textColor="@color/cardview_light_background"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textView12"
@@ -76,7 +77,8 @@
             android:id="@+id/frequencyView"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:textSize="18sp"/>
+            android:textColor="@color/cardview_light_background"
+            android:textSize="18sp" />
 
         <Space
             android:layout_width="match_parent"

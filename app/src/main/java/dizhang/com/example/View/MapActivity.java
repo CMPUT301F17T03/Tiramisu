@@ -13,6 +13,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import dizhang.com.example.Model.Event;
 import dizhang.com.example.Model.MMP;
 import dizhang.com.example.tiramisu.R;
+
+import static java.lang.Thread.sleep;
 
 /**
  * Class Name: MapActivity
@@ -112,8 +115,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mGoogleMap = googleMap;
         mGoogleMap.setMyLocationEnabled(true);
         //Location myLocation = mGoogleMap.getMyLocation();
+
         //LatLng myLatlng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
         //ArrayList<MMP> pass2Map = (ArrayList<MMP>) getIntent().getSerializableExtra("pass2Map");
+
+        Log.d("final","finally out of this shiet");
         if (pass2Map!=null) {
 
             for (int i = 0; i < pass2Map.size(); i++) {
