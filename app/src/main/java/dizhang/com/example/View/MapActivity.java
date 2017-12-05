@@ -2,6 +2,7 @@ package dizhang.com.example.View;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.graphics.Color;
 import android.location.Location;
 import com.google.android.gms.location.LocationListener;
 import android.support.annotation.NonNull;
@@ -23,6 +24,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -236,6 +239,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    Circle circle;
     @Override
     public void onLocationChanged(Location location) {
         if(location == null) {
@@ -243,10 +247,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
         else{
             ll = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, 15);
+            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, 12);
             mGoogleMap.animateCamera(update);
             if (pass2Map==null){
                 mGoogleMap.clear();
+                circle = drawCircle(ll);
                 for (int i = 0; i < mainMap.size(); i++) {
                     //Log.d("pass2Map", pass2Map.get(i).getTitle());
                     ArrayList<String> loc = mainMap.get(i).getLocation();
@@ -271,6 +276,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
         }
+    }
+
+    private Circle drawCircle(LatLng ll) {
+
+        CircleOptions options = new CircleOptions().center(ll).radius(5000).fillColor(0X33BFEFFF).strokeColor(Color.BLUE).strokeWidth(3);
+
+
+        return mGoogleMap.addCircle(options);
     }
 
     @Override
